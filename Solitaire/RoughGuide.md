@@ -1,4 +1,4 @@
-Cuis-Smalltalk-ColorSolitaire
+https://github.com/Cuis-Smalltalk/Games/tree/master/Solitaire
 =============================
 # Techniques of Interest
 
