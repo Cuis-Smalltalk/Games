@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3681] on 28 March 2019 at 9:10:39 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3681] on 28 March 2019 at 9:21:10 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 186!
+!provides: 'Construction' 1 187!
 !requires: 'Game' 1 0 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2184,6 +2184,52 @@ makeIdArea
 	^ area	layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 
+!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 21:18:50'!
+leftFrom: from to: to
+	"Animate relocation of self when player must go BACK to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from - 6.
+	model positionBoardTo: oldPos.
+	self position: 7.
+	newPos _ index atWrap: final - 7.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowLeft.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model enableAll: {'Do Job'}.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 21:19:18'!
+moveFrom: positionA to: positionB
+	"Determine best direction and move"
+	| dir |
+	
+	dir _ Direction
+		shortest: positionA
+		to: positionB
+		in: model spaces size.
+	dir > 0
+		ifTrue: [self rightFrom: positionA to: positionB]
+		ifFalse: [self leftFrom: positionA to: positionB]! !
+
 !ContractToken methodsFor: 'operations' stamp: 'dhn 10/1/2016 11:19:54'!
 moved
 	"Perform the results of the move"
@@ -2205,6 +2251,51 @@ moved
 		ifFalse: [
 			mr updateHistory.
 			mr enableAll: {'End Turn'}]! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 21:19:52'!
+position: aCell
+	"Position the receiver over the board cell numbered by aCell"
+	| horiz |
+	
+	self morphPosition: self posAdjust.
+	horiz _ (model cells at: aCell) morphPosition x.
+	self morphPosition: (self morphPosition translatedBy: (horiz@0))! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 21:20:13'!
+rightFrom: from to: to
+	"Animate relocation of self when player moves ahead to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from.
+	model positionBoardTo: oldPos.
+	self position: 1.
+	newPos _ final + 1.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowRight.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer 
+					position: final;
+					years: 1 + model currentPlayer years;
+					salary.
+				model enableAll: {'Do Job'}.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
 
 !ContractToken methodsFor: 'operations' stamp: 'dhn 8/14/2017 11:53:01'!
 sickMove
