@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3631] on 26 February 2019 at 12:09:09 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3681] on 28 March 2019 at 8:52:00 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 23!
+!provides: 'Game' 1 24!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -428,19 +428,19 @@ hardRoll: anObject
 	
 	hardRoll _ anObject! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 9/6/2017 22:10:04'!
+!Game methodsFor: 'operating' stamp: 'dhn 3/28/2019 20:50:42'!
 hopFor: anObject
 	"Hop token for anObject number of spaces"
-	| roll |
+	| value |
 	
 	token who oldPosition: token who position.
-	roll _ self testMode ifTrue: [self hardRoll] ifFalse: [anObject].
-	token jump: roll.
+	value _ self testMode ifTrue: [self hardRoll] ifFalse: [anObject].
+	token jump: value.
 	currentPlayer 
-		roll: roll;
-		position: (currentPlayer forwardTo: (roll + currentPlayer position) 
+		roll: value;
+		position: (currentPlayer forwardTo: (value + currentPlayer position) 
 			around: spaces size).
-	currentPlayer rollStats: roll! !
+	currentPlayer rollStats: value! !
 
 !Game methodsFor: 'operating' stamp: 'dhn 8/21/2017 13:20:32'!
 move
