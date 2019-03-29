@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3470] on 7 October 2018 at 4:07:58 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3681] on 28 March 2019 at 9:10:39 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 185!
+!provides: 'Construction' 1 186!
 !requires: 'Game' 1 0 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -390,6 +390,21 @@ A contingency in Construction Game. Contingencies can be positive or negative fo
 
 !Announcement commentStamp: '<historical>' prior: 0!
 An Announcement is a class which is detected by name, resulting in the early display of its description in the drawContingency method.!
+
+!Construction class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 18:58:07'!
+initializedInstance
+
+	^ self start! !
+
+!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 13:48'!
+shutDown
+	"Answer the value of shutDown"
+	shutDown ifNil: [shutDown := false].
+	^ shutDown! !
+
+!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 11:03'!
+shutDown: aBoolean
+	shutDown := aBoolean.! !
 
 !Contract methodsFor: 'auction' stamp: 'dhn 9/15/2016 18:18:14'!
 assetAuctionItem
@@ -2856,11 +2871,6 @@ includeInNewMorphMenu
 	
 	^ true! !
 
-!Construction class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 18:58:07'!
-initializedInstance
-
-	^ self start! !
-
 !Construction class methodsFor: 'instance creation' stamp: 'dhn 9/1/2016 21:30:46'!
 labelAreaHeight
 
@@ -4489,16 +4499,6 @@ priceFactor: aFactor
 	^ 0
 ! !
 
-!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 13:48'!
-shutDown
-	"Answer the value of shutDown"
-	shutDown ifNil: [shutDown := false].
-	^ shutDown! !
-
-!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 11:03'!
-shutDown: aBoolean
-	shutDown := aBoolean.! !
-
 !Contractor methodsFor: 'accessing' stamp: 'dhn 7/14/2013 10:43'!
 spaceEffect: anObject
 	"Set the value of spaceEffect"
@@ -4940,13 +4940,13 @@ emphasized: anAmount
 		ifTrue: [(StringMorph contents: amt font: nil emphasis: 1) color: Color red]
 		ifFalse: [StringMorph contents: amt font: nil emphasis: 1]! !
 
-!Contractor methodsFor: 'job-related' stamp: 'dhn 1/23/2018 16:49:34'!
-jobHistory: roll
+!Contractor methodsFor: 'job-related' stamp: 'dhn 3/28/2019 21:09:16'!
+jobHistory: aRoll
 	"Account for job performance"
 	
-	jobRoll _ jobRoll + roll.
+	jobRoll _ jobRoll + aRoll.
 	jobCount _ jobCount + 1.
-	jobMAvg add: roll! !
+	jobMAvg add: aRoll! !
 
 !Contractor methodsFor: 'job-related' stamp: 'dhn 1/23/2018 17:03:22'!
 movingAvg
@@ -5028,13 +5028,13 @@ updateIron: anAsset with: aRoll
 	expenseFactor _ 1.
 	^ total! !
 
-!Contractor methodsFor: 'job-related' stamp: 'dhn 1/23/2018 16:23:01'!
-updateJobRoll: roll
-	"Append roll to jobRoll"
+!Contractor methodsFor: 'job-related' stamp: 'dhn 3/28/2019 21:09:47'!
+updateJobRoll: aRoll
+	"Append aRoll to jobRoll"
 	
 	^ jobRoll notNil 
-		ifTrue: [jobRoll add: roll; yourself]
-		ifFalse: [jobRoll _ OrderedCollection with: roll]! !
+		ifTrue: [jobRoll add: aRoll; yourself]
+		ifFalse: [jobRoll _ OrderedCollection with: aRoll]! !
 
 !Contractor class methodsFor: 'operating' stamp: 'dhn 2/16/2017 19:57:23'!
 moveInterval
