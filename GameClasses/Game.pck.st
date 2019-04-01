@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3681] on 28 March 2019 at 8:52:00 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 1 April 2019 at 3:38:30 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 24!
+!provides: 'Game' 1 25!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -857,6 +857,24 @@ initialize
 	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
 a die is "rolled" and the token moves that number of spaces.'! !
 
+!Token methodsFor: 'initialization' stamp: 'dhn 4/1/2019 15:33:37'!
+makeIdArea
+	"Lay out the area for the player's name"
+	| area |
+	
+	area _ LayoutMorph newRow
+		color: Color transparent;
+		name: #id;
+		padding: #center.
+	
+	id _ (StringMorph contents: 'Player') 
+		emphasis: AbstractFont boldCode;
+		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 10).
+		
+	area addMorph: id.
+	^ area	layoutSpec: (LayoutSpec  
+		proportionalWidth: 1.0)! !
+
 !Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:47:12'!
 model
 	"Answer the value of model"
@@ -1163,6 +1181,40 @@ buttonAreaHeight
 defaultExtent
 
 	^ (Display width) @ (Display height * 0.6)! !
+
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 4/1/2019 15:26:43'!
+getPlayers
+	"Get the names of two to six players"
+	| x y cnt clrs |
+
+	model disableAll: {'Players'. 'Tour'}.
+	clrs _ Token colors shuffled.
+	cnt _ 0.
+	x _ FillInTheBlankMorph request: 'First player''s name?' initialAnswer: ''.
+	x 
+		ifEmpty: [
+			model enableAll: {'Players'. 'Tour'}.
+			^ nil]
+		ifNotEmpty: [
+			cnt _ cnt + 1.
+			model setupPlayer: x color: (clrs at: cnt)].
+	
+	[cnt < 6] whileTrue: [
+		y _ FillInTheBlankMorph request: 'Next player''s name?' initialAnswer: ''.
+		y
+			ifEmpty: [
+				cnt > 1 
+					ifTrue: [self startGame]
+					ifFalse: [
+						model players: OrderedCollection new.
+						model enableAll: {'Players'. 'Tour'}].
+				^ nil]
+			ifNotEmpty: [
+				cnt _ cnt + 1.
+				model setupPlayer: y color: (clrs at: cnt)]].
+		
+	self startGame
+! !
 
 !GameBoard methodsFor: 'initialization' stamp: 'dhn 10/19/2016 16:40:06'!
 initialize
