@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 1 April 2019 at 3:38:30 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 8 April 2019 at 10:23:10 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 25!
+!provides: 'Game' 1 26!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1265,11 +1265,11 @@ submorphProportion
 	
 	^ 0.99! !
 
-!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 11/8/2016 16:52:40'!
+!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 4/8/2019 21:17:03'!
 titleHeight
 	"Answer the proportional height for morphs such as title"
 	
-	^ 0.11! !
+	^ 0.21! !
 
 !GameView methodsFor: 'initialization' stamp: 'dhn 8/25/2018 13:54:32'!
 removeWindowMenu
