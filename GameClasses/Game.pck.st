@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 9 April 2019 at 8:01:43 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 10 April 2019 at 7:06:11 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 27!
+!provides: 'Game' 1 28!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -441,12 +441,12 @@ hardRoll: anObject
 	
 	hardRoll _ anObject! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 3/28/2019 20:50:42'!
+!Game methodsFor: 'operating' stamp: 'dhn 4/10/2019 18:07:56'!
 hopFor: anObject
 	"Hop token for anObject number of spaces"
 	| value |
 	
-	token who oldPosition: token who position.
+	currentPlayer oldPosition: currentPlayer position.
 	value _ self testMode ifTrue: [self hardRoll] ifFalse: [anObject].
 	token jump: value.
 	currentPlayer 
@@ -467,7 +467,7 @@ move
 	bone adjustTo: token.
 	bone show: bone class faces shuffled! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 8/9/2017 15:48:42'!
+!Game methodsFor: 'operating' stamp: 'dhn 4/10/2019 18:10:13'!
 nextPlayer
 	"Begin the next player's turn"
 	| x |
@@ -484,7 +484,6 @@ nextPlayer
 	token id contents: currentPlayer identity.
 	token doubled contents: currentPlayer doubledString.
 	token color: currentPlayer color.
-	token who: currentPlayer.
 	token setBalloonText: 'token for ', currentPlayer identity.
 	self testMode ifTrue: [
 	x _ (FillInTheBlankMorph request: 'How many spaces' initialAnswer: '6' onCancel: ['0']) asNumber.
@@ -814,18 +813,6 @@ labelArea: anObject
 
 	labelArea _ anObject! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 10/11/2011 21:53'!
-who
-	"Answer the value of who"
-
-	^ who! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 10/11/2011 21:53'!
-who: anObject
-	"Set the value of who"
-
-	who := anObject! !
-
 !Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:47'!
 arrowLeft
 	"Associate an arrow with the sender, pointing to the left"
@@ -918,14 +905,14 @@ setSize
 	h _ w * 0.5.
 	self morphExtent: w@h! !
 
-!Token methodsFor: 'stepping' stamp: 'dhn 4/8/2017 20:35:06'!
+!Token methodsFor: 'stepping' stamp: 'dhn 4/10/2019 17:50:37'!
 jump: aCount
 	"Move the receiver in aCount hops"
 	| step limit i horiz |
 	
 	step _ 30.	"time of each increment of the hop"
 	limit _ hop size * (aCount min: 6).
-	horiz _ (who mgr cells first morphWidth +2)/ (hop size).
+	horiz _ (model cells first morphWidth +2)/ (hop size).
 	i _ 0.
 	self when: #morphicStep evaluate: [ :delta |
 		i _ i + 1.
@@ -938,7 +925,7 @@ jump: aCount
 	self startSteppingStepTime: step. 	
 ! !
 
-!Token methodsFor: 'stepping' stamp: 'dhn 8/9/2017 22:06:33'!
+!Token methodsFor: 'stepping' stamp: 'dhn 4/10/2019 18:00:23'!
 moveFrom: positionA to: positionB
 	"Determine best direction and move"
 	| dir |
@@ -946,7 +933,7 @@ moveFrom: positionA to: positionB
 	dir _ Direction
 		shortest: positionA
 		to: positionB
-		in: who mgr spaces size.
+		in: model spaces size.
 	dir > 0
 		ifTrue: [self arrowRight]
 		ifFalse: [self arrowLeft].

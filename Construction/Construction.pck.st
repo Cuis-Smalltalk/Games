@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 9 April 2019 at 8:01:35 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 10 April 2019 at 7:08:11 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 198!
+!provides: 'Construction' 1 199!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -459,7 +459,7 @@ jobAuctionList
 
 	^ self class bidIncrement! !
 
-!Contract methodsFor: 'auction' stamp: 'dhn 8/10/2017 13:21:13'!
+!Contract methodsFor: 'auction' stamp: 'dhn 4/10/2019 18:08:29'!
 jobWinner: aName bid: aBid
 	"Change current player to aName and move to job, if necessary"
 	| space playr |
@@ -482,7 +482,6 @@ jobWinner: aName bid: aBid
 			token id contents: currentPlayer identity.
 			token doubled contents: currentPlayer doubledString.
 			token color: currentPlayer color.
-			token who: currentPlayer.
 			token setBalloonText: 'token for ', currentPlayer identity.
 			token moveFrom: playr position to: space].
 	self updateHistory.
@@ -2202,15 +2201,15 @@ moveFrom: positionA to: positionB
 		ifTrue: [self rightFrom: positionA to: positionB]
 		ifFalse: [self leftFrom: positionA to: positionB]! !
 
-!ContractToken methodsFor: 'operations' stamp: 'dhn 10/1/2016 11:19:54'!
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/10/2019 18:01:06'!
 moved
 	"Perform the results of the move"
 	| pl mr |
 	
-	pl _ self who.
-	mr _ pl mgr.
+	pl _ model currentPlayer.
+	mr _ model.
 	pl split: false.
-	doubled contents: who doubledString.
+	doubled contents: pl doubledString.
 	(Contract taxDue: pl position) ifTrue: [pl debtTax].
 	(Contract interestDue: pl position) ifTrue: [pl debtInterest].
 	(Contract alwaysDo: pl position) 	ifTrue: [mr doSpace].
@@ -2448,7 +2447,7 @@ playButtonSet
 		addMorph: self makeQuitGameButton.
 ! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 4/12/2017 19:30:21'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 4/10/2019 18:08:53'!
 setupToken: aPlayer
 	"Place the player's token on the board"
 	| w h |
@@ -2462,7 +2461,7 @@ setupToken: aPlayer
 		morphExtent: w@h;
 		morphPosition: owner morphExtent * (0.006@0.72).
 	pasteup addMorph: model token.
-	^ model token who: aPlayer! !
+	^ model token! !
 
 !Construction methodsFor: 'initialization' stamp: 'dhn 10/20/2016 19:54:47'!
 showSeasons: associations 
