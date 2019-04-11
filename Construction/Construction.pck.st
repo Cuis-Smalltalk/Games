@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 6 April 2019 at 12:37:44 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3695] on 11 April 2019 at 2:49:31 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 197!
+!provides: 'Construction' 1 198!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1311,12 +1311,12 @@ initialButtonState
 	self enableAll: {'Purchase'}.
 	self disableAll: {'End Turn'. 'Do Job'}! !
 
-!Contract methodsFor: 'initialize-release' stamp: 'dhn 8/9/2017 11:50:14'!
+!Contract methodsFor: 'initialize-release' stamp: 'jmv 4/11/2019 14:49:17'!
 initialize
 
 	super initialize.
 	spaces _ self setUpSpaces.
-	spaceFreq _ Histogram ofSize: spaces size.
+	spaceFreq _ GameHistogram ofSize: spaces size.
 	cellCount _ self class cellsForGame.
 	won _ false.
 	windowCount _ 0.
