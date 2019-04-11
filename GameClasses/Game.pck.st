@@ -206,6 +206,16 @@ Object subclass: #Direction
 Direction class
 	instanceVariableNames: ''!
 
+!classDefinition: #GameHistogram category: #'Game-Model'!
+Object subclass: #GameHistogram
+	instanceVariableNames: 'distribution'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Game-Model'!
+!classDefinition: 'GameHistogram class' category: #'Game-Model'!
+GameHistogram class
+	instanceVariableNames: ''!
+
 !classDefinition: #Gamer category: #'Game-Model'!
 Object subclass: #Gamer
 	instanceVariableNames: 'color identity cash debt inFlow outFlow interestPd paidInterest avoidedDebt assets history passedGo years mgr position oldPosition die marker roll totalRoll turns expenseCount'
@@ -214,16 +224,6 @@ Object subclass: #Gamer
 	category: 'Game-Model'!
 !classDefinition: 'Gamer class' category: #'Game-Model'!
 Gamer class
-	instanceVariableNames: ''!
-
-!classDefinition: #Histogram category: #'Game-Model'!
-Object subclass: #Histogram
-	instanceVariableNames: 'distribution'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Game-Model'!
-!classDefinition: 'Histogram class' category: #'Game-Model'!
-Histogram class
 	instanceVariableNames: ''!
 
 !classDefinition: #Season category: #'Game-Model'!
@@ -304,12 +304,12 @@ marks - morphs indicating player's presence!
 !Direction commentStamp: 'dhn 7/10/2016 12:00' prior: 0!
 A model for finding the shortest distance around a game board.!
 
-!Gamer commentStamp: 'dhn 7/10/2016 12:02' prior: 0!
-A model for a player in a board game.
+!GameHistogram commentStamp: 'dhn 10/7/2014 17:28' prior: 0!
+A Histogram shows the frequency distribution of how often some value occurs.
 !
 
-!Histogram commentStamp: 'dhn 10/7/2014 17:28' prior: 0!
-A Histogram shows the frequency distribution of how often some value occurs.
+!Gamer commentStamp: 'dhn 7/10/2016 12:02' prior: 0!
+A model for a player in a board game.
 !
 
 !Season commentStamp: 'dhn 7/10/2016 12:02' prior: 0!
@@ -655,12 +655,12 @@ initialButtonState
 	"Establish the button state at the start of the game"
 	self subclassResponsibility! !
 
-!Game methodsFor: 'initialize' stamp: 'dhn 8/31/2017 16:08:04'!
+!Game methodsFor: 'initialize' stamp: 'jmv 4/11/2019 14:44:14'!
 initialize
 
 	players _ OrderedCollection new.
 	cells _ OrderedCollection new.
-	spaceFreq _ Histogram ofSize: self class describeSpaces size! !
+	spaceFreq _ GameHistogram ofSize: self class describeSpaces size! !
 
 !Game methodsFor: 'initialize' stamp: 'dhn 7/11/2013 14:53'!
 markerSize
@@ -2658,6 +2658,42 @@ longest: a to: b in: n
 shortest: a to: b in: n 
 	^ (Float twoPi * (b + n - a / n)) sin sign! !
 
+!GameHistogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:10'!
+distribution
+
+	^ distribution! !
+
+!GameHistogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:11'!
+distribution: anObject
+
+	distribution := anObject! !
+
+!GameHistogram methodsFor: 'accessing' stamp: 'dhn 11/12/2016 22:08:56'!
+incrementAt: anIndex
+	"Add 1 to the amount in the distribution at anIndex"
+	| x |
+	
+	x _ distribution atWrap: anIndex.
+	distribution atWrap: anIndex put: x + 1! !
+
+!GameHistogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:15'!
+maximum
+	"Answer the maximum of the distribution"
+	^ self distribution inject: 0 into: [:a :c | (a > c)	
+		ifTrue: [a]
+		ifFalse: [c]].! !
+
+!GameHistogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:17'!
+size
+	^ self distribution size! !
+
+!GameHistogram class methodsFor: 'instance creation' stamp: 'dhn 10/7/2014 17:11'!
+ofSize: size
+	| arr |
+	arr := Array new: size.
+	1 to: size do: [:i | arr at: i put: 0].
+	^ self new distribution: arr! !
+
 !Gamer methodsFor: 'accessing' stamp: 'dhn 9/3/2013 21:29'!
 assets
 	^ assets! !
@@ -2972,42 +3008,6 @@ outOfAssets
 	"Answer whether the receiver is out of assets"
 	
 	^ assets allSatisfy: [:a | a quantity <= 0]! !
-
-!Histogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:10'!
-distribution
-
-	^ distribution! !
-
-!Histogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:11'!
-distribution: anObject
-
-	distribution := anObject! !
-
-!Histogram methodsFor: 'accessing' stamp: 'dhn 11/12/2016 22:08:56'!
-incrementAt: anIndex
-	"Add 1 to the amount in the distribution at anIndex"
-	| x |
-	
-	x _ distribution atWrap: anIndex.
-	distribution atWrap: anIndex put: x + 1! !
-
-!Histogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:15'!
-maximum
-	"Answer the maximum of the distribution"
-	^ self distribution inject: 0 into: [:a :c | (a > c)	
-		ifTrue: [a]
-		ifFalse: [c]].! !
-
-!Histogram methodsFor: 'accessing' stamp: 'dhn 10/7/2014 17:17'!
-size
-	^ self distribution size! !
-
-!Histogram class methodsFor: 'instance creation' stamp: 'dhn 10/7/2014 17:11'!
-ofSize: size
-	| arr |
-	arr := Array new: size.
-	1 to: size do: [:i | arr at: i put: 0].
-	^ self new distribution: arr! !
 
 !Season methodsFor: 'accessing' stamp: 'dhn 1/22/2014 13:41'!
 assetName

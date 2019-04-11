@@ -1,6 +1,6 @@
 'From Cuis 5.0 of 7 November 2016 [latest update: #3564] on 23 January 2019 at 3:32:30 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 81!
+!provides: 'Morphic-Games-Solitaire' 1 82!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 !requires: 'Cuis-Base' 42 2846 nil!
 !requires: 'Goodies' 1 3 nil!
@@ -6264,7 +6264,7 @@ defaultExtent
 	^ tableExtent.! !
 
 !Klondike methodsFor: 'initialization' stamp: 'KenD 4/6/2016 20:06'!
-initializeWithScale: scale
+initializeWithScale: aScale
 	"Setup my layout.  Down the column are 
 	Label, 
 	Deck, Discards and 4 Piles,
@@ -6272,7 +6272,7 @@ initializeWithScale: scale
 	then a Button area."
 	|  |
 
-	super initializeWithScale: scale.
+	super initializeWithScale: aScale.
 	"deck created in makePilesArea"
 	self
 		makeLabelArea: 'Klondike';

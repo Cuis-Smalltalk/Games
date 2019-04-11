@@ -1297,12 +1297,12 @@ initialButtonState
 	self enableAll: {'Purchase'}.
 	self disableAll: {'End Turn'. 'Do Job'}! !
 
-!Contract methodsFor: 'initialize-release' stamp: 'dhn 8/9/2017 11:50:14'!
+!Contract methodsFor: 'initialize-release' stamp: 'jmv 4/11/2019 14:49:17'!
 initialize
 
 	super initialize.
 	spaces _ self setUpSpaces.
-	spaceFreq _ Histogram ofSize: spaces size.
+	spaceFreq _ GameHistogram ofSize: spaces size.
 	cellCount _ self class cellsForGame.
 	won _ false.
 	windowCount _ 0.
