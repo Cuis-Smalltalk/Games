@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 10 April 2019 at 7:06:11 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 11 April 2019 at 1:02:30 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 28!
+!provides: 'Game' 1 29!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1151,7 +1151,7 @@ pasteup
 
 	^ pasteup! !
 
-!GameBoard methodsFor: 'operation' stamp: 'dhn 8/27/2018 10:13:46'!
+!GameBoard methodsFor: 'operation' stamp: 'dhn 4/11/2019 12:13:52'!
 showHistory
 	"Open a graph of players' history"
 	| graphs |
@@ -1164,8 +1164,9 @@ showHistory
 		players: model players;
 		plotData.
 	graphs 
-		openInHand;
+		openInWorld: pasteup;
  		morphExtent: 300 @ 300;
+		morphPosition: (self morphExtent x - 350)@18;
 		borderColor: Color lightBrown.
 	graphs layoutMorph color: Color white.
 	graphs legend color: Color white.
@@ -1270,6 +1271,12 @@ titleHeight
 	"Answer the proportional height for morphs such as title"
 	
 	^ 0.21! !
+
+!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 4/11/2019 11:42:29'!
+viewPositionLeft
+	"Answer the upper left location for views"
+	
+	^ 50@0! !
 
 !GameView methodsFor: 'initialization' stamp: 'dhn 8/25/2018 13:54:32'!
 removeWindowMenu

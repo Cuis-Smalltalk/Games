@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 10 April 2019 at 9:42:20 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 11 April 2019 at 1:02:54 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 200!
+!provides: 'Construction' 1 201!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2649,11 +2649,11 @@ showStats
 		morphExtent: 300 @ 260.
 	model disableAll: {'Stats'}! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 4/10/2019 21:08:47'!
+!Construction methodsFor: 'windows' stamp: 'dhn 4/11/2019 11:43:10'!
 windowPosition
 	"Answer the position for a window"
 	
-	^ seasonsArea morphPosition + (model windowPosition: 50@-300)! !
+	^ self morphPosition + (model windowPosition: self class viewPositionLeft)! !
 
 !Construction methodsFor: 'operation' stamp: 'dhn 10/6/2018 20:56:46'!
 displayNumbers
