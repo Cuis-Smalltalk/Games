@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 11 April 2019 at 1:02:30 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 12 April 2019 at 11:40:56 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 29!
+!provides: 'Game' 1 31!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -28,7 +28,7 @@ GamePasteUp class
 
 !classDefinition: #Token category: #'Game-Graphics'!
 EllipseMorph subclass: #Token
-	instanceVariableNames: 'labelArea model who count die arrow id hop'
+	instanceVariableNames: 'labelArea model count die arrow id hop'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -655,7 +655,7 @@ initialButtonState
 	"Establish the button state at the start of the game"
 	self subclassResponsibility! !
 
-!Game methodsFor: 'initialize' stamp: 'jmv 4/11/2019 14:44:14'!
+!Game methodsFor: 'initialize' stamp: 'dhn 4/12/2019 11:40:07'!
 initialize
 
 	players _ OrderedCollection new.
