@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 12 April 2019 at 11:40:56 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 11:36:43 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 31!
+!provides: 'Game' 1 32!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -993,6 +993,72 @@ moveFrom: start to: end by: direction enabling: anArray
 				model enableAll: anArray]].
 	self startSteppingStepTime: 400
 ! !
+
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:29:23'!
+slideLeft: from to: to
+	"Slide self when player must go BACK to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from - 6.
+	model positionBoardTo: oldPos.
+	self position: 7.
+	newPos _ index atWrap: final - 7.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowLeft.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
+
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:36:11'!
+slideRight: from to: to
+	"Slide self when player moves ahead from 'from' to 'to' other than by the Move button"
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from.
+	model positionBoardTo: oldPos.
+	self position: 1.
+	newPos _ final + 1.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowRight.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
 
 !Token class methodsFor: 'instance creation' stamp: 'dhn 7/11/2013 14:42'!
 colors
