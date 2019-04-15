@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 11:51:49 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 12:32:45 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 33!
+!provides: 'Game' 1 34!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -390,11 +390,11 @@ disableAll: aCollection
 		btn _ self buttons submorphs detect: [:b | b label = x] ifNone: [nil].
 		btn ifNotNil: [btn disableButton]]! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 1/11/2017 21:35:01'!
+!Game methodsFor: 'operating' stamp: 'dhn 4/15/2019 12:31:28'!
 doSpace
 	"Perform the method associated with the space where the player is"
 
-	^ self perform: ((spaces at: self currentPlayer position) routine)! !
+	^ self perform: ((spaces atWrap: self currentPlayer position) routine)! !
 
 !Game methodsFor: 'operating' stamp: 'dhn 10/9/2011 11:04'!
 drawCard: aDeck discard: aDiscard
