@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 11:36:43 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 11:51:49 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 32!
+!provides: 'Game' 1 33!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -925,19 +925,13 @@ jump: aCount
 	self startSteppingStepTime: step. 	
 ! !
 
-!Token methodsFor: 'stepping' stamp: 'dhn 4/10/2019 18:00:23'!
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:49:16'!
 moveFrom: positionA to: positionB
-	"Determine best direction and move"
-	| dir |
+	"Slide self in the shorter direction"
 	
-	dir _ Direction
-		shortest: positionA
-		to: positionB
-		in: model spaces size.
-	dir > 0
-		ifTrue: [self arrowRight]
-		ifFalse: [self arrowLeft].
-	self moveFrom: positionA to: positionB by: dir enabling: {}! !
+	(Direction shortest: positionA to: positionB in: model spaces size) > 0
+		ifTrue: [self slideLeft: positionA to: positionB]
+		ifFalse: [self slideRight: positionA to: positionB]! !
 
 !Token methodsFor: 'stepping' stamp: 'dhn 8/12/2017 10:54:35'!
 moveFrom: start to: end by: direction
