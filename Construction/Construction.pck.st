@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 11 April 2019 at 1:02:54 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 14 April 2019 at 10:47:47 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 201!
+!provides: 'Construction' 1 202!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2188,16 +2188,11 @@ leftFrom: from to: to
 				self doubled contents: model currentPlayer doubledString]].
 	self startSteppingStepTime: 500! !
 
-!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 16:40:21'!
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/12/2019 19:28:16'!
 moveFrom: positionA to: positionB
 	"Determine best direction and move"
-	| dir |
 	
-	dir _ Direction
-		shortest: positionA
-		to: positionB
-		in: model spaces size.
-	dir > 0
+	(Direction shortest: positionA to: positionB in: model spaces size) > 0
 		ifTrue: [self rightFrom: positionA to: positionB]
 		ifFalse: [self leftFrom: positionA to: positionB]! !
 
