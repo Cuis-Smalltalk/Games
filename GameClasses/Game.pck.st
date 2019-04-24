@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 15 April 2019 at 12:32:45 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3696] on 23 April 2019 at 9:06:04 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 34!
+!provides: 'Game' 1 35!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -932,61 +932,6 @@ moveFrom: positionA to: positionB
 	(Direction shortest: positionA to: positionB in: model spaces size) > 0
 		ifTrue: [self slideLeft: positionA to: positionB]
 		ifFalse: [self slideRight: positionA to: positionB]! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 8/12/2017 10:54:35'!
-moveFrom: start to: end by: direction
-	"Animate moves forward or backward."
-	| a b board posns limit i |
-	
-	a _ start.
-	b _ end.
-	board _ model class describeSpaces.
-	direction < 0
-		ifTrue: [start < end ifTrue: [	a _ start + board size]]
-		ifFalse: [start > end ifTrue: [b _ end + board size]].
-	posns _ (Interval from: a to: b by: direction) asArray.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: (posns at: i)]].
-	self startSteppingStepTime: 400
-! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 8/10/2017 11:55:21'!
-moveFrom: start to: end by: direction enabling: anArray
-	"Animate moves forward or backward."
-	| a b board posns limit i |
-	
-	a _ start.
-	b _ end.
-	board _ model class describeSpaces.
-	direction < 0
-		ifTrue: [start < end ifTrue: [	a _ start + board size]]
-		ifFalse: [start > end ifTrue: [b _ end + board size]].
-	posns _ (Interval from: a to: b by: direction) asArray.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: (posns at: i).
-				self doubled contents: model currentPlayer doubledString.
-				model currentPlayer canDoJob ifTrue: [model enableAll: {'Do Job'}].
-				model enableAll: anArray]].
-	self startSteppingStepTime: 400
-! !
 
 !Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:29:23'!
 slideLeft: from to: to
