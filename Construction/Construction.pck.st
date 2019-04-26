@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3690] on 14 April 2019 at 10:47:47 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3696] on 26 April 2019 at 10:57:45 am'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 202!
+!provides: 'Construction' 1 203!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2119,7 +2119,7 @@ layoutSubmorphs
 
 	labelArea morphExtent: self morphExtent! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 11/8/2016 18:18:47'!
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:56:56'!
 makeDoubledArea
 	"Lay out the area for the arrow"
 	| area |
@@ -2131,13 +2131,13 @@ makeDoubledArea
 	
 	doubled _ (StringMorph contents: '') 
 		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 10).
+		font: GameBoard gameFont.
 		
 	area addMorph: doubled.
-	^ area	layoutSpec: (LayoutSpec  
+	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 9/25/2016 16:28:29'!
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:49:21'!
 makeIdArea
 	"Lay out the area for the arrow"
 	| area |
@@ -2149,10 +2149,10 @@ makeIdArea
 	
 	id _ (StringMorph contents: 'Player') 
 		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 10).
+		font: GameBoard gameFont.
 		
 	area addMorph: id.
-	^ area	layoutSpec: (LayoutSpec  
+	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 
 !ContractToken methodsFor: 'operations' stamp: 'dhn 4/6/2019 11:48:30'!
