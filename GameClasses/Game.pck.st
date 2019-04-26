@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3696] on 23 April 2019 at 9:06:04 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3696] on 26 April 2019 at 10:53:25 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 35!
+!provides: 'Game' 1 36!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -836,13 +836,13 @@ arrowRight
 	arrow morphPosition: self arrowPosition
 ! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 8/22/2016 20:12:13'!
+!Token methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:47:39'!
 identity: aString
 	"Set the layout for the player's name"
 
 	^ (StringMorph 
 		contents: aString 
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 10)
+		font: GameBoard gameFont
 		emphasis: AbstractFont boldCode)
 			morphPosition: 50@18! !
 
@@ -857,7 +857,7 @@ initialize
 	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
 a die is "rolled" and the token moves that number of spaces.'! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 4/1/2019 15:33:37'!
+!Token methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:51:23'!
 makeIdArea
 	"Lay out the area for the player's name"
 	| area |
@@ -869,10 +869,10 @@ makeIdArea
 	
 	id _ (StringMorph contents: 'Player') 
 		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 10).
+		font: GameBoard gameFont.
 		
 	area addMorph: id.
-	^ area	layoutSpec: (LayoutSpec  
+	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)! !
 
 !Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:47:12'!
@@ -1232,23 +1232,23 @@ labelAreaHeight
 
 	^ 50! !
 
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 11/8/2016 16:51:43'!
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:48:46'!
 makeTitleArea
 	"Lay out the area for title"
 	| area |
 	
 	area _ LayoutMorph newRow.
 	area
-			color: Color transparent;
-			name: #title;
-			padding: #center.
+		color: Color transparent;
+		name: #title;
+		padding: #center.
 	
 	gameTitle _ (StringMorph contents: '') 
 		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 22).
+		font: GameBoard gameFont.
 		
 	area addMorph: gameTitle.
-	^ area	layoutSpec: (LayoutSpec  
+	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0
 		proportionalHeight: self class titleHeight)	! !
 
@@ -1258,12 +1258,15 @@ morphWidth
 	
 	^ Display width! !
 
-!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 7/17/2016 13:51'!
+!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 4/26/2019 10:44:24'!
 gameFont
-	"Answer the font for balloon help"
+	"Answer the font for the game"
+	| family |
 	
-	^ AbstractFont familyNames     
-		detect: [:f | f = 'ComicPlain'] ifNone: [^ AbstractFont default]! !
+	family _  AbstractFont familyNames     
+		detect: [:f | f = 'DejaVu'] ifNone: [^ AbstractFont default].
+	^ AbstractFont familyName: family aroundPointSize: 10
+! !
 
 !GameBoard class methodsFor: 'instance creation' stamp: 'dhn 7/18/2016 10:37'!
 submorphProportion
