@@ -10,4 +10,4 @@ Classes which support board games, including
 - DieMorph
 - PlotGraphMorph
 - Direction
-- Histogram
+- GameHistogram
