@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 3:18:57 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 3:37:12 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 204!
+!provides: 'Construction' 1 205!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1104,6 +1104,17 @@ debtInterest
 		ifFalse: [currentPlayer avoidedDebt: 1 + currentPlayer avoidedDebt].
 			currentPlayer  tally: z.
 			currentPlayer mgr updatePlayer.
+! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:23:49'!
+debtTax
+	"Inform player that income tax is due"
+	
+	self disableAll: {'Move'}.
+	GamePopUp inform: 'You owe $5,000 for Federal income tax.' title: 'Tax Time'.
+	currentPlayer tally: 5000 negated.
+	self enableAll: {'End Turn'}.
+	self updatePlayer
 ! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 8/24/2016 10:14:20'!
@@ -2212,7 +2223,7 @@ moveFrom: positionA to: positionB
 		ifTrue: [self rightFrom: positionA to: positionB]
 		ifFalse: [self leftFrom: positionA to: positionB]! !
 
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/28/2019 15:10:55'!
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/28/2019 15:33:51'!
 moved
 	"Perform the results of the move"
 	| pl mr |
@@ -2221,7 +2232,7 @@ moved
 	mr _ model.
 	pl split: false.
 	doubled contents: pl doubledString.
-	(Contract taxDue: pl position) ifTrue: [pl debtTax].
+	(Contract taxDue: pl position) ifTrue: [mr debtTax].
 	(Contract interestDue: pl position) ifTrue: [mr debtInterest].
 	(Contract alwaysDo: pl position) 	ifTrue: [mr doSpace].
 	pl rollAdjustment: 0.
@@ -4634,19 +4645,6 @@ paid: anAmount for: aSymbol
 	asset := self assets at: aSymbol.
 	old := asset cost.
 	asset cost: old + anAmount! !
-
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 10/1/2016 12:06:01'!
-debtTax
-	"Inform player that income tax is due"
-	| z |
-	
-	self mgr disableAll: {'Move'}.
-	GamePopUp inform: 'You owe $5,000 for Federal income tax.' title: 'Tax Time'.
-	z _ 5000 negated.
-	self mgr enableAll: {'End Turn'}.
-	self tally: z.
-	self mgr updatePlayer
-! !
 
 !Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 9/12/2016 20:24:24'!
 jobMissed
