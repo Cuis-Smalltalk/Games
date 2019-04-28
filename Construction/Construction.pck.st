@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3696] on 26 April 2019 at 10:57:45 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 3:18:57 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 203!
+!provides: 'Construction' 1 204!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -542,7 +542,7 @@ optionsReport
 		ifFalse: [^ '']
 ! !
 
-!Contract methodsFor: 'options' stamp: 'dhn 8/26/2016 18:50:18'!
+!Contract methodsFor: 'options' stamp: 'dhn 4/28/2019 14:59:28'!
 optionsReport: anAsset
 	"Show the status of anAsset for shopping purposes"
 	| p |
@@ -550,7 +550,7 @@ optionsReport: anAsset
 	p _ currentPlayer assets at: anAsset ifAbsent: [^ 'No such asset named ', anAsset].
 	p owner: currentPlayer.
 	"exerciseButton disableButton."
-	^ p reportOptionTo: currentPlayer mgr! !
+	^ p reportOptionTo: self! !
 
 !Contract methodsFor: 'options' stamp: 'dhn 9/12/2016 20:25:59'!
 pay: down borrow: balance for: aSymbol amount: qty 
@@ -580,13 +580,13 @@ pay: down borrow: balance for: aSymbol amount: qty
 					ifFalse: [self enableAll: {'Do Job'}]]].
 	self updatePlayer! !
 
-!Contract methodsFor: 'options' stamp: 'dhn 8/26/2016 08:14:27'!
+!Contract methodsFor: 'options' stamp: 'dhn 4/28/2019 15:01:37'!
 reportFor: aPlayer on: anAsset
 	| p |
 	p := aPlayer assets at: anAsset ifAbsent: [^ 'No such asset named ', anAsset].
 	p owner: aPlayer.
 	"exerciseButton disableButton."
-	^ p reportOptionTo: aPlayer mgr! !
+	^ p reportOptionTo: self! !
 
 !Contract methodsFor: 'options' stamp: 'dhn 10/2/2016 16:02:09'!
 reviewOption
@@ -1088,6 +1088,22 @@ whom: aSymbol
 	owner := (self availableOptions at: aSymbol) holder.
 	owner ifNotNil: [^ owner identity].
 	^ self class bankName
+! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:10:14'!
+debtInterest
+	"Inform player that interest is due"
+	| z |
+	
+	z _ 0.
+	0 > currentPlayer debt
+		ifTrue: [GamePopUp inform: 'You owe 10% of all outstanding notes.' title: 'Interest Due'.
+			z _ 0.1 * currentPlayer debt.
+			currentPlayer paidInterest: 1 + currentPlayer paidInterest.
+			currentPlayer interestPd: z + currentPlayer interestPd]
+		ifFalse: [currentPlayer avoidedDebt: 1 + currentPlayer avoidedDebt].
+			currentPlayer  tally: z.
+			currentPlayer mgr updatePlayer.
 ! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 8/24/2016 10:14:20'!
@@ -2196,7 +2212,7 @@ moveFrom: positionA to: positionB
 		ifTrue: [self rightFrom: positionA to: positionB]
 		ifFalse: [self leftFrom: positionA to: positionB]! !
 
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/10/2019 18:01:06'!
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/28/2019 15:10:55'!
 moved
 	"Perform the results of the move"
 	| pl mr |
@@ -2206,7 +2222,7 @@ moved
 	pl split: false.
 	doubled contents: pl doubledString.
 	(Contract taxDue: pl position) ifTrue: [pl debtTax].
-	(Contract interestDue: pl position) ifTrue: [pl debtInterest].
+	(Contract interestDue: pl position) ifTrue: [mr debtInterest].
 	(Contract alwaysDo: pl position) 	ifTrue: [mr doSpace].
 	pl rollAdjustment: 0.
 	pl canDoJob ifTrue: [mr enableAll: {'Do Job'}].
@@ -4618,22 +4634,6 @@ paid: anAmount for: aSymbol
 	asset := self assets at: aSymbol.
 	old := asset cost.
 	asset cost: old + anAmount! !
-
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 8/24/2016 10:58:04'!
-debtInterest
-	"Inform player that interest is due"
-	| z |
-	
-	z _ 0.
-	0 > self debt
-		ifTrue: [GamePopUp inform: 'You owe 10% of all outstanding notes.' title: 'Interest Due'.
-			z _ 0.1 * debt.
-			self paidInterest: 1 + self paidInterest.
-			self interestPd: z + self interestPd]
-		ifFalse: [self avoidedDebt: 1 + self avoidedDebt].
-			self  tally: z.
-			self mgr updatePlayer.
-! !
 
 !Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 10/1/2016 12:06:01'!
 debtTax
