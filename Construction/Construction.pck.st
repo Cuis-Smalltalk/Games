@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 3:37:12 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 5:09:26 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 205!
+!provides: 'Construction' 1 206!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1090,11 +1090,43 @@ whom: aSymbol
 	^ self class bankName
 ! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:10:14'!
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 15:47:26'!
+payBigPhil: anAmount 
+	"Pay the owner of BigPhil"
+	
+	^ currentPlayer identity = (self whom: #BigPhil)
+		ifTrue: [0]
+		ifFalse: [currentPlayer pay: anAmount forFranchise: #BigPhil]! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 16:01:05'!
+payLostMiner: anAmount
+	"Pay the owner of LostMiner"
+	
+	^ currentPlayer identity = (self whom: #LostMiner)
+		ifTrue: [0]
+		ifFalse: [currentPlayer pay: anAmount forFranchise: #LostMiner]! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 16:03:05'!
+payStinky: anAmount 
+	"Pay the owner of Stinky"
+	
+	^ currentPlayer identity = (self whom: #Stinky)
+		ifTrue: [0]
+		ifFalse: [currentPlayer pay: anAmount forFranchise: #Stinky]! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 16:05:56'!
+payWestwood: anAmount
+	"Pay the owner of Westwood"
+	
+	^ currentPlayer identity = (self whom: #Westwood)
+		ifTrue: [0]
+		ifFalse: [currentPlayer pay: anAmount forFranchise: #Westwood]! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:41:47'!
 debtInterest
 	"Inform player that interest is due"
 	| z |
-	
+
 	z _ 0.
 	0 > currentPlayer debt
 		ifTrue: [GamePopUp inform: 'You owe 10% of all outstanding notes.' title: 'Interest Due'.
@@ -1102,8 +1134,8 @@ debtInterest
 			currentPlayer paidInterest: 1 + currentPlayer paidInterest.
 			currentPlayer interestPd: z + currentPlayer interestPd]
 		ifFalse: [currentPlayer avoidedDebt: 1 + currentPlayer avoidedDebt].
-			currentPlayer  tally: z.
-			currentPlayer mgr updatePlayer.
+	currentPlayer  tally: z.
+	self updatePlayer
 ! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:23:49'!
@@ -4434,38 +4466,6 @@ pay: anAmount forFranchise: aSymbol
 				ifFalse: [owner tally: anAmount negated.
 					^ anAmount]].
 	^ anAmount! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/29/2016 18:35:08'!
-payBigPhil: anAmount 
-	"Pay the owner of BigPhil"
-	
-	^ self identity = (self mgr whom: #BigPhil)
-		ifTrue: [0]
-		ifFalse: [self pay: anAmount forFranchise: #BigPhil]! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/29/2016 18:36:14'!
-payLostMiner: anAmount
-	"Pay the owner of LostMiner"
-	
-	^ self identity = (self mgr whom: #LostMiner)
-		ifTrue: [0]
-		ifFalse: [self pay: anAmount forFranchise: #LostMiner]! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/29/2016 18:14:05'!
-payStinky: anAmount 
-	"Pay the owner of Stinky"
-	
-	^ self identity = (self mgr whom: #Stinky)
-		ifTrue: [0]
-		ifFalse: [self pay: anAmount forFranchise: #Stinky]! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/29/2016 18:36:55'!
-payWestwood: anAmount
-	"Pay the owner of Westwood"
-	
-	^ self identity = (self mgr whom: #Westwood)
-		ifTrue: [0]
-		ifFalse: [self pay: anAmount forFranchise: #Westwood]! !
 
 !Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 14:46'!
 perMachine: anAmount 
