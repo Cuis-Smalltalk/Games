@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3665] on 26 April 2019 at 2:58:33 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 10:34:03 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 37!
+!provides: 'Game' 1 38!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1727,20 +1727,6 @@ endIt
 	model moveButton enabled
 		ifFalse: [begun ifFalse: [model enableAll: {'End Turn'}]].
 	self delete! !
-
-!AuctionAsset class methodsFor: 'class initialization' stamp: 'dhn 9/19/2016 14:00:32'!
-openOn: aModel
-	"Answer an instance of this class on aModel"
-	| win |
-
-	win _ self open: aModel label: 'Asset Auction'.
-	win removeWindowMenu.
-			
-	aModel when: #itemChange send: #details to: win.
-	aModel when: #deleteOpenWindows send: #endIt to: win.
-	
-	^ win
-! !
 
 !HistoryView methodsFor: 'initialization' stamp: 'dhn 1/9/2017 09:56:37'!
 buildMorphicWindow
