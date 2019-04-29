@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 5:09:26 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 10:05:34 am'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 206!
+!provides: 'Construction' 1 207!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -8,7 +8,7 @@ SystemOrganization addCategory: #'Construction-Graphics'!
 
 !classDefinition: #Contract category: #'Construction-Model'!
 Game subclass: #Contract
-	instanceVariableNames: 'availableOptions exercisedOptions listOfOptions fates drawnFates paymentList leases statsItem optionsItem optionsReport loanItem loanReport assetAuctionItem auctionList jobAuctionItem windowCount moveButton latestPlayer invoice'
+	instanceVariableNames: 'availableOptions exercisedOptions listOfOptions fates drawnFates paymentList leases statsItem optionsItem optionsReport loanItem loanReport assetAuctionItem auctionList jobAuctionItem windowCount moveButton latestPlayer invoice forfeitJob cutIncome expenseFactor demo spaceEffect contingency'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Construction-Model'!
@@ -258,7 +258,7 @@ You class
 
 !classDefinition: #Contractor category: #'Construction-Model'!
 Gamer subclass: #Contractor
-	instanceVariableNames: 'markets options priceFactor expenseFactor demo shutDown forfeitJob cutIncome spaceEffect contingency split drawnOption jobRoll jobCount jobDone rollAdjustment jobMAvg'
+	instanceVariableNames: 'markets options priceFactor demo shutDown cutIncome spaceEffect contingency split drawnOption jobRoll jobCount jobDone rollAdjustment jobMAvg'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Construction-Model'!
@@ -634,7 +634,7 @@ decideCompetitive
 			self updateHistory.
 			self enableAll: {'End Turn'}]! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 10/5/2018 23:01:23'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/28/2019 21:29:51'!
 franchiseEffect: anObject
 	"Show the effect of landing on an owned franchise"
 	| fran z amt owner user |
@@ -651,7 +651,7 @@ franchiseEffect: anObject
 			str
 				nextPutAll: 'First Friendly Bank paid you because you own ';
 				nextPutAll: (leases at: fran) description.
-			invoice details: str contents amount: (currentPlayer emphasized: z)]).
+			invoice details: str contents amount: (self emphasized: z)]).
 			user earned: z for: fran.
 			user tally: z]
 		ifFalse: [| payee | owner ifNotNil: [
@@ -665,7 +665,7 @@ franchiseEffect: anObject
 							nextPutAll: payee;
 							nextPutAll: ' for your bill from ';
 							nextPutAll: (leases at: fran) description.
-						invoice details: str contents amount: (currentPlayer emphasized: z negated)]).
+						invoice details: str contents amount: (self emphasized: z negated)]).
 					user paid: z for: fran.
 					user tally: z negated]].
 	currentPlayer jobDone: true.
@@ -1090,6 +1090,31 @@ whom: aSymbol
 	^ self class bankName
 ! !
 
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 18:03:23'!
+adjust: anAssociation
+	^ anAssociation! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 20:40:13'!
+equipmentDemo: aFactor
+	"Set the value of demo"
+	
+	demo _ aFactor.
+	^ 0
+! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 22:55:01'!
+interest: aRate
+	"Charge a player interest at aRate"
+	| int |
+	
+	int _ 0.
+	0 > currentPlayer debt
+		ifTrue: [int _ aRate * currentPlayer debt negated roundTo: 1.
+			currentPlayer paidInterest: 1 + currentPlayer paidInterest.
+			currentPlayer interestPd: int + currentPlayer interestPd]
+		ifFalse: [currentPlayer avoidedDebt: 1 + currentPlayer avoidedDebt].
+	^ int negated! !
+
 !Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 15:47:26'!
 payBigPhil: anAmount 
 	"Pay the owner of BigPhil"
@@ -1121,6 +1146,88 @@ payWestwood: anAmount
 	^ currentPlayer identity = (self whom: #Westwood)
 		ifTrue: [0]
 		ifFalse: [currentPlayer pay: anAmount forFranchise: #Westwood]! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 18:52:35'!
+perMachine: anAmount 
+	"Answer anAmount per machine"
+	| tot |
+	
+	tot _ 0.
+	currentPlayer assets do: [:item | 
+		(item class inheritsFrom: Iron)
+			ifTrue: [item cost: item cost + anAmount.
+				tot _ tot + item quantity]].
+	^ tot * anAmount! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 17:58:37'!
+perPlayer: anAmount
+	"Collect anAmount from each player"
+	| tot |
+	
+	tot _ 0.
+	players do: [:each | each identity ~= currentPlayer identity ifTrue: [
+		tot _ tot + anAmount.
+		each tally: anAmount negated.]]. 
+	^ tot! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 17:21:07'!
+realTax: aRate 
+	"Pay aRate on purchase price of all properties owned."
+	| total exp |
+	
+	total _ 0.
+	currentPlayer assets
+		do: [:each | 
+			exp _ aRate * (each quantity * each class price).
+			each cost: each cost + exp.
+			total _ total + exp].
+	^ total negated! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/28/2019 17:16:47'!
+rentTrucks: anAmount
+	"Rent a truck from every player in the game who has one."
+	| tot |
+	
+	tot _ 0.
+	(currentPlayer assets at: #Truck) quantity > 0
+		ifFalse: [
+			self players do: [:pl | 
+				pl ~= currentPlayer
+					ifTrue: [
+						(pl assets at: #Truck) quantity > 0
+							ifTrue: [
+								pl tally: anAmount.
+								tot _ tot - anAmount]]]].
+	^ tot! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/29/2019 09:44:19'!
+replaceTires: anAmount 
+	"Pay anAmount for tires if you own a truck"
+	| tot veh |
+	
+	tot _ 0.
+	veh _ currentPlayer assets at: #Truck.
+	veh quantity > 0
+		ifTrue: [
+			veh cost: veh cost + anAmount negated.
+			tot _ anAmount].
+	^ tot! !
+
+!Contract methodsFor: 'contingency' stamp: 'dhn 4/29/2019 09:35:25'!
+sewerPlug: anAmount
+	"Reward player for having an excavator handy"
+	
+	(currentPlayer assets at: #Excavator) quantity > 0
+		ifTrue: [^ anAmount].
+	^ 0! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 22:30:09'!
+closeDown: aBool
+	"Shut down the player"
+	
+	currentPlayer shutDown: true.
+	^ 0
+! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 15:41:47'!
 debtInterest
@@ -1173,34 +1280,42 @@ declareOver: aString
 		title: 'Debt Too High'
 ! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 10/1/2016 11:13:26'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 21:26:38'!
 doJob
 	"Try to do the job for this space"
 
-	(currentPlayer shutDown
-			or: [currentPlayer forfeitJob])
+	(currentPlayer shutDown or: [forfeitJob])
 		ifFalse: [currentPlayer jobDone: true.
-			(self class ccSpaces includes: currentPlayer position)
-				ifTrue: [currentPlayer contingency: self drawContingency]
-				ifFalse: [currentPlayer contingency: nil].
+			contingency _ (self class ccSpaces includes: currentPlayer position)
+				ifTrue: [ self drawContingency] ifFalse: [nil].
 			self doSpace].
 	self disableAll: {'Do Job'}.
 	self updateHistory.
 	self enableAll: {'End Turn'}! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 9/28/2016 10:07:20'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 21:20:29'!
 doSpace
 	"Determine if player can do the job"
 	
 	(self class alwaysDo: currentPlayer position)
-		ifTrue: [currentPlayer spaceEffect: self whatSpaceSays]
+		ifTrue: [self spaceEffect: self whatSpaceSays]
 		ifFalse: [
-			currentPlayer forfeitJob
+			self forfeitJob
 				ifFalse:[
 					currentPlayer canDoJob
 						ifTrue: [self harvest]]]! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 8/9/2017 21:22:42'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 21:28:53'!
+emphasized: anAmount
+	"Answer a bold-faced string morph for anAmount, colored red if negative"
+	| amt |
+	
+	amt _ '$', anAmount abs printStringWithCommas.
+	^ anAmount < 0
+		ifTrue: [(StringMorph contents: amt font: nil emphasis: 1) color: Color red]
+		ifFalse: [StringMorph contents: amt font: nil emphasis: 1]! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 09:56:31'!
 endTurn
 	"End a player's turn"
 	
@@ -1220,23 +1335,20 @@ endTurn
 					self declareOver: currentPlayer identity.
 					self disableAll: {'End Turn'}]
 				ifFalse: [currentPlayer netAssets >= self goal
-						ifTrue: [won
-								ifFalse: [self declareWinner]].
-					currentPlayer priceFactor: 1.
-					currentPlayer contingency: nil.
-					currentPlayer jobDone
-						ifFalse: [currentPlayer jobMissed].
-					currentPlayer 
-						jobDone: false;
-						forfeitJob: false.
-					self disableAll: {'Do Job'}.
-					self triggerEvent: #deleteOpenWindows.
-					windowCount _ 0.
-					self nextPlayer.
-					self won
-						ifTrue: [self wonButtonsState]
-						ifFalse: [self enableAll: {'Move'. 'Stats'}.
-							self disableAll: {'End Turn'}]]]! !
+					ifTrue: [won ifFalse: [self declareWinner]].
+			currentPlayer priceFactor: 1.
+			contingency _ nil.
+			currentPlayer jobDone ifFalse: [currentPlayer jobMissed].
+			currentPlayer jobDone: false.
+			forfeitJob _ false.
+			self disableAll: {'Do Job'}.
+			self triggerEvent: #deleteOpenWindows.
+			windowCount _ 0.
+			self nextPlayer.
+			self won
+				ifTrue: [self wonButtonsState]
+				ifFalse: [self enableAll: {'Move'. 'Stats'}.
+					self disableAll: {'End Turn'}]]]! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 10/5/2018 21:07:07'!
 goalProgress
@@ -1290,6 +1402,13 @@ queryWin: aBool
 			self updateHistory.
 			self enableAll: {'End Turn'}]! !
 
+!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 22:18:57'!
+reduced: aFactor
+	"Set the value of a player's price factor, e.g. half price"
+	"This method is for compatibility with #contingencyDesc"
+	
+	currentPlayer priceFactor: aFactor! !
+
 !Contract methodsFor: 'operating' stamp: 'dhn 8/14/2017 11:07:02'!
 removeFromGame
 	"Remove a player from the game"
@@ -1325,6 +1444,73 @@ updateHistory
 			latestPlayer _ playerIndex.
 			currentPlayer appendHistory].
 	self triggerEvent: #itemChange! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 09:49:29'!
+updateIron: anAsset with: aRoll 
+	"Compute the results of a move"
+	| what amt yield total mkt reduced title |
+
+	yield _ 0.
+	reduced _ false.
+	currentPlayer shutDown
+		ifTrue: [GamePopUp inform: 'The IRS has shut you down for the rest of the year.' title: 'Loss of Income']
+		ifFalse: [
+			what _ currentPlayer assets at: anAsset.
+			amt _ what quantity + demo.
+			title _ String streamContents: [:cnts |
+				cnts 
+					nextPutAll: amt asString;
+					nextPut: $ ;
+					nextPutAll: anAsset.
+				amt > 1 ifTrue: [cnts nextPut: $s]].
+			self triggerEvent: #showJobView: with: title.
+			mkt _ currentPlayer markets
+						at: (self class equipmentMarket at: anAsset).
+			yield _ (what class at: aRoll for: amt)
+						* mkt * expenseFactor.
+			yield >= 0
+				ifTrue: [| str |
+					contingency isNil
+						ifTrue:[total _ yield + spaceEffect key]
+						ifFalse:[total _ contingency result + (yield + spaceEffect key) * contingency factor.
+							contingency factor < 1 ifTrue: [reduced _ true.]].
+					what gross: total + what gross.
+					what quality: aRoll + what quality.
+					what count: 1 + what count.
+					str _ String new writeStream.
+
+					spaceEffect
+						ifNotNil: [
+							str nextPutAll: 'Job Expense'.
+							spaceEffect value
+								ifNotNil: [str nextPutAll: ': (paid to ' , spaceEffect value , ')'].
+							self invoice details: str contents amount: (self emphasized: spaceEffect key asInteger)].
+							
+					contingency
+						ifNotNil: [
+							contingency class ~= Announcement
+								ifTrue: [
+									str 
+										reset;
+										nextPutAll: 'Contingency: ' , contingency description.
+									self invoice details: str contents amount: (self emphasized: contingency result asInteger)]].
+
+					str 
+						reset;
+						nextPutAll: 'Equipment Performance @ ' , aRoll asString.
+					mkt = 2
+						ifTrue: [str nextPutAll: ' (doubled)'].
+					self invoice details: str contents amount: (self emphasized: yield asInteger).
+						
+					str
+						reset;
+						nextPutAll: '______________'; newLine;
+						nextPutAll: ' Net'.
+					reduced ifTrue: [str nextPutAll: ' reduced by ', contingency factor printString].
+					self invoice details: str contents amount: (self emphasized: total asInteger)]].
+	demo _ 0.
+	expenseFactor _ 1.
+	^ total! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 9/25/2016 17:51:21'!
 updatePlayer
@@ -1459,27 +1645,27 @@ testMode: aBool
 	
 	TestMode _ aBool! !
 
-!Contract methodsFor: 'fates' stamp: 'dhn 9/25/2016 20:14:54'!
+!Contract methodsFor: 'fates' stamp: 'dhn 4/28/2019 17:53:59'!
 drawContingency
 	"Randomly draw a fate card"
 	| con |
 	
 	con _ self drawCard: fates discard: drawnFates.
-	con result: (self currentPlayer perform: con function withArguments: {con argument}).
+	con result: (self perform: con function withArguments: {con argument}).
 	self triggerEvent: #itemChange.
 	con class = Announcement
 		ifTrue: [GamePopUp inform: con description title: 'Contractor Contingency:'].
 	^ con! !
 
-!Contract methodsFor: 'harvesting' stamp: 'dhn 9/22/2016 22:32:10'!
+!Contract methodsFor: 'harvesting' stamp: 'dhn 4/28/2019 21:20:46'!
 harvest
 	"Determine how well the job is done"
 	
-	self currentPlayer spaceEffect: self whatSpaceSays.
+	self spaceEffect: self whatSpaceSays.
 	self rollTheDie
 ! !
 
-!Contract methodsFor: 'harvesting' stamp: 'dhn 1/23/2018 15:45:20'!
+!Contract methodsFor: 'harvesting' stamp: 'dhn 4/28/2019 22:02:33'!
 remainder: roll
 	"Do the rest of the job calculations"
 	| machine income |
@@ -1489,10 +1675,9 @@ remainder: roll
 	currentPlayer jobHistory: roll.
 	income _ 0.
 	((Smalltalk at: machine) inheritsFrom: Iron)
-		ifTrue: [income _ self currentPlayer updateIron: machine with: roll].
-	self
-		currentPlayer tally: income;
-		cutIncome: 1.
+		ifTrue: [income _ self updateIron: machine with: roll].
+	self currentPlayer tally: income.
+	self cutIncome: 1.
 	self updatePlayer.
 	^ income! !
 
@@ -1513,6 +1698,58 @@ rollTheDie
 	bone _ currentPlayer die openInWorld: world.
 	bone referencePosition: token referencePosition - (0@2 * token morphHeight).
 	bone show: bone class faces shuffled event: #jobDone
+! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 21:03:28'!
+contingency
+	"Answer the value of contingency"
+	
+	contingency ifNil: [contingency _ 0->'none'].
+	^ contingency! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 21:04:20'!
+contingency: anObject 
+	"Set the value of contingency"
+	
+	contingency _ anObject.
+	^ anObject! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 19:27:18'!
+cutIncome
+	"Answer the cutIncome factor"
+	
+	cutIncome ifNil: [cutIncome _ 1].
+	^ cutIncome! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 19:29:03'!
+cutIncome: aFactor 
+	"Set the value of cutIncome"
+	
+	cutIncome _ aFactor.
+	^ 0
+! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 20:24:55'!
+expenseOnly: aNumber
+	"Set the value of expenseFactor"
+
+	expenseFactor _ aNumber.
+	^ 0
+! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 18:08:45'!
+forfeitJob
+	"Answer the value of forfeitJob"
+	
+	forfeitJob ifNil: [forfeitJob _ false].
+	^ forfeitJob! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 18:12:41'!
+forfeitJob: aBool
+	"Set the value of forfeitJob"
+	
+	forfeitJob _ aBool.
+	^ 0
 ! !
 
 !Contract methodsFor: 'accessing' stamp: 'dhn 9/9/2018 13:45:15'!
@@ -1564,6 +1801,13 @@ seasonAt: aPosition
 	
 	pos _ (1 to: spaces size) atWrap: aPosition.
 	^ self class season detect: [:a | (a range x <= pos) and: [a range y >= pos]]! !
+
+!Contract methodsFor: 'accessing' stamp: 'dhn 4/28/2019 20:58:33'!
+spaceEffect: anObject
+	"Set the value of spaceEffect"
+	
+	spaceEffect _ anObject.
+! !
 
 !Contract methodsFor: 'accessing' stamp: 'dhn 1/11/2017 15:44:39'!
 spaces
@@ -3003,14 +3247,14 @@ start
 	^ win
 ! !
 
-!Construction class methodsFor: 'database' stamp: 'dhn 10/17/2016 11:31:49'!
+!Construction class methodsFor: 'database' stamp: 'dhn 4/28/2019 22:19:17'!
 contingencyDesc
 	^ OrderedCollection new
 	add: (Contingency for: #interest: with: 0.1 factor: 1 text: 'First Friendly Bank responds instantly to a rise in prime rate. Pay 10% on outstanding notes.');
 	add: (Announcement for: #closeDown: with: true factor: 1 text: 'IRS shuts you down after finding discrepancies 
 in your income taxes. Do not accept any contracts 
 for the rest of the year, including this job.');
-	add: (Announcement for: #priceFactor: with: 1/2 factor: 1 text: 'A competitor retires and offers you the pick 
+	add: (Announcement for: #reduced: with: 1/2 factor: 1 text: 'A competitor retires and offers you the pick 
 	of his equipment at half price. For this turn only, 
 you may buy all the big iron you can afford 
 at these bargain basement prices.');
@@ -4275,6 +4519,10 @@ addOption: anObject
 	anObject notNil ifTrue: [self options addFirst: anObject].
 ! !
 
+!Contractor methodsFor: 'accessing' stamp: 'dhn 8/19/2013 09:16'!
+assets
+	^ assets! !
+
 !Contractor methodsFor: 'accessing' stamp: 'dhn 9/28/2016 16:59:02'!
 canDoJob
 	"Answer true if contractor can do this job"
@@ -4300,19 +4548,6 @@ color: anObject
 	"Set the value of color"
 
 	color := anObject! !
-
-!Contractor methodsFor: 'accessing' stamp: 'dhn 5/4/2012 19:57'!
-demo
-	"Answer the value of demo"
-	demo
-		ifNil: [demo := 0].
-	^ demo! !
-
-!Contractor methodsFor: 'accessing' stamp: 'dhn 5/4/2012 19:55'!
-demo: anObject
-	"Set the value of demo"
-
-	demo := anObject! !
 
 !Contractor methodsFor: 'accessing' stamp: 'dhn 8/24/2016 11:02:36'!
 emergencyLoan
@@ -4372,82 +4607,11 @@ priceFactor: aFactor
 	^ 0
 ! !
 
-!Contractor methodsFor: 'accessing' stamp: 'dhn 7/14/2013 10:43'!
-spaceEffect: anObject
-	"Set the value of spaceEffect"
-	spaceEffect := anObject.
-! !
-
 !Contractor methodsFor: 'accessing' stamp: 'dhn 5/2/2012 11:12'!
 split: anObject
 	"Set the value of split"
 
 	split := anObject! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/9/2014 20:28'!
-adjust: anAssociation
-	^ anAssociation! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/19/2013 09:16'!
-assets
-	^ assets! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 21:21'!
-closeDown: aBool
-	self shutDown: true.
-	^ 0
-! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/7/2014 11:07'!
-contingency
-	contingency
-		ifNil: [contingency := 0->'none'].
-	^ contingency! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 8/1/2013 14:40'!
-contingency: anObject 
-	"Set the value of contingency"
-	contingency := anObject.
-	^ anObject! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 5/4/2012 20:43'!
-cutIncome
-	"Answer the value of cutIncome"
-	cutIncome
-		ifNil: [cutIncome := 1].
-	^ cutIncome! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 20:06'!
-cutIncome: aFactor 
-	"Set the value of cutIncome"
-	cutIncome := aFactor.
-	^ 0
-! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 16:51'!
-equipmentDemo: aFactor 
-	self demo: aFactor.
-	^ 0
-! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 21:18'!
-expenseOnly: aNumber
-	expenseFactor := aNumber.
-	^ 0
-! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 5/4/2012 18:31'!
-forfeitJob
-	"Answer the value of forfeitJob"
-	forfeitJob
-		ifNil: [forfeitJob := false].
-	^ forfeitJob! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 20:34'!
-forfeitJob: aBool
-	forfeitJob := aBool.
-	^ 0
-! !
 
 !Contractor methodsFor: 'contingency' stamp: 'dhn 4/28/2012 19:54'!
 pay: anObject for: anAsset
@@ -4467,26 +4631,6 @@ pay: anAmount forFranchise: aSymbol
 					^ anAmount]].
 	^ anAmount! !
 
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 14:46'!
-perMachine: anAmount 
-	| tot |
-	tot := 0.
-	assets
-		do: [:item | (item class inheritsFrom: Iron)
-				ifTrue: [item cost: item cost + anAmount.
-					tot := tot + item quantity]].
-	^ tot * anAmount! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 14:38'!
-perPlayer: anAmount
-	"Collect anAmount from each player"
-	| tot |
-	tot := 0.
-	mgr players do: [:each | each identity ~= identity ifTrue: [
-			tot := tot + anAmount.
-			each tally: anAmount negated.]]. 
-	^ tot! !
-
 !Contractor methodsFor: 'contingency' stamp: 'dhn 8/22/2013 13:44'!
 propertyValue
 	| tot |
@@ -4494,52 +4638,6 @@ propertyValue
 	assets
 		do: [:item | tot := tot + (item class price * item quantity)].
 	^ tot! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 14:31'!
-realTax: aRate 
-	"Pay aRate on purchase price of all properties owned."
-	| total exp |
-	total := 0.
-	assets
-		do: [:each | 
-			exp := aRate * (each quantity * each class price).
-			each cost: each cost + exp.
-			total := total + exp].
-	^ total negated! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 21:13'!
-rentTrucks: anAmount
-	"Rent a truck from every player in the game who has one."
-	| tot |
-	tot := 0.
-	(self assets at: #Truck)
-			quantity > 0
-		ifFalse: [self mgr players
-				do: [:pl | pl ~= self
-						ifTrue: [(pl assets at: #Truck)
-									quantity > 0
-								ifTrue: [pl tally: anAmount.
-									tot := tot - anAmount]]]].
-	^ tot! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 19:11'!
-replaceTires: anAmount 
-	"Pay anAmount for tires if you own a truck"
-	| tot veh |
-	tot := 0.
-	veh := assets at: #Truck.
-	veh quantity > 0
-		ifTrue: [
-			veh cost: veh cost + anAmount negated.
-			tot := anAmount].
-	^ tot! !
-
-!Contractor methodsFor: 'contingency' stamp: 'dhn 9/11/2014 21:11'!
-sewerPlug: anAmount
-	(self assets at: #Excavator)
-			quantity > 0
-				ifTrue: [^ anAmount].
-	^ 0! !
 
 !Contractor methodsFor: 'space-related' stamp: 'dhn 10/1/2016 13:39:51'!
 appendHistory
@@ -4560,17 +4658,6 @@ harvestPosition
 	"Answer the cell number for the die during harvest"
 	
 	^ 1 + roll + rollAdjustment! !
-
-!Contractor methodsFor: 'space-related' stamp: 'dhn 9/22/2014 13:35'!
-interest: aRate 
-	| int |
-	int := 0.
-	0 > self debt
-		ifTrue: [int := aRate * self debt negated roundTo: 1.
-			self paidInterest: 1 + self paidInterest.
-			self interestPd: int + self interestPd]
-		ifFalse: [self avoidedDebt: 1 + self avoidedDebt].
-	^ int negated! !
 
 !Contractor methodsFor: 'space-related' stamp: 'dhn 5/2/2012 14:30'!
 reset
@@ -4646,28 +4733,18 @@ paid: anAmount for: aSymbol
 	old := asset cost.
 	asset cost: old + anAmount! !
 
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 9/12/2016 20:24:24'!
-jobMissed
-	| market asset |
-	
-	market _ Contract jobSeason atWrap: position.
-	market
-		ifNotNil: [
-			asset _ assets at: (Contract requiredEquipment at: market).
-			asset missed: 1 + asset missed]! !
-
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 8/1/2013 12:57'!
+!Contractor methodsFor: 'operating' stamp: 'dhn 8/1/2013 12:57'!
 outOfAssets
 	^ assets allSatisfy: [:a | a quantity <= 0]! !
 
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 10/2/2016 16:02:15'!
+!Contractor methodsFor: 'operating' stamp: 'dhn 10/2/2016 16:02:15'!
 playerDebtLimit
 	"Answer the player's debt limit based on years in business"
 	^ Construction debtLimit
 		detect: [:a | a key > self years]
 		ifNone: [300000 negated] ! !
 
-!Contractor methodsFor: 'as yet unclassified' stamp: 'dhn 8/24/2013 12:03'!
+!Contractor methodsFor: 'operating' stamp: 'dhn 8/24/2013 12:03'!
 sellAsset: aString for: aNumber 
 	| lot asset |
 	self tally: aNumber.
@@ -4677,18 +4754,6 @@ sellAsset: aString for: aNumber
 	asset := mgr availableOptions at: aString asSymbol.
 	asset value holder = self
 		ifTrue: [asset value holder: nil]! !
-
-!Contractor methodsFor: 'option-related' stamp: 'dhn 5/3/2012 17:06'!
-drawnOption
-	"Answer the value of drawnOption"
-	drawnOption ifNil: [drawnOption := false].
-	^ drawnOption! !
-
-!Contractor methodsFor: 'option-related' stamp: 'dhn 5/3/2012 17:07'!
-drawnOption: aBool
-	"Set the value of drawnOption"
-
-	drawnOption := aBool! !
 
 !Contractor methodsFor: 'initialize-release' stamp: 'dhn 1/23/2018 16:48:37'!
 initialize
@@ -4742,16 +4807,6 @@ setupMarkets
 		add: #'HEAVY HIGHWAY' -> 1;
 		yourself! !
 
-!Contractor methodsFor: 'job-related' stamp: 'dhn 9/7/2018 22:36:59'!
-emphasized: anAmount
-	"Answer a bold-faced string morph for anAmount, colored red if negative"
-	| amt |
-	
-	amt _ '$', anAmount abs printStringWithCommas.
-	^ anAmount < 0
-		ifTrue: [(StringMorph contents: amt font: nil emphasis: 1) color: Color red]
-		ifFalse: [StringMorph contents: amt font: nil emphasis: 1]! !
-
 !Contractor methodsFor: 'job-related' stamp: 'dhn 3/28/2019 15:53:28'!
 jobHistory: aRoll
 	"Account for job performance"
@@ -4759,6 +4814,16 @@ jobHistory: aRoll
 	jobRoll _ jobRoll + aRoll.
 	jobCount _ jobCount + 1.
 	jobMAvg add: aRoll! !
+
+!Contractor methodsFor: 'job-related' stamp: 'dhn 9/12/2016 20:24:24'!
+jobMissed
+	| market asset |
+	
+	market _ Contract jobSeason atWrap: position.
+	market
+		ifNotNil: [
+			asset _ assets at: (Contract requiredEquipment at: market).
+			asset missed: 1 + asset missed]! !
 
 !Contractor methodsFor: 'job-related' stamp: 'dhn 1/23/2018 17:03:22'!
 movingAvg
@@ -4772,73 +4837,6 @@ movingAvg
 			"compute the moving average"
 			(sub inject: 0 into: [:a :c | a + c]) / self class movingAverageBase]
 		ifFalse: [nil]! !
-
-!Contractor methodsFor: 'job-related' stamp: 'dhn 9/9/2018 15:01:02'!
-updateIron: anAsset with: aRoll 
-	"Compute the results of a move"
-	| what amt yield total mkt reduced title |
-
-	yield _ 0.
-	reduced _ false.
-	self shutDown
-		ifTrue: [GamePopUp inform: 'The IRS has shut you down for the rest of the year.' title: 'Loss of Income']
-		ifFalse: [
-			what _ self assets at: anAsset.
-			amt _ what quantity + self demo.
-			title _ String streamContents: [:cnts |
-				cnts 
-					nextPutAll: amt asString;
-					nextPut: $ ;
-					nextPutAll: anAsset.
-				amt > 1 ifTrue: [cnts nextPut: $s]].
-			mgr triggerEvent: #showJobView: with: title.
-			mkt _ self markets
-						at: (self mgr class equipmentMarket at: anAsset).
-			yield _ (what class at: aRoll for: amt)
-						* mkt * expenseFactor.
-			yield >= 0
-				ifTrue: [| str |
-					contingency isNil
-						ifTrue:[total _ yield + spaceEffect key]
-						ifFalse:[total _ contingency result + (yield + spaceEffect key) * contingency factor.
-							contingency factor < 1 ifTrue: [reduced _ true.]].
-					what gross: total + what gross.
-					what quality: aRoll + what quality.
-					what count: 1 + what count.
-					str _ String new writeStream.
-
-					spaceEffect
-						ifNotNil: [
-							str nextPutAll: 'Job Expense'.
-							spaceEffect value
-								ifNotNil: [str nextPutAll: ': (paid to ' , spaceEffect value , ')'].
-							mgr invoice details: str contents amount: (self emphasized: spaceEffect key asInteger)].
-							
-					contingency
-						ifNotNil: [
-							contingency class ~= Announcement
-								ifTrue: [
-									str 
-										reset;
-										nextPutAll: 'Contingency: ' , contingency description.
-									mgr invoice details: str contents amount: (self emphasized: contingency result asInteger)]].
-
-					str 
-						reset;
-						nextPutAll: 'Equipment Performance @ ' , aRoll asString.
-					mkt = 2
-						ifTrue: [str nextPutAll: ' (doubled)'].
-					mgr invoice details: str contents amount: (self emphasized: yield asInteger).
-						
-					str
-						reset;
-						nextPutAll: '______________'; newLine;
-						nextPutAll: ' Net'.
-					reduced ifTrue: [str nextPutAll: ' reduced by ', contingency factor printString].
-					mgr invoice details: str contents amount: (self emphasized: total asInteger)]].
-	self demo: 0.
-	expenseFactor _ 1.
-	^ total! !
 
 !Contractor methodsFor: 'job-related' stamp: 'dhn 3/28/2019 15:52:56'!
 updateJobRoll: aRoll
