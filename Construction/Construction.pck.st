@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 12:26:24 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 2:56:39 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 208!
+!provides: 'Construction' 1 209!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -774,7 +774,7 @@ space19
 	"May week 2"
 	^ self spaceTruck: 7000! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 9/12/2016 18:40:06'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/29/2019 13:41:20'!
 space2
 	"Jan week 1"
 	| z |
@@ -782,9 +782,9 @@ space2
 	self disableAll: {'Move'}.
 	z _ 0.
 	self currentPlayer passedGo
-		ifTrue: [z _ self currentPlayer salary].
+		ifTrue: [z _ self salary].
 	self updatePlayer.
-	self currentPlayer markets at: #RESIDENTIAL put: 2.
+	currentPlayer markets at: #RESIDENTIAL put: 2.
 	self queryWin: won.
 	self triggerEvent: #itemChange.
 	^ z -> nil! !
@@ -846,7 +846,7 @@ space29
 	^ (self
 		spacePlain: (self currentPlayer pay: 10000 negated for: #Scraper)) -> nil! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 9/12/2016 18:40:17'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/29/2019 13:41:30'!
 space3
 	"Jan week 2"
 	| z |
@@ -854,9 +854,9 @@ space3
 	self disableAll: {'Move'}.
 	z _ 0.
 	self currentPlayer passedGo
-		ifTrue: [z _ self currentPlayer salary].
+		ifTrue: [z _ self salary].
 	self updatePlayer.
-	self currentPlayer markets at: #COMMERCIAL put: 2.
+	currentPlayer markets at: #COMMERCIAL put: 2.
 	self queryWin: won.
 	self triggerEvent: #itemChange.
 	^ z -> nil! !
@@ -915,7 +915,7 @@ space39
 	"Oct week 1"
 	^ 0 -> nil! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 9/12/2016 18:40:25'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/29/2019 13:41:51'!
 space4
 	"Jan week 3"
 	| z |
@@ -923,9 +923,9 @@ space4
 	self disableAll: {'Move'}.
 	z _ 0.
 	self currentPlayer passedGo
-		ifTrue: [z _ self currentPlayer salary].
+		ifTrue: [z _ self salary].
 	self updatePlayer.
-	self currentPlayer markets at: #INSTITUTIONAL put: 2.
+	currentPlayer markets at: #INSTITUTIONAL put: 2.
 	self queryWin: won.
 	self triggerEvent: #itemChange.
 	^ z -> nil! !
@@ -994,7 +994,7 @@ space49
 	((availableOptions at: #BigPhil) holder)
 		ifNotNil: [^ self rollForFranchise]! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 9/12/2016 18:40:34'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/29/2019 13:42:01'!
 space5
 	"Jan week 4"
 	| z |
@@ -1002,14 +1002,14 @@ space5
 	self disableAll: {'Move'}.
 	z _ 0.
 	self currentPlayer passedGo
-		ifTrue: [z _ self currentPlayer salary].
+		ifTrue: [z _ self salary].
 	self updatePlayer.
-	self currentPlayer markets at: #MUNICIPAL put: 2.
+	currentPlayer markets at: #MUNICIPAL put: 2.
 	self queryWin: won.
 	self triggerEvent: #itemChange.
 	^ z -> nil! !
 
-!Contract methodsFor: 'space-related' stamp: 'dhn 9/12/2016 18:40:42'!
+!Contract methodsFor: 'space-related' stamp: 'dhn 4/29/2019 13:42:11'!
 space6
 	"Jan week 5"
 	| z |
@@ -1017,9 +1017,9 @@ space6
 	self disableAll: {'Move'}.
 	z _ 0.
 	self currentPlayer passedGo
-		ifTrue: [z _ self currentPlayer salary].
+		ifTrue: [z _ self salary].
 	self updatePlayer.
-	self currentPlayer markets at: #'HEAVY HIGHWAY' put: 2.
+	currentPlayer markets at: #'HEAVY HIGHWAY' put: 2.
 	self queryWin: won.
 	self triggerEvent: #itemChange.
 	^ z -> nil! !
@@ -1402,12 +1402,13 @@ queryWin: aBool
 			self updateHistory.
 			self enableAll: {'End Turn'}]! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 4/28/2019 22:18:57'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 14:30:43'!
 reduced: aFactor
 	"Set the value of a player's price factor, e.g. half price"
 	"This method is for compatibility with #contingencyDesc"
 	
-	currentPlayer priceFactor: aFactor! !
+	currentPlayer priceFactor: aFactor.
+	^ 0! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 8/14/2017 11:07:02'!
 removeFromGame
@@ -1433,6 +1434,23 @@ limit and is out of the game'
 				title: 'THE WINNAH!!'.
 			self disableAll: {'Pay Loan'. 'Purchases'. 'Do Job'. 'Move'}.
 			self won: true]! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 13:38:45'!
+salary
+	"Inform player that salary will be received"
+	| z |
+	
+	GamePopUp 
+		inform: 'You have collected outstanding receivables 
+in the amount of $10,000.' 
+		title: 'Whoopee!!!!'.
+	z _ 10000.
+	currentPlayer tally: z.
+	self updatePlayer.
+	currentPlayer reset.
+	currentPlayer history addLast: currentPlayer netAssets.
+	^ z
+! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 10/1/2016 13:42:49'!
 updateHistory
@@ -4680,23 +4698,6 @@ rollForHarvest
 	"Set the roll adjustment so that the die will be in the right position"
 
 	rollAdjustment _ roll negated! !
-
-!Contractor methodsFor: 'space-related' stamp: 'dhn 8/29/2016 21:21:14'!
-salary
-	"Inform that salary will be received"
-	| z |
-	
-	GamePopUp 
-		inform: 'You have collected outstanding receivables 
-in the amount of $10,000.' 
-		title: 'Whoopee!!!!'.
-	z := 10000.
-	self tally: z.
-	self mgr updatePlayer.
-	self reset.
-	self history addLast: self netAssets.
-	^ z
-! !
 
 !Contractor methodsFor: 'space-related' stamp: 'dhn 10/1/2016 11:21:05'!
 tally: anAmount 
