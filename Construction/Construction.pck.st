@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 10:05:34 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 12:26:24 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 207!
+!provides: 'Construction' 1 208!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1542,7 +1542,7 @@ initialButtonState
 	self enableAll: {'Purchase'}.
 	self disableAll: {'End Turn'. 'Do Job'}! !
 
-!Contract methodsFor: 'initialize-release' stamp: 'jmv 4/11/2019 14:49:17'!
+!Contract methodsFor: 'initialize-release' stamp: 'dhn 4/29/2019 10:22:25'!
 initialize
 
 	super initialize.
@@ -1550,6 +1550,8 @@ initialize
 	spaceFreq _ GameHistogram ofSize: spaces size.
 	cellCount _ self class cellsForGame.
 	won _ false.
+	demo _ 0.
+	expenseFactor _ 1.
 	windowCount _ 0.
 	fates _ Construction contingencyDesc shuffled.
 	availableOptions _ Construction optionsDesc.
@@ -4755,7 +4757,7 @@ sellAsset: aString for: aNumber
 	asset value holder = self
 		ifTrue: [asset value holder: nil]! !
 
-!Contractor methodsFor: 'initialize-release' stamp: 'dhn 1/23/2018 16:48:37'!
+!Contractor methodsFor: 'initialize-release' stamp: 'dhn 4/29/2019 10:14:40'!
 initialize
 
 	cash _ 100000.
@@ -4766,8 +4768,7 @@ initialize
 	history _ OrderedCollection with: self netAssets.
 	jobMAvg _ OrderedCollection new.
 	jobRoll _ 0.
-	jobCount _ 0.
-	expenseFactor _ 1! !
+	jobCount _ 0! !
 
 !Contractor methodsFor: 'initialize-release' stamp: 'dhn 1/18/2017 17:29:16'!
 setupAssets
