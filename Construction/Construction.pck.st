@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 2:56:39 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 9:56:54 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 209!
+!provides: 'Construction' 1 210!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -258,7 +258,7 @@ You class
 
 !classDefinition: #Contractor category: #'Construction-Model'!
 Gamer subclass: #Contractor
-	instanceVariableNames: 'markets options priceFactor demo shutDown cutIncome spaceEffect contingency split drawnOption jobRoll jobCount jobDone rollAdjustment jobMAvg'
+	instanceVariableNames: 'markets options priceFactor shutDown split drawnOption jobRoll jobCount jobDone rollAdjustment jobMAvg'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Construction-Model'!
