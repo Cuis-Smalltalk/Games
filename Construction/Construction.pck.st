@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 29 April 2019 at 9:56:54 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 30 April 2019 at 6:15:41 pm'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 210!
+!provides: 'Construction' 1 211!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1463,7 +1463,7 @@ updateHistory
 			currentPlayer appendHistory].
 	self triggerEvent: #itemChange! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 09:49:29'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/30/2019 18:01:48'!
 updateIron: anAsset with: aRoll 
 	"Compute the results of a move"
 	| what amt yield total mkt reduced title |
@@ -1483,7 +1483,7 @@ updateIron: anAsset with: aRoll
 				amt > 1 ifTrue: [cnts nextPut: $s]].
 			self triggerEvent: #showJobView: with: title.
 			mkt _ currentPlayer markets
-						at: (self class equipmentMarket at: anAsset).
+						at: (self class requiredEquipment keyAtValue: anAsset ifAbsent: []).
 			yield _ (what class at: aRoll for: amt)
 						* mkt * expenseFactor.
 			yield >= 0
@@ -2249,22 +2249,6 @@ Week 3
 If owned, pay owner for annual material purchases $15,000 to $90,000. If you own, bank pays you. If unowned, you may purchase the exclusive right to the revenue stream for $500,000.';
 
 	yourself! !
-
-!Contract class methodsFor: 'operation' stamp: 'dhn 9/23/2016 15:53:04'!
-equipmentMarket
-	"Associate asset class with season."
-
-	^ Dictionary new
-		add: #Backhoe -> #RESIDENTIAL;
-		add: #Dozer -> #COMMERCIAL;
-		add: #Excavator -> #INSTITUTIONAL;
-		add: #Grader -> #MUNICIPAL;
-		add: #Scraper -> #'HEAVY HIGHWAY';
-		add: #Stinky -> #STINKY;
-		add: #LostMiner -> #'LOST MINER';
-		add: #Westwood -> #WESTWOOD;
-		add: #BigPhil -> #'BIG PHIL';
-		yourself! !
 
 !Contract class methodsFor: 'operation' stamp: 'dhn 9/28/2016 16:54:58'!
 franchiseSpaces
@@ -3942,36 +3926,11 @@ details
 
 	textPane model actualContents: model statsReport 	"note that the textPane model differs from the model for this view"! !
 
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 4/15/2012 13:21'!
+!ConAsset methodsFor: 'operating' stamp: 'dhn 4/15/2012 13:21'!
 assetValue
 	^self class price * self quantity! !
 
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/19/2013 15:25'!
-costAvoided
-	"Answer the value of costAvoided"
-
-	costAvoided ifNil: [costAvoided := 0].
-	^ costAvoided! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/19/2013 15:26'!
-costAvoided: anObject
-	"Set the value of costAvoided"
-
-	costAvoided := anObject! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/21/2013 12:06'!
-holder
-	"Answer the value of holder"
-
-	^ holder! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/21/2013 12:06'!
-holder: anObject
-	"Set the value of holder"
-
-	holder := anObject! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 8/26/2016 08:41:06'!
+!ConAsset methodsFor: 'operating' stamp: 'dhn 8/26/2016 08:41:06'!
 optionHeader
 	| str |
 	str := String new writeStream.
@@ -3980,7 +3939,52 @@ optionHeader
 	^ str contents
 ! !
 
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/15/2016 18:07'!
+!ConAsset methodsFor: 'operating' stamp: 'dhn 7/21/2013 14:16'!
+recordCost: anAmount for: aPlayer
+	cost := anAmount + self cost.
+	aPlayer expenseCount: 1 + aPlayer expenseCount.
+! !
+
+!ConAsset methodsFor: 'operating' stamp: 'dhn 7/21/2013 14:18'!
+recordGross: anAmount
+	gross := anAmount + self gross! !
+
+!ConAsset methodsFor: 'initialize-release' stamp: 'dhn 3/13/2014 11:51'!
+initialize
+	super initialize.
+	description := self listName! !
+
+!ConAsset methodsFor: 'initialize-release' stamp: 'dhn 4/30/2019 17:31:10'!
+listName
+
+	self subclassResponsibility! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 7/19/2013 15:25'!
+costAvoided
+	"Answer the value of costAvoided"
+
+	costAvoided ifNil: [costAvoided := 0].
+	^ costAvoided! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 7/19/2013 15:26'!
+costAvoided: anObject
+	"Set the value of costAvoided"
+
+	costAvoided := anObject! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 7/21/2013 12:06'!
+holder
+	"Answer the value of holder"
+
+	^ holder! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 7/21/2013 12:06'!
+holder: anObject
+	"Set the value of holder"
+
+	holder := anObject! !
+
+!ConAsset methodsFor: 'reporting' stamp: 'dhn 7/15/2016 18:07'!
 profitAndLoss
 	"Answer the P&L report"
 
@@ -4001,21 +4005,11 @@ profitAndLoss
 			nextPutAll: (self profit: self gross + self costAvoided orLoss: self cost);
 			newLine]! !
 
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/21/2013 14:16'!
-recordCost: anAmount for: aPlayer
-	cost := anAmount + self cost.
-	aPlayer expenseCount: 1 + aPlayer expenseCount.
-! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 7/21/2013 14:18'!
-recordGross: anAmount
-	gross := anAmount + self gross! !
-
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 8/17/2013 16:27'!
+!ConAsset methodsFor: 'reporting' stamp: 'dhn 8/17/2013 16:27'!
 reportAsAssetFor: aPlayer
 	^ self profitAndLoss! !
 
-!ConAsset methodsFor: 'as yet unclassified' stamp: 'dhn 8/26/2016 08:42:09'!
+!ConAsset methodsFor: 'reporting' stamp: 'dhn 8/26/2016 08:42:09'!
 termsAndConditions
 	"Answer the purchase terms for an asset"
 	| theCost down balance |
@@ -4032,11 +4026,6 @@ termsAndConditions
 			nextPutAll: ' cash and a loan for ';
 			nextPutAll: '$' , balance asInteger printStringWithCommas, '.'; newLine;
 			nextPutAll: 'Currently you have ', quantity asString, '.']! !
-
-!ConAsset methodsFor: 'initialize-release' stamp: 'dhn 3/13/2014 11:51'!
-initialize
-	super initialize.
-	description := self listName! !
 
 !Contingencies methodsFor: 'as yet unclassified' stamp: 'dhn 5/19/2014 15:33'!
 initialize
