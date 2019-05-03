@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 30 April 2019 at 6:15:41 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 11:15:19 am'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 211!
+!provides: 'Construction' 1 212!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -54,16 +54,6 @@ GameView subclass: #JobView
 	category: 'Construction-Graphics'!
 !classDefinition: 'JobView class' category: #'Construction-Graphics'!
 JobView class
-	instanceVariableNames: ''!
-
-!classDefinition: #LoanView category: #'Construction-Graphics'!
-GameView subclass: #LoanView
-	instanceVariableNames: 'textPane cancelButton payButton buttonArea'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Construction-Graphics'!
-!classDefinition: 'LoanView class' category: #'Construction-Graphics'!
-LoanView class
 	instanceVariableNames: ''!
 
 !classDefinition: #OptionsView category: #'Construction-Graphics'!
@@ -307,9 +297,6 @@ A Construction Game window which makes it possible for players to bid on competi
 
 !JobView commentStamp: '<historical>' prior: 0!
 A Construction Game window which shows the job invoice, an itemized list of the expense and income resulting from doing the job.!
-
-!LoanView commentStamp: 'dhn 9/14/2016 10:34:25' prior: 0!
-A Construction Game window which makes it possible for contractors to reduce debt.!
 
 !OptionsView commentStamp: 'dhn 8/26/2016 16:48:51' prior: 0!
 A Construction Game window which makes it possible for contractors to make purchases.!
@@ -2901,7 +2888,7 @@ showJobView: aTitle
 		morphPosition: self windowPosition;
 		morphExtent: 300 @ 384! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 3/23/2017 20:56:39'!
+!Construction methodsFor: 'windows' stamp: 'dhn 5/3/2019 11:13:25'!
 showLoan
 	"Show window for reducing debt"
 	| pl win |
@@ -2911,6 +2898,7 @@ showLoan
 	win openInWorld: pasteup.
 	win
 		setLabel: pl identity, '''s Debt';
+		player: pl;
 		setWindowColor: pl color;
 		startButtons;
 		morphPosition: self windowPosition;
@@ -3615,136 +3603,6 @@ openOn: aModel title: atitle
 	win _ self open: aModel label: atitle.
 	win removeWindowMenu.
 			
-	aModel when: #deleteOpenWindows send: #endIt to: win.
-	
-	^ win
-! !
-
-!LoanView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 12:05:14'!
-buildMorphicWindow
-	"Lay out the window for paying down debt"
-	| list1 rightPane |
-	
-	self layoutMorph beRow.
-	list1 _ (PluggableListMorph
-		model: model
-		listGetter: #loanList
-		indexGetter: #loanItem
-		indexSetter: #loanItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
-			name: #'payment size'.
-			
-	buttonArea _ (LayoutMorph newRow)
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
-	buttonArea
-		name: #buttons;
-		padding: #center.
-	model when: #payButton: send: #payButton: to: self with: #state.
-
-	textPane _ (TextModelMorph
-		withModel: (TextModel withText: '')) 	"note the different model specification"
-			askBeforeDiscardingEdits: false;	"discard changes to the text"
-			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
-	textPane 
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.85
-			minorDirectionPadding: #center).
-
-	rightPane _ LayoutMorph newColumn.
-	rightPane
-		name: 'right pane';
-		addMorph: buttonArea;
-		addMorph: textPane.
-	
-	self layoutMorph
-		addMorph: list1 proportionalWidth: 0.35;
-		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
-! !
-
-!LoanView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 16:30:09'!
-startButtons
-	"Set the Loan Payment buttons"
-	
-	payButton _ GameButtonMorph label: 'Pay' action: #pay state: false model: self.
-	payButton 
-		morphExtent: 70@20;
-		setBalloonText: 'Make the selected payment.'.
-		
-	cancelButton _ GameButtonMorph label: 'Cancel' action: #endIt state: true model: self.
-	cancelButton 
-		morphExtent: 70@20;
-		setBalloonText: 'Forget about reducing debt.'.
-
-	buttonArea
-		removeAllMorphs;
-		addMorph: payButton;
-		addMorph: cancelButton;
-		padding: #center.
-! !
-
-!LoanView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:01:31'!
-closeBoxHit
-
-	model 
-		loanItem: nil;
-		enableAll: {'Pay Loan'}.
-	super closeBoxHit! !
-
-!LoanView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:00:38'!
-endIt
-	"Close the receiver"
-	
-	model 
-		loanItem: nil;
-		enableAll: {'Pay Loan'}.
-	self delete! !
-
-!LoanView methodsFor: 'accessing' stamp: 'dhn 9/12/2016 15:48:26'!
-details
-
-	textPane model actualContents: (model loanReportFor: model loanItem)	"note that the textPane model differs from the model for this view"! !
-
-!LoanView methodsFor: 'accessing' stamp: 'dhn 9/16/2016 14:57:28'!
-payButton: aBool
-	"Change Pay button state according to aBool"
-	
-	aBool
-		ifTrue: [payButton enableButton]
-		ifFalse: [payButton disableButton]! !
-
-!LoanView methodsFor: 'as yet unclassified' stamp: 'dhn 10/1/2016 12:07:19'!
-pay
-	"Make payment on the loan"
-	| payment selection pl |
-	
-	selection _ model loanItem.
-	model loanItem: 0. 	"avoid multiples via contact bounce"
-	pl _ model currentPlayer.
-	payment _ selection * model class paymentIncrement min: pl debt negated.
-	pl debt: pl debt + payment.
-	pl cash: pl cash - payment.
-	model updatePlayer.
-	(pl playerDebtLimit value <= pl debt and: [model moveButton enabled not])
-		ifTrue: [
-			model updateHistory.
-			model enableAll: {'End Turn'}].
-	self details! !
-
-!LoanView class methodsFor: 'class initialization' stamp: 'dhn 9/12/2016 14:08:41'!
-openOn: aModel
-	"Answer an instance of this class on aModel"
-	| win |
-
-	win _ self open: aModel label: 'Purchases'.
-	win removeWindowMenu.
-			
-	aModel when: #itemChange send: #details to: win.
 	aModel when: #deleteOpenWindows send: #endIt to: win.
 	
 	^ win
