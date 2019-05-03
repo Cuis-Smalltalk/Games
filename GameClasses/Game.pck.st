@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 28 April 2019 at 10:34:03 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 10:34:10 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 38!
+!provides: 'Game' 1 39!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -114,6 +114,16 @@ GameView subclass: #HistoryView
 	category: 'Game-Graphics'!
 !classDefinition: 'HistoryView class' category: #'Game-Graphics'!
 HistoryView class
+	instanceVariableNames: ''!
+
+!classDefinition: #LoanView category: #'Game-Graphics'!
+GameView subclass: #LoanView
+	instanceVariableNames: 'textPane cancelButton payButton buttonArea player loanItem loanReport'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Game-Graphics'!
+!classDefinition: 'LoanView class' category: #'Game-Graphics'!
+LoanView class
 	instanceVariableNames: ''!
 
 !classDefinition: #ListView category: #'Game-Graphics'!
@@ -269,6 +279,9 @@ A window which makes it possible for players to raise cash by selling assets.!
 
 !HistoryView commentStamp: 'dhn 8/27/2018 10:14:45' prior: 0!
 A plot of players' progress toward the goal of the game.!
+
+!LoanView commentStamp: '<historical>' prior: 0!
+A view which makes it possible for players to reduce debt.!
 
 !ListView commentStamp: 'dhn 7/10/2016 17:20' prior: 0!
 An abstract class for game windows.!
@@ -1815,6 +1828,209 @@ openOn: aModel title: atitle
 	
 	^ win
 ! !
+
+!LoanView methodsFor: 'initialization' stamp: 'dhn 9/14/2017 11:07:48'!
+buildMorphicWindow
+	"Lay out the window for paying down debt"
+	| list1 rightPane |
+	
+	self layoutMorph beRow.
+	list1 _ (PluggableListMorph
+		model: self
+		listGetter: #loanList
+		indexGetter: #loanItem
+		indexSetter: #loanItem:
+		mainView: self
+		menuGetter: nil
+		keystrokeAction: nil)
+			name: #'payment size'.
+			
+	buttonArea _ (LayoutMorph newRow)
+		layoutSpec: (LayoutSpec 
+			proportionalWidth: 1.0
+			proportionalHeight: 0.15
+			minorDirectionPadding: #center).
+	buttonArea
+		name: #buttons;
+		padding: #center.
+	model when: #payButton: send: #payButton: to: self with: #state.
+
+	textPane _ (TextModelMorph
+		withModel: (TextModel withText: '')) 	"note the different model specification"
+			askBeforeDiscardingEdits: false;	"discard changes to the text"
+			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
+	textPane 
+		layoutSpec: (LayoutSpec 
+			proportionalWidth: 1.0
+			proportionalHeight: 0.85
+			minorDirectionPadding: #center).
+
+	rightPane _ LayoutMorph newColumn.
+	rightPane
+		name: 'right pane';
+		addMorph: buttonArea;
+		addMorph: textPane.
+	
+	self layoutMorph
+		addMorph: list1 proportionalWidth: 0.35;
+		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
+! !
+
+!LoanView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 16:30:09'!
+startButtons
+	"Set the Loan Payment buttons"
+	
+	payButton _ GameButtonMorph label: 'Pay' action: #pay state: false model: self.
+	payButton 
+		morphExtent: 70@20;
+		setBalloonText: 'Make the selected payment.'.
+		
+	cancelButton _ GameButtonMorph label: 'Cancel' action: #endIt state: true model: self.
+	cancelButton 
+		morphExtent: 70@20;
+		setBalloonText: 'Forget about reducing debt.'.
+
+	buttonArea
+		removeAllMorphs;
+		addMorph: payButton;
+		addMorph: cancelButton;
+		padding: #center.
+! !
+
+!LoanView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:01:31'!
+closeBoxHit
+
+	model 
+		loanItem: nil;
+		enableAll: {'Pay Loan'}.
+	super closeBoxHit! !
+
+!LoanView methodsFor: 'termination' stamp: 'dhn 9/14/2017 11:48:54'!
+endIt
+	"Close the receiver"
+	
+	model enableAll: {'Pay Loan'}.
+	self delete! !
+
+!LoanView methodsFor: 'accessing' stamp: 'dhn 9/14/2017 11:48:00'!
+details
+	"Set the loan report in the textPane"
+	
+	textPane model actualContents: (self loanReportFor: self loanItem)	"note that the textPane model differs from the model for this view"! !
+
+!LoanView methodsFor: 'accessing' stamp: 'dhn 9/16/2016 14:57:28'!
+payButton: aBool
+	"Change Pay button state according to aBool"
+	
+	aBool
+		ifTrue: [payButton enableButton]
+		ifFalse: [payButton disableButton]! !
+
+!LoanView methodsFor: 'accessing' stamp: 'dhn 9/13/2017 17:14:36'!
+player: anObject
+	"Set the value of player to anObject"
+	
+	player _ anObject! !
+
+!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 11:00:58'!
+loanItem
+	"Answer the value of loanItem"
+
+	loanItem ifNil: [loanItem _ 0]. 	"nil is unacceptable during model initialization"
+	^ loanItem! !
+
+!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 11:21:30'!
+loanItem: anObject
+	"Set the value of loanItem and loanReport"
+	| enab |
+	
+	(loanItem _ anObject) ifNotNil: [
+	anObject ~= 0
+		ifTrue: [
+			loanReport _ self loanReportFor: anObject.
+			enab _ true]
+		ifFalse: [
+			loanReport _ ''.
+			enab _ false].
+		textPane model actualContents: loanReport.
+		self payButton: enab.
+		model triggerEvent: #itemChange.
+		self changed: #loanItem]! !
+
+!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 11:04:20'!
+loanList
+	"Answer possible loan payment amounts"
+	| list |
+	
+	list _ OrderedCollection new.
+	1 to: 50 do: [:n | 
+		list add: (String streamContents: [:str |
+			str 
+				nextPut: $$;
+				nextPutAll: (n * self class paymentIncrement) printStringWithCommas;
+				newLine])].
+	^ list! !
+
+!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 11:06:35'!
+loanReportFor: anInteger
+	"Answer the effect on cash and debt of a payment selected by anInteger"
+	| pmt enab |
+
+	anInteger > 0
+		ifTrue: [
+			enab _ true.
+			pmt _ anInteger * self class paymentIncrement min: player debt negated.
+			^ (String streamContents: [:string |
+				string 
+					nextPutAll: 'By making this payment, ', player identity, ' would have:';
+					newLine; newLine;
+					nextPut: $$;
+					nextPutAll: (player debt + pmt) negated asInteger printStringWithCommas, ' in debt and';
+					newLine;
+					nextPut: $$;
+					nextPutAll: (player cash - pmt) asInteger printStringWithCommas , ' in cash and';
+					newLine;
+					nextPutAll: '$' , player playerDebtLimit value negated  printStringWithCommas , ' debt limit.'])]
+		ifFalse: [
+			enab _ false.
+			^ ''].
+	self payButton: enab.
+	self triggerEvent: #itemChange.
+	self changed: #loanItem! !
+
+!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 13:38:30'!
+pay
+	"Make payment on the loan"
+	| index payment |
+	
+	index _ loanItem.
+	self loanItem: 0. 	"avoid multiples via contact bounce"
+	payment _ index * self class paymentIncrement min: player debt negated.
+	player debt: player debt + payment.
+	player cash: player cash - payment.
+	model updatePlayer.
+	(player playerDebtLimit value <= player debt and: [model moveButton enabled not])
+		ifTrue: [model updateHistory].
+	self details! !
+
+!LoanView class methodsFor: 'class initialization' stamp: 'dhn 9/14/2017 12:00:59'!
+openOn: aModel
+	"Answer an instance of this class on aModel"
+	| win |
+
+	win _ self open: aModel label: 'Purchases'.
+	win removeWindowMenu.
+			
+	aModel when: #deleteOpenWindows send: #endIt to: win.
+	
+	^ win
+! !
+
+!LoanView class methodsFor: 'database' stamp: 'dhn 9/14/2017 11:12:09'!
+paymentIncrement
+	"Answer the payment increment for displaying loan payment choices"
+	
+	^ 1000! !
 
 !ListView methodsFor: 'text view 1' stamp: 'dhn 12/10/2013 21:07'!
 accept1: string from: aPluggableTextMorph 
