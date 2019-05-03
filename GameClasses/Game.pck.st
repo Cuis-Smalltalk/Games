@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 10:34:10 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 1:23:03 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 39!
+!provides: 'Game' 1 40!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1971,7 +1971,7 @@ loanList
 				newLine])].
 	^ list! !
 
-!LoanView methodsFor: 'operating' stamp: 'dhn 9/14/2017 11:06:35'!
+!LoanView methodsFor: 'operating' stamp: 'dhn 5/3/2019 13:21:35'!
 loanReportFor: anInteger
 	"Answer the effect on cash and debt of a payment selected by anInteger"
 	| pmt enab |
@@ -1985,10 +1985,10 @@ loanReportFor: anInteger
 					nextPutAll: 'By making this payment, ', player identity, ' would have:';
 					newLine; newLine;
 					nextPut: $$;
-					nextPutAll: (player debt + pmt) negated asInteger printStringWithCommas, ' in debt and';
+					nextPutAll: (player cash - pmt) asInteger printStringWithCommas , ' in cash and';
 					newLine;
 					nextPut: $$;
-					nextPutAll: (player cash - pmt) asInteger printStringWithCommas , ' in cash and';
+					nextPutAll: (player debt + pmt) negated asInteger printStringWithCommas, ' in debt and';
 					newLine;
 					nextPutAll: '$' , player playerDebtLimit value negated  printStringWithCommas , ' debt limit.'])]
 		ifFalse: [
