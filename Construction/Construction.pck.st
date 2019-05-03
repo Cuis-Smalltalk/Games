@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 11:15:19 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 11:49:46 am'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 212!
+!provides: 'Construction' 1 213!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -44,6 +44,16 @@ AuctionView subclass: #AuctionJob
 	category: 'Construction-Graphics'!
 !classDefinition: 'AuctionJob class' category: #'Construction-Graphics'!
 AuctionJob class
+	instanceVariableNames: ''!
+
+!classDefinition: #DebtView category: #'Construction-Graphics'!
+LoanView subclass: #DebtView
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Graphics'!
+!classDefinition: 'DebtView class' category: #'Construction-Graphics'!
+DebtView class
 	instanceVariableNames: ''!
 
 !classDefinition: #JobView category: #'Construction-Graphics'!
@@ -2888,13 +2898,13 @@ showJobView: aTitle
 		morphPosition: self windowPosition;
 		morphExtent: 300 @ 384! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 5/3/2019 11:13:25'!
+!Construction methodsFor: 'windows' stamp: 'dhn 5/3/2019 11:48:43'!
 showLoan
 	"Show window for reducing debt"
 	| pl win |
 		
 	pl _ model currentPlayer.
-	win _ LoanView openOn: model.
+	win _ DebtView openOn: model.
 	win openInWorld: pasteup.
 	win
 		setLabel: pl identity, '''s Debt';
@@ -3534,6 +3544,12 @@ openOn: aModel
 	
 	^ win
 ! !
+
+!DebtView class methodsFor: 'instance creation' stamp: 'dhn 5/3/2019 11:47:59'!
+paymentIncrement
+	"Answer the payment increment for displaying loan payment choices"
+	
+	^ 10000! !
 
 !JobView methodsFor: 'initialization' stamp: 'dhn 9/9/2018 12:09:16'!
 buildMorphicWindow
