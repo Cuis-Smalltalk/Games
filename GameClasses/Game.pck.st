@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:30:59 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:57:14 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 41!
+!provides: 'Game' 1 42!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -128,7 +128,7 @@ LoanView class
 
 !classDefinition: #OptionsView category: #'Game-Graphics'!
 GameView subclass: #OptionsView
-	instanceVariableNames: 'textPane cancelButton buyButton buttonArea'
+	instanceVariableNames: 'textPane cancelButton buyButton buttonArea player list optionsItem optionsReport'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -2045,13 +2045,13 @@ paymentIncrement
 	
 	^ 1000! !
 
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 15:04:46'!
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 5/4/2019 11:48:51'!
 buildMorphicWindow
 	"Lay out the window for purchases"
-	| list1 rightPane |
+	| rightPane |
 	
 	self layoutMorph beRow.
-	list1 _ (PluggableListMorph
+	list _ (PluggableListMorph
 		model: model
 		listGetter: #optionsList
 		indexGetter: #optionsItem
@@ -2088,7 +2088,7 @@ buildMorphicWindow
 		addMorph: textPane.
 	
 	self layoutMorph
-		addMorph: list1 proportionalWidth: 0.35;
+		addMorph: list proportionalWidth: 0.35;
 		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
 ! !
 
