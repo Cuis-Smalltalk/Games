@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 1:23:03 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:30:59 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 40!
+!provides: 'Game' 1 41!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -124,6 +124,16 @@ GameView subclass: #LoanView
 	category: 'Game-Graphics'!
 !classDefinition: 'LoanView class' category: #'Game-Graphics'!
 LoanView class
+	instanceVariableNames: ''!
+
+!classDefinition: #OptionsView category: #'Game-Graphics'!
+GameView subclass: #OptionsView
+	instanceVariableNames: 'textPane cancelButton buyButton buttonArea'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Game-Graphics'!
+!classDefinition: 'OptionsView class' category: #'Game-Graphics'!
+OptionsView class
 	instanceVariableNames: ''!
 
 !classDefinition: #ListView category: #'Game-Graphics'!
@@ -282,6 +292,9 @@ A plot of players' progress toward the goal of the game.!
 
 !LoanView commentStamp: '<historical>' prior: 0!
 A view which makes it possible for players to reduce debt.!
+
+!OptionsView commentStamp: '<historical>' prior: 0!
+A window which makes it possible for players to make purchases.!
 
 !ListView commentStamp: 'dhn 7/10/2016 17:20' prior: 0!
 An abstract class for game windows.!
@@ -2031,6 +2044,118 @@ paymentIncrement
 	"Answer the payment increment for displaying loan payment choices"
 	
 	^ 1000! !
+
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 15:04:46'!
+buildMorphicWindow
+	"Lay out the window for purchases"
+	| list1 rightPane |
+	
+	self layoutMorph beRow.
+	list1 _ (PluggableListMorph
+		model: model
+		listGetter: #optionsList
+		indexGetter: #optionsItem
+		indexSetter: #optionsItem:
+		mainView: self
+		menuGetter: nil
+		keystrokeAction: nil)
+			name: #catalog.
+			
+	buttonArea _ (LayoutMorph newRow)
+		layoutSpec: (LayoutSpec 
+			proportionalWidth: 1.0
+			proportionalHeight: 0.15
+			minorDirectionPadding: #center).
+	buttonArea
+		name: #buttons;
+		padding: #center.
+	model when: #buyButton: send: #buyButton: to: self with: #state.
+
+	textPane _ (TextModelMorph
+		withModel: (TextModel withText: '')) 	"note the different model specification"
+			askBeforeDiscardingEdits: false;	"discard changes to the text"
+			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
+	textPane 
+		layoutSpec: (LayoutSpec 
+			proportionalWidth: 1.0
+			proportionalHeight: 0.85
+			minorDirectionPadding: #center).
+
+	rightPane _ LayoutMorph newColumn.
+	rightPane
+		name: 'right pane';
+		addMorph: buttonArea;
+		addMorph: textPane.
+	
+	self layoutMorph
+		addMorph: list1 proportionalWidth: 0.35;
+		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
+! !
+
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/17/2016 10:20:02'!
+startButtons
+	"Set the buttons for buying assets"
+	
+	buyButton _ GameButtonMorph label: 'Buy' action: #buy state: false model: self.
+	buyButton 
+		morphExtent: 70@20;
+		setBalloonText: 'Make the purchase.'.
+		
+	cancelButton _ GameButtonMorph label: 'Cancel' action: #endIt state: true model: self.
+	cancelButton 
+		morphExtent: 70@20;
+		setBalloonText: 'Forget about shopping for now.'.
+
+	buttonArea
+		removeAllMorphs;
+		addMorph: buyButton;
+		addMorph: cancelButton;
+		padding: #center.
+! !
+
+!OptionsView methodsFor: 'accessing' stamp: 'dhn 9/12/2016 11:33:35'!
+buyButton: aBool
+	"Change buy button state according to aBool"
+	
+	aBool
+		ifTrue: [buyButton enableButton]
+		ifFalse: [buyButton disableButton]! !
+
+!OptionsView methodsFor: 'accessing' stamp: 'dhn 8/26/2016 15:51:55'!
+details
+
+	textPane model actualContents: model optionsReport 	"note that the textPane model differs from the model for this view"! !
+
+!OptionsView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:18:16'!
+closeBoxHit
+
+	model 
+		optionsItem: nil;
+		enableAll: {'Purchase'}.
+	super closeBoxHit! !
+
+!OptionsView methodsFor: 'termination' stamp: 'dhn 8/28/2016 14:19:18'!
+endIt
+	"Close the receiver"
+	
+	model 
+		optionsItem: nil;
+		enableAll: {'Purchase'}.
+	self delete! !
+
+!OptionsView class methodsFor: 'class initialization' stamp: 'dhn 11/2/2016 20:33:52'!
+openOn: aModel
+	"Answer an instance of this class on aModel"
+	| win |
+
+	win _ self open: aModel.
+	win removeWindowMenu.
+			
+	aModel when: #itemChange send: #details to: win.
+	aModel when: #deleteOpenWindows send: #endIt to: win.
+	
+	^ win
+! !
 
 !ListView methodsFor: 'text view 1' stamp: 'dhn 12/10/2013 21:07'!
 accept1: string from: aPluggableTextMorph 
