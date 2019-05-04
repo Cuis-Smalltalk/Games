@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 3 May 2019 at 11:49:46 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:22:55 am'!
 'Description Please enter a description for this package'!
-!provides: 'Construction' 1 213!
+!provides: 'Construction' 1 214!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -56,6 +56,16 @@ LoanView subclass: #DebtView
 DebtView class
 	instanceVariableNames: ''!
 
+!classDefinition: #BuyMachinery category: #'Construction-Graphics'!
+OptionsView subclass: #BuyMachinery
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Graphics'!
+!classDefinition: 'BuyMachinery class' category: #'Construction-Graphics'!
+BuyMachinery class
+	instanceVariableNames: ''!
+
 !classDefinition: #JobView category: #'Construction-Graphics'!
 GameView subclass: #JobView
 	instanceVariableNames: 'items index'
@@ -64,16 +74,6 @@ GameView subclass: #JobView
 	category: 'Construction-Graphics'!
 !classDefinition: 'JobView class' category: #'Construction-Graphics'!
 JobView class
-	instanceVariableNames: ''!
-
-!classDefinition: #OptionsView category: #'Construction-Graphics'!
-GameView subclass: #OptionsView
-	instanceVariableNames: 'textPane cancelButton buyButton buttonArea'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Construction-Graphics'!
-!classDefinition: 'OptionsView class' category: #'Construction-Graphics'!
-OptionsView class
 	instanceVariableNames: ''!
 
 !classDefinition: #StatsView category: #'Construction-Graphics'!
@@ -305,11 +305,11 @@ http://farmgame.com/product/the-construction-game/!
 !AuctionJob commentStamp: '<historical>' prior: 0!
 A Construction Game window which makes it possible for players to bid on competitive jobs.!
 
+!BuyMachinery commentStamp: '<historical>' prior: 0!
+A Construction Game window which makes it possible for contractors to make purchases.!
+
 !JobView commentStamp: '<historical>' prior: 0!
 A Construction Game window which shows the job invoice, an itemized list of the expense and income resulting from doing the job.!
-
-!OptionsView commentStamp: 'dhn 8/26/2016 16:48:51' prior: 0!
-A Construction Game window which makes it possible for contractors to make purchases.!
 
 !StatsView commentStamp: '<historical>' prior: 0!
 A Construction Game window which shows statistics about the player's assets, the player, and others.!
@@ -2916,7 +2916,7 @@ showLoan
 				
 	model disableAll: {'Pay Loan'}! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 3/23/2017 20:56:49'!
+!Construction methodsFor: 'windows' stamp: 'dhn 5/4/2019 11:13:03'!
 showOpts
 	"Show window for buying assets"
 	| pl win |
@@ -2924,7 +2924,7 @@ showOpts
 	pl _ model currentPlayer.
 	pl options notEmpty
 		ifTrue: [
-			win _ OptionsView openOn: model.
+			win _ BuyMachinery openOn: model.
 			win openInWorld: pasteup.
 			win
 				setLabel: pl identity, '''s Shopping';
@@ -3551,6 +3551,25 @@ paymentIncrement
 	
 	^ 10000! !
 
+!BuyMachinery methodsFor: 'operating' stamp: 'dhn 5/4/2019 11:11:04'!
+buy
+	"Purchase an asset"
+	| key option cost down balance |
+
+	key _ model optionsList at: model optionsItem.
+	option _ Construction optionsDesc at: key.
+	cost _ option class price * model currentPlayer priceFactor.
+	down _ 0.2 * cost.
+	balance _ cost - down.
+	model
+		pay: down
+		borrow: balance
+		for: option listName asSymbol
+		amount: 1;
+		updateHistory;
+		enableAll: {'doJob'}.
+	self details! !
+
 !JobView methodsFor: 'initialization' stamp: 'dhn 9/9/2018 12:09:16'!
 buildMorphicWindow
 	"Lay out the window for job invoice"
@@ -3619,137 +3638,6 @@ openOn: aModel title: atitle
 	win _ self open: aModel label: atitle.
 	win removeWindowMenu.
 			
-	aModel when: #deleteOpenWindows send: #endIt to: win.
-	
-	^ win
-! !
-
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 15:04:46'!
-buildMorphicWindow
-	"Lay out the window for purchases"
-	| list1 rightPane |
-	
-	self layoutMorph beRow.
-	list1 _ (PluggableListMorph
-		model: model
-		listGetter: #optionsList
-		indexGetter: #optionsItem
-		indexSetter: #optionsItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
-			name: #catalog.
-			
-	buttonArea _ (LayoutMorph newRow)
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
-	buttonArea
-		name: #buttons;
-		padding: #center.
-	model when: #buyButton: send: #buyButton: to: self with: #state.
-
-	textPane _ (TextModelMorph
-		withModel: (TextModel withText: '')) 	"note the different model specification"
-			askBeforeDiscardingEdits: false;	"discard changes to the text"
-			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
-	textPane 
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.85
-			minorDirectionPadding: #center).
-
-	rightPane _ LayoutMorph newColumn.
-	rightPane
-		name: 'right pane';
-		addMorph: buttonArea;
-		addMorph: textPane.
-	
-	self layoutMorph
-		addMorph: list1 proportionalWidth: 0.35;
-		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
-! !
-
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/17/2016 10:20:02'!
-startButtons
-	"Set the buttons for buying assets"
-	
-	buyButton _ GameButtonMorph label: 'Buy' action: #buy state: false model: self.
-	buyButton 
-		morphExtent: 70@20;
-		setBalloonText: 'Make the purchase.'.
-		
-	cancelButton _ GameButtonMorph label: 'Cancel' action: #endIt state: true model: self.
-	cancelButton 
-		morphExtent: 70@20;
-		setBalloonText: 'Forget about shopping for now.'.
-
-	buttonArea
-		removeAllMorphs;
-		addMorph: buyButton;
-		addMorph: cancelButton;
-		padding: #center.
-! !
-
-!OptionsView methodsFor: 'accessing' stamp: 'dhn 12/8/2016 20:19:00'!
-buy
-	"Purchase an asset"
-	| key option cost down balance |
-
-	key _ model optionsList at: model optionsItem.
-	option _ Construction optionsDesc at: key.
-	cost _ option class price * model currentPlayer priceFactor.
-	down _ 0.2 * cost.
-	balance _ cost - down.
-	model
-		pay: down
-		borrow: balance
-		for: option listName asSymbol
-		amount: 1;
-		updateHistory;
-		enableAll: {'doJob'}.
-	self details! !
-
-!OptionsView methodsFor: 'accessing' stamp: 'dhn 9/12/2016 11:33:35'!
-buyButton: aBool
-	"Change buy button state according to aBool"
-	
-	aBool
-		ifTrue: [buyButton enableButton]
-		ifFalse: [buyButton disableButton]! !
-
-!OptionsView methodsFor: 'accessing' stamp: 'dhn 8/26/2016 15:51:55'!
-details
-
-	textPane model actualContents: model optionsReport 	"note that the textPane model differs from the model for this view"! !
-
-!OptionsView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:18:16'!
-closeBoxHit
-
-	model 
-		optionsItem: nil;
-		enableAll: {'Purchase'}.
-	super closeBoxHit! !
-
-!OptionsView methodsFor: 'termination' stamp: 'dhn 8/28/2016 14:19:18'!
-endIt
-	"Close the receiver"
-	
-	model 
-		optionsItem: nil;
-		enableAll: {'Purchase'}.
-	self delete! !
-
-!OptionsView class methodsFor: 'class initialization' stamp: 'dhn 11/2/2016 20:33:52'!
-openOn: aModel
-	"Answer an instance of this class on aModel"
-	| win |
-
-	win _ self open: aModel.
-	win removeWindowMenu.
-			
-	aModel when: #itemChange send: #details to: win.
 	aModel when: #deleteOpenWindows send: #endIt to: win.
 	
 	^ win
