@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:57:14 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 5 May 2019 at 10:16:10 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 42!
+!provides: 'Game' 1 43!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -128,7 +128,7 @@ LoanView class
 
 !classDefinition: #OptionsView category: #'Game-Graphics'!
 GameView subclass: #OptionsView
-	instanceVariableNames: 'textPane cancelButton buyButton buttonArea player list optionsItem optionsReport'
+	instanceVariableNames: 'textPane cancelButton buyButton buttonArea player list'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
