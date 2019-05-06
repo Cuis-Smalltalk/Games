@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 5 May 2019 at 10:16:10 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 6 May 2019 at 10:40:58 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 43!
+!provides: 'Game' 1 44!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -2113,11 +2113,13 @@ startButtons
 		padding: #center.
 ! !
 
-!OptionsView methodsFor: 'accessing' stamp: 'dhn 9/12/2016 11:33:35'!
+!OptionsView methodsFor: 'accessing' stamp: 'dhn 5/6/2019 10:39:05'!
 buyButton: aBool
 	"Change buy button state according to aBool"
+	| chg |
 	
-	aBool
+	aBool ifNil: [chg _ false] ifNotNil: [chg _ aBool].
+	chg
 		ifTrue: [buyButton enableButton]
 		ifFalse: [buyButton disableButton]! !
 
