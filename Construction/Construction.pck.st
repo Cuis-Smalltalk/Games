@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3717] on 4 May 2019 at 11:22:55 am'!
-'Description Please enter a description for this package'!
-!provides: 'Construction' 1 214!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 12 May 2019 at 8:00:23 pm'!
+'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
+!provides: 'Construction' 1 215!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
