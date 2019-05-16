@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 12 May 2019 at 8:00:23 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 11:33:04 am'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 215!
+!provides: 'Construction' 1 216!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2619,12 +2619,6 @@ buildMorphicWindow
 initialize
 
 	super initialize! !
-
-!Construction methodsFor: 'initialization' stamp: 'dhn 4/17/2017 14:01:11'!
-layoutSubmorphs
-
-    super layoutSubmorphs.
-    self board morphExtent: self board owner morphExtent! !
 
 !Construction methodsFor: 'initialization' stamp: 'dhn 3/6/2017 12:19:48'!
 makeButtonArea
