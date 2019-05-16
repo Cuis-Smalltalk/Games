@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 6 May 2019 at 10:40:58 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 15 May 2019 at 8:02:47 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 44!
+!provides: 'Game' 1 45!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -3368,10 +3368,11 @@ color: anObject
 
 	color := anObject! !
 
-!Season methodsFor: 'accessing' stamp: 'dhn 2/13/2012 11:45'!
+!Season methodsFor: 'accessing' stamp: 'dhn 5/15/2019 18:06:10'!
 desc
 	"Answer the value of desc"
 
+	desc ifNil: [desc _ ''].
 	^ desc! !
 
 !Season methodsFor: 'accessing' stamp: 'dhn 2/13/2012 11:45'!
@@ -3386,11 +3387,13 @@ range
 
 	^ range! !
 
-!Season methodsFor: 'accessing' stamp: 'dhn 4/14/2012 15:08'!
-range: aPoint
+!Season methodsFor: 'accessing' stamp: 'dhn 5/15/2019 18:15:32'!
+range: anObject
 	"Set the value of range as from@to"
 
-	range := aPoint! !
+	range _ anObject class = Point 
+		ifTrue: [anObject]
+		ifFalse: [anObject@anObject]! !
 
 !Season methodsFor: 'accessing' stamp: 'dhn 4/14/2012 15:07'!
 textColor
