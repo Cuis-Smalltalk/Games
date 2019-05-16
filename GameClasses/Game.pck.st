@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 15 May 2019 at 8:02:47 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 11:32:39 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 45!
+!provides: 'Game' 1 46!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1257,6 +1257,12 @@ initialize
 labelAreaHeight
 
 	^ 50! !
+
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 5/16/2019 11:26:27'!
+layoutSubmorphs
+
+    super layoutSubmorphs.
+    self board morphExtent: self board owner morphExtent! !
 
 !GameBoard methodsFor: 'initialization' stamp: 'dhn 4/26/2019 11:25:52'!
 makeTitleArea
