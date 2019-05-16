@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 11:32:39 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 7:03:48 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 46!
+!provides: 'Game' 1 47!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -657,6 +657,12 @@ spaceFreq
 	"Answer the value of spaceFreq"
 
 	^ spaceFreq! !
+
+!Game methodsFor: 'accessing' stamp: 'dhn 5/16/2019 13:20:14'!
+spaces
+	"Answer the value of spaces"
+	
+	^ spaces! !
 
 !Game methodsFor: 'accessing' stamp: 'dhn 3/18/2017 18:39:37'!
 token
