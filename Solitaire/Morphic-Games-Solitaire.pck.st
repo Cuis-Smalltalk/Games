@@ -1,9 +1,9 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3564] on 23 January 2019 at 3:32:30 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3745] on 16 May 2019 at 2:56:19 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 82!
+!provides: 'Morphic-Games-Solitaire' 1 83!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
-!requires: 'Cuis-Base' 42 2846 nil!
 !requires: 'Goodies' 1 3 nil!
+!requires: 'Cuis-Base' 50 3745 nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
 
@@ -371,6 +371,41 @@ Structure:
 
 valuesArray grows by doubling; no shrinkage at present.
 Initial purpose in life is to support SmallScheme dynamic variables.!
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
+name
+	"e.g. Jack of Hearts"
+	^((self face) asString), ' of ', ((self suit) asString)! !
+
+!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
+initializedInstance
+	^self newColumn! !
+
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
+initializedInstance
+	"Answer a new instance"
+	"
+	FreeCell newGame.
+	"
+	
+	^ self newColumn initializeWithScale: 1! !
+
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
+initializedInstance
+	"Answer a new instance"
+	"
+	Klondike initializedImage.
+	"
+	
+	^ self newColumn initializeWithScale: 1! !
+
+!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
+printOn: aStream
+	aStream nextPut: $(.
+	1 to: top do: [ :index | 
+				 aStream print: (valuesArray at: index); space].
+	self isEmpty ifFalse: [aStream skip: -1].
+	aStream nextPut: $)! !
 
 !EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:51'!
 disable
@@ -1515,11 +1550,6 @@ grabPreowner
 height
 
 	^self faceForm height! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
-name
-	"e.g. Jack of Hearts"
-	^((self face) asString), ' of ', ((self suit) asString)! !
 
 !CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:01'!
 rememberPreowner
@@ -4925,15 +4955,23 @@ removeWinnerText
 			            addMorph: labelMorph.
 		winnerText := nil! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/4/2016 13:51'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 5/16/2019 14:47:44'!
 showWinnerText
 	"Display Winner Message to user"
-
+	| widthToFit  pointSizeToUse newText |
 	saveGameButton disable. "No use saving a won game"
-	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
-	winnerText := (StringMorph contents: (CardTableMorph randomWinnerText))
+	newText := CardTableMorph randomWinnerText.
+	"Find a point size which fits"
+	widthToFit := labelLayout morphExtent x.
+	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
+		detect: [ :ps |  
+		 (((AbstractFont familyName: 'DejaVu' pointSize: ps) widthOfString: newText)
+		  <= widthToFit) ]
+		ifNone: [AbstractFont default].
+ 	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
+	winnerText := (StringMorph contents: newText )
 					emphasis: 1; "bold"
-					font:  (AbstractFont familyName: 'DejaVu' pointSize: 22).
+					font:  (AbstractFont familyName: 'DejaVu' pointSize: pointSizeToUse).
 	winnerText color: Color blue; 
 				layoutSpec: (LayoutSpec  proportionalWidth: 0.9 proportionalHeight: 1.0).
 
@@ -5194,10 +5232,6 @@ cpsOverCollExample3
 !CardTableMorph class methodsFor: 'class initialization' stamp: 'KenD 10/25/2004 08:16'!
 includeInNewMorphMenu
 	^ false! !
-
-!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
-initializedInstance
-	^self newColumn! !
 
 !CardTableMorph class methodsFor: 'accessing' stamp: 'KenD 2/28/2016 07:15'!
 randomWinnerText
@@ -5939,15 +5973,6 @@ initialize
 	NumPiles       _ 4.
 	^self! !
 
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
-initializedInstance
-	"Answer a new instance"
-	"
-	FreeCell newGame.
-	"
-	
-	^ self newColumn initializeWithScale: 1! !
-
 !FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
 newGame
 	"Answer a new instance"
@@ -6599,15 +6624,6 @@ initializedImage
 	
 	^ (self newColumn initializeWithScale: 1) openInHand! !
 
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
-initializedInstance
-	"Answer a new instance"
-	"
-	Klondike initializedImage.
-	"
-	
-	^ self newColumn initializeWithScale: 1! !
-
 !Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 19:51'!
 newGame
 	"Answer a new instance"
@@ -7072,14 +7088,6 @@ topValue: newVal
 	(self isEmpty)
 	ifFalse: [valuesArray at: top put: newVal] "set!!"
 	ifTrue: [Exception signal: 'Attempt to assign to empty Stack'].! !
-
-!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
-printOn: aStream
-	aStream nextPut: $(.
-	1 to: top do: [ :index | 
-				 aStream print: (valuesArray at: index); space].
-	self isEmpty ifFalse: [aStream skip: -1].
-	aStream nextPut: $)! !
 
 !Stack class methodsFor: 'private' stamp: 'KenD 5/14/2002 11:10'!
 with: anObject 
