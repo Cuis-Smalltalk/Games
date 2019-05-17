@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 7:03:48 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 10:03:07 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 47!
+!provides: 'Game' 1 48!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1238,6 +1238,40 @@ getPlayers
 			model setupPlayer: x color: (clrs at: cnt)].
 	
 	[cnt < 6] whileTrue: [
+		y _ FillInTheBlankMorph request: 'Next player''s name?' initialAnswer: ''.
+		y
+			ifEmpty: [
+				cnt > 1 
+					ifTrue: [self startGame]
+					ifFalse: [
+						model players: OrderedCollection new.
+						model enableAll: {'Players'. 'Tour'}].
+				^ nil]
+			ifNotEmpty: [
+				cnt _ cnt + 1.
+				model setupPlayer: y color: (clrs at: cnt)]].
+		
+	self startGame
+! !
+
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 5/16/2019 21:46:46'!
+getPlayers: aLimit
+	"Get the names of two to aLimit players"
+	| x y cnt clrs |
+
+	model disableAll: {'Players'. 'Tour'}.
+	clrs _ Token colors shuffled.
+	cnt _ 0.
+	x _ FillInTheBlankMorph request: 'First player''s name?' initialAnswer: ''.
+	x 
+		ifEmpty: [
+			model enableAll: {'Players'. 'Tour'}.
+			^ nil]
+		ifNotEmpty: [
+			cnt _ cnt + 1.
+			model setupPlayer: x color: (clrs at: cnt)].
+	
+	[cnt < aLimit] whileTrue: [
 		y _ FillInTheBlankMorph request: 'Next player''s name?' initialAnswer: ''.
 		y
 			ifEmpty: [
