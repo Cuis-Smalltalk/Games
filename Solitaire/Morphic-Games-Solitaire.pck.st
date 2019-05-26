@@ -1,8 +1,8 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3564] on 23 January 2019 at 3:32:30 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3750] on 18 May 2019 at 3:48:48 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 82!
+!provides: 'Morphic-Games-Solitaire' 1 84!
+!requires: 'Cuis-Base' 50 3745 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
-!requires: 'Cuis-Base' 42 2846 nil!
 !requires: 'Goodies' 1 3 nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
@@ -371,6 +371,41 @@ Structure:
 
 valuesArray grows by doubling; no shrinkage at present.
 Initial purpose in life is to support SmallScheme dynamic variables.!
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
+name
+	"e.g. Jack of Hearts"
+	^((self face) asString), ' of ', ((self suit) asString)! !
+
+!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
+initializedInstance
+	^self newColumn! !
+
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
+initializedInstance
+	"Answer a new instance"
+	"
+	FreeCell newGame.
+	"
+	
+	^ self newColumn initializeWithScale: 1! !
+
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
+initializedInstance
+	"Answer a new instance"
+	"
+	Klondike initializedImage.
+	"
+	
+	^ self newColumn initializeWithScale: 1! !
+
+!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
+printOn: aStream
+	aStream nextPut: $(.
+	1 to: top do: [ :index | 
+				 aStream print: (valuesArray at: index); space].
+	self isEmpty ifFalse: [aStream skip: -1].
+	aStream nextPut: $)! !
 
 !EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:51'!
 disable
@@ -1287,6 +1322,94 @@ addCard: aCard
 	ifFalse: [Error signal: 'A Spare can hold only 1 card' ]
 ! !
 
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 12:20'!
+backForm
+	"form for this card's back side"
+
+	^FormsArray at: 53.! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 05:09'!
+cardNumber
+	"private"
+
+	^cardNumber! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:53'!
+color
+	"Answer a symbol denoting the color of this card"
+	"clubs diamonds hearts spades => black red red black"
+
+	| suitNum |
+	suitNum := self suitNumber.
+	(suitNum = 1)
+	ifTrue: [^ #Black]
+	ifFalse: [(suitNum = 4)
+			ifTrue: [ ^#Black ]
+			ifFalse: [ ^#Red ]].! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
+face
+	"Answer a symbol denoting the face value of this card"
+
+	^FaceNames at: (self faceNumber).! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
+faceForm
+	"Answer form for this card's face"
+	
+	"Zero based card numbers -> 1 based array => add 1".
+	^FormsArray at: (cardNumber + 1)! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:02'!
+forgetPreowner
+	
+	grabPreowner  := nil! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 14:58'!
+grabPreowner
+	^grabPreowner ! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 13:37'!
+height
+
+	^self faceForm height! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:01'!
+rememberPreowner
+	
+	(self owner isKindOf: CardContainerMorph )
+	ifTrue: [grabPreowner := self owner]
+	ifFalse: [grabPreowner  := nil] "no funny stuff.."! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 4/6/2016 14:58'!
+scale
+	"Not scalable -- see ScaledCardMorph"
+	^1! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
+suit
+	"Answer a symbol denoting the suit of this card"
+
+	^SuitNames at: (self suitNumber).! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/28/2004 11:07'!
+suitColor
+	"Answer a symbol denoting the color of this card"
+	"clubs diamonds hearts spades => black red red black"
+
+	| suitNum |
+	suitNum := self suitNumber.
+	(suitNum = 1)
+	ifTrue: [^ #Black]
+	ifFalse: [(suitNum = 4)
+			ifTrue: [ ^#Black ]
+			ifFalse: [ ^#Red ]].! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 13:38'!
+width
+
+	^self faceForm width! !
+
 !CardMorph methodsFor: 'comparing' stamp: 'KenD 1/10/2013 13:45'!
 < aCard
 	"Absolute ordering over all cards in a 52 card deck."
@@ -1463,99 +1586,6 @@ wantsToBeDroppedInto: aMorph
 	"I want to be dropped onto a Card or a Card Container"
 	^ (aMorph isKindOf: CardContainerMorph)
 		| (aMorph isKindOf: CardMorph)! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 12:20'!
-backForm
-	"form for this card's back side"
-
-	^FormsArray at: 53.! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 05:09'!
-cardNumber
-	"private"
-
-	^cardNumber! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:53'!
-color
-	"Answer a symbol denoting the color of this card"
-	"clubs diamonds hearts spades => black red red black"
-
-	| suitNum |
-	suitNum := self suitNumber.
-	(suitNum = 1)
-	ifTrue: [^ #Black]
-	ifFalse: [(suitNum = 4)
-			ifTrue: [ ^#Black ]
-			ifFalse: [ ^#Red ]].! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
-face
-	"Answer a symbol denoting the face value of this card"
-
-	^FaceNames at: (self faceNumber).! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
-faceForm
-	"Answer form for this card's face"
-	
-	"Zero based card numbers -> 1 based array => add 1".
-	^FormsArray at: (cardNumber + 1)! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:02'!
-forgetPreowner
-	
-	grabPreowner  := nil! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 14:58'!
-grabPreowner
-	^grabPreowner ! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 13:37'!
-height
-
-	^self faceForm height! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
-name
-	"e.g. Jack of Hearts"
-	^((self face) asString), ' of ', ((self suit) asString)! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:01'!
-rememberPreowner
-	
-	(self owner isKindOf: CardContainerMorph )
-	ifTrue: [grabPreowner := self owner]
-	ifFalse: [grabPreowner  := nil] "no funny stuff.."! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 4/6/2016 14:58'!
-scale
-	"Not scalable -- see ScaledCardMorph"
-	^1! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
-suit
-	"Answer a symbol denoting the suit of this card"
-
-	^SuitNames at: (self suitNumber).! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/28/2004 11:07'!
-suitColor
-	"Answer a symbol denoting the color of this card"
-	"clubs diamonds hearts spades => black red red black"
-
-	| suitNum |
-	suitNum := self suitNumber.
-	(suitNum = 1)
-	ifTrue: [^ #Black]
-	ifFalse: [(suitNum = 4)
-			ifTrue: [ ^#Black ]
-			ifFalse: [ ^#Red ]].! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 13:38'!
-width
-
-	^self faceForm width! !
 
 !CardMorph methodsFor: 'event handling' stamp: 'KenD 1/21/2013 10:01'!
 click: evt localPosition: localEventPosition
@@ -4925,15 +4955,23 @@ removeWinnerText
 			            addMorph: labelMorph.
 		winnerText := nil! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/4/2016 13:51'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 5/18/2019 15:44:46'!
 showWinnerText
 	"Display Winner Message to user"
-
+	| widthToFit  pointSizeToUse newText |
 	saveGameButton disable. "No use saving a won game"
-	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
-	winnerText := (StringMorph contents: (CardTableMorph randomWinnerText))
+	newText := CardTableMorph randomWinnerText.
+	"Find a point size which fits"
+	widthToFit := (labelLayout morphExtent x) - 20.
+	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
+		detect: [ :ps |  
+		 (((AbstractFont familyName: 'DejaVu' pointSize: ps) widthOfString: newText)
+		  <= widthToFit) ]
+		ifNone: [AbstractFont default].
+ 	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
+	winnerText := (StringMorph contents: newText )
 					emphasis: 1; "bold"
-					font:  (AbstractFont familyName: 'DejaVu' pointSize: 22).
+					font:  (AbstractFont familyName: 'DejaVu' pointSize: pointSizeToUse).
 	winnerText color: Color blue; 
 				layoutSpec: (LayoutSpec  proportionalWidth: 0.9 proportionalHeight: 1.0).
 
@@ -5194,10 +5232,6 @@ cpsOverCollExample3
 !CardTableMorph class methodsFor: 'class initialization' stamp: 'KenD 10/25/2004 08:16'!
 includeInNewMorphMenu
 	^ false! !
-
-!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
-initializedInstance
-	^self newColumn! !
 
 !CardTableMorph class methodsFor: 'accessing' stamp: 'KenD 2/28/2016 07:15'!
 randomWinnerText
@@ -5890,6 +5924,23 @@ setScale: aScale
 	
 	! !
 
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
+newGame
+	"Answer a new instance"
+	"
+	FreeCell newGame.
+	"
+	
+	^ (self newColumn initializeWithScale: 1) openInWorld! !
+
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
+newGameWithScale: scale
+	"Answer a new instance"
+	"
+	FreeCell newGameWithScale: 0.8.
+	"
+	^ (self newColumn initializeWithScale: scale) openInWorld! !
+
 !FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 17:03'!
 fileReaderServicesForFile: fullName suffix: suffix
 	"FileList buttons that are serviced by us."
@@ -5938,32 +5989,6 @@ initialize
 	NumSpares   _ 4.
 	NumPiles       _ 4.
 	^self! !
-
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
-initializedInstance
-	"Answer a new instance"
-	"
-	FreeCell newGame.
-	"
-	
-	^ self newColumn initializeWithScale: 1! !
-
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
-newGame
-	"Answer a new instance"
-	"
-	FreeCell newGame.
-	"
-	
-	^ (self newColumn initializeWithScale: 1) openInWorld! !
-
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
-newGameWithScale: scale
-	"Answer a new instance"
-	"
-	FreeCell newGameWithScale: 0.8.
-	"
-	^ (self newColumn initializeWithScale: scale) openInWorld! !
 
 !Klondike methodsFor: 'undo' stamp: 'KenD 3/28/2015 18:45'!
 addingCardOrCards: cardMorph toContainer: cardContainer
@@ -6540,6 +6565,33 @@ saveGameToDataStream: aDataStream
 							nil. "FIXME"
 						}! !
 
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 20:49'!
+initializedImage
+	"Answer a new instance"
+	"
+	Klondike initializedImage.
+	"
+	
+	^ (self newColumn initializeWithScale: 1) openInHand! !
+
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 19:51'!
+newGame
+	"Answer a new instance"
+	"
+	Klondike newGame.
+	"
+	
+	^ (self newColumn initializeWithScale: 1) openInWorld! !
+
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 19:51'!
+newGameWithScale: scale
+	"Answer a new instance"
+	"
+	Klondike newGameWithScale: 0.8.
+	"
+	
+	^ (self newColumn initializeWithScale: scale) openInWorld! !
+
 !Klondike class methodsFor: 'file reader registration' stamp: 'KenD 2/3/2016 16:48'!
 fileReaderServicesForFile: fullName suffix: suffix
 	"FileList buttons that are serviced by us."
@@ -6589,42 +6641,6 @@ initialize
 	NumColumns := 7.
 	NumPiles := 4.
 	^self! !
-
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 20:49'!
-initializedImage
-	"Answer a new instance"
-	"
-	Klondike initializedImage.
-	"
-	
-	^ (self newColumn initializeWithScale: 1) openInHand! !
-
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/7/2016 06:45'!
-initializedInstance
-	"Answer a new instance"
-	"
-	Klondike initializedImage.
-	"
-	
-	^ self newColumn initializeWithScale: 1! !
-
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 19:51'!
-newGame
-	"Answer a new instance"
-	"
-	Klondike newGame.
-	"
-	
-	^ (self newColumn initializeWithScale: 1) openInWorld! !
-
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 19:51'!
-newGameWithScale: scale
-	"Answer a new instance"
-	"
-	Klondike newGameWithScale: 0.8.
-	"
-	
-	^ (self newColumn initializeWithScale: scale) openInWorld! !
 
 !CardTests methodsFor: 'Running' stamp: 'KenD 10/20/2004 09:49'!
 setUp
@@ -7072,14 +7088,6 @@ topValue: newVal
 	(self isEmpty)
 	ifFalse: [valuesArray at: top put: newVal] "set!!"
 	ifTrue: [Exception signal: 'Attempt to assign to empty Stack'].! !
-
-!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
-printOn: aStream
-	aStream nextPut: $(.
-	1 to: top do: [ :index | 
-				 aStream print: (valuesArray at: index); space].
-	self isEmpty ifFalse: [aStream skip: -1].
-	aStream nextPut: $)! !
 
 !Stack class methodsFor: 'private' stamp: 'KenD 5/14/2002 11:10'!
 with: anObject 
