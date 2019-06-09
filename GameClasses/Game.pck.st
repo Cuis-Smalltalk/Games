@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 6 May 2019 at 10:40:58 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 8 June 2019 at 10:49:05 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 44!
+!provides: 'Game' 1 45!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -2755,7 +2755,7 @@ ticLength
 	
 	^ 0.2! !
 
-!GamePopUp class methodsFor: 'dialogs' stamp: 'dhn 8/24/2016 10:10:56'!
+!GamePopUp class methodsFor: 'dialogs' stamp: 'dhn 6/8/2019 20:47:57'!
 inform: aMessage title: aTitle
 	"Display a modal dialog with aTitle containing aMessage"
 	"Can be dismissed by clicking anywhere below the title"
@@ -2763,7 +2763,7 @@ inform: aMessage title: aTitle
 	self 
 		confirm: aTitle
 		trueChoice: aMessage
-		falseChoice: 'OK'! !
+		falseChoice: ''! !
 
 !Asset methodsFor: 'accessing' stamp: 'dhn 9/25/2011 10:37'!
 cost
