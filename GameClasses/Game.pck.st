@@ -1,18 +1,6 @@
-<<<<<<< HEAD
 'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 8 June 2019 at 10:49:05 pm'!
-||||||| merged common ancestors
-'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 6 May 2019 at 10:40:58 am'!
-=======
-'From Cuis 5.0 of 7 November 2016 [latest update: #3744] on 16 May 2019 at 10:03:07 pm'!
->>>>>>> e8b0773511b5585c634efcf6183e75c657666371
 'Description Classes which support board games.'!
-<<<<<<< HEAD
 !provides: 'Game' 1 45!
-||||||| merged common ancestors
-!provides: 'Game' 1 44!
-=======
-!provides: 'Game' 1 48!
->>>>>>> e8b0773511b5585c634efcf6183e75c657666371
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -670,12 +658,6 @@ spaceFreq
 
 	^ spaceFreq! !
 
-!Game methodsFor: 'accessing' stamp: 'dhn 5/16/2019 13:20:14'!
-spaces
-	"Answer the value of spaces"
-	
-	^ spaces! !
-
 !Game methodsFor: 'accessing' stamp: 'dhn 3/18/2017 18:39:37'!
 token
 	"Answer the value of token"
@@ -1266,40 +1248,6 @@ getPlayers
 	self startGame
 ! !
 
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 5/16/2019 21:46:46'!
-getPlayers: aLimit
-	"Get the names of two to aLimit players"
-	| x y cnt clrs |
-
-	model disableAll: {'Players'. 'Tour'}.
-	clrs _ Token colors shuffled.
-	cnt _ 0.
-	x _ FillInTheBlankMorph request: 'First player''s name?' initialAnswer: ''.
-	x 
-		ifEmpty: [
-			model enableAll: {'Players'. 'Tour'}.
-			^ nil]
-		ifNotEmpty: [
-			cnt _ cnt + 1.
-			model setupPlayer: x color: (clrs at: cnt)].
-	
-	[cnt < aLimit] whileTrue: [
-		y _ FillInTheBlankMorph request: 'Next player''s name?' initialAnswer: ''.
-		y
-			ifEmpty: [
-				cnt > 1 
-					ifTrue: [self startGame]
-					ifFalse: [
-						model players: OrderedCollection new.
-						model enableAll: {'Players'. 'Tour'}].
-				^ nil]
-			ifNotEmpty: [
-				cnt _ cnt + 1.
-				model setupPlayer: y color: (clrs at: cnt)]].
-		
-	self startGame
-! !
-
 !GameBoard methodsFor: 'initialization' stamp: 'dhn 10/19/2016 16:40:06'!
 initialize
 
@@ -1309,12 +1257,6 @@ initialize
 labelAreaHeight
 
 	^ 50! !
-
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 5/16/2019 11:26:27'!
-layoutSubmorphs
-
-    super layoutSubmorphs.
-    self board morphExtent: self board owner morphExtent! !
 
 !GameBoard methodsFor: 'initialization' stamp: 'dhn 4/26/2019 11:25:52'!
 makeTitleArea
@@ -3426,11 +3368,10 @@ color: anObject
 
 	color := anObject! !
 
-!Season methodsFor: 'accessing' stamp: 'dhn 5/15/2019 18:06:10'!
+!Season methodsFor: 'accessing' stamp: 'dhn 2/13/2012 11:45'!
 desc
 	"Answer the value of desc"
 
-	desc ifNil: [desc _ ''].
 	^ desc! !
 
 !Season methodsFor: 'accessing' stamp: 'dhn 2/13/2012 11:45'!
@@ -3445,13 +3386,11 @@ range
 
 	^ range! !
 
-!Season methodsFor: 'accessing' stamp: 'dhn 5/15/2019 18:15:32'!
-range: anObject
+!Season methodsFor: 'accessing' stamp: 'dhn 4/14/2012 15:08'!
+range: aPoint
 	"Set the value of range as from@to"
 
-	range _ anObject class = Point 
-		ifTrue: [anObject]
-		ifFalse: [anObject@anObject]! !
+	range := aPoint! !
 
 !Season methodsFor: 'accessing' stamp: 'dhn 4/14/2012 15:07'!
 textColor
