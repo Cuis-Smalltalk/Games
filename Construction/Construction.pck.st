@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 8 June 2019 at 10:56:21 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3727] on 12 May 2019 at 8:00:23 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 216!
+!provides: 'Construction' 1 215!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1312,7 +1312,7 @@ emphasized: anAmount
 		ifTrue: [(StringMorph contents: amt font: nil emphasis: 1) color: Color red]
 		ifFalse: [StringMorph contents: amt font: nil emphasis: 1]! !
 
-!Contract methodsFor: 'operating' stamp: 'dhn 6/8/2019 21:02:27'!
+!Contract methodsFor: 'operating' stamp: 'dhn 4/29/2019 09:56:31'!
 endTurn
 	"End a player's turn"
 	
@@ -1324,11 +1324,13 @@ endTurn
 			currentPlayer outOfAssets
 				ifTrue: [self removeFromGame]
 				ifFalse: [
-					self declareBroke: currentPlayer identity]]
+					self declareBroke: currentPlayer identity.
+					self disableAll: {'End Turn'}]]
 		ifFalse: [
 			currentPlayer debt < currentPlayer playerDebtLimit value
 				ifTrue: [
-					self declareOver: currentPlayer identity]
+					self declareOver: currentPlayer identity.
+					self disableAll: {'End Turn'}]
 				ifFalse: [currentPlayer netAssets >= self goal
 					ifTrue: [won ifFalse: [self declareWinner]].
 			currentPlayer priceFactor: 1.
