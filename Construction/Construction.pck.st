@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 10 June 2019 at 9:49:39 am'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 12 June 2019 at 3:02:03 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 216!
+!provides: 'Construction' 1 217!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2896,7 +2896,7 @@ showJobView: aTitle
 		morphPosition: self windowPosition;
 		morphExtent: 300 @ 384! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 5/3/2019 11:48:43'!
+!Construction methodsFor: 'windows' stamp: 'dhn 6/12/2019 12:30:50'!
 showLoan
 	"Show window for reducing debt"
 	| pl win |
@@ -2910,7 +2910,7 @@ showLoan
 		setWindowColor: pl color;
 		startButtons;
 		morphPosition: self windowPosition;
-		morphExtent: 300 @ 220.
+		morphExtent: 365 @ 220.
 				
 	model disableAll: {'Pay Loan'}! !
 
@@ -3641,7 +3641,7 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!StatsView methodsFor: 'initialization' stamp: 'dhn 9/12/2016 19:35:25'!
+!StatsView methodsFor: 'initialization' stamp: 'dhn 6/12/2019 13:05:59'!
 buildMorphicWindow
 	"Lay out the window for statistics"
 	| list |
@@ -3662,7 +3662,7 @@ buildMorphicWindow
 			name: 'stat description'. 	"give the TextModelMorph a name which will appear in the halos"
 
 	self layoutMorph
-		addMorph: list proportionalWidth: 0.5;
+		addMorph: list proportionalWidth: 0.6;
 		addAdjusterAndMorph: textPane layoutSpec: (LayoutSpec useAll)! !
 
 !StatsView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:15:08'!
