@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 12 June 2019 at 3:00:39 pm'!
+'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 13 June 2019 at 11:10:04 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 46!
+!provides: 'Game' 1 47!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1842,7 +1842,7 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!LoanView methodsFor: 'initialization' stamp: 'dhn 9/14/2017 11:07:48'!
+!LoanView methodsFor: 'initialization' stamp: 'dhn 6/13/2019 11:01:39'!
 buildMorphicWindow
 	"Lay out the window for paying down debt"
 	| list1 rightPane |
@@ -1885,7 +1885,7 @@ buildMorphicWindow
 		addMorph: textPane.
 	
 	self layoutMorph
-		addMorph: list1 proportionalWidth: 0.35;
+		addMorph: list1 proportionalWidth: 0.45;
 		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
 ! !
 
