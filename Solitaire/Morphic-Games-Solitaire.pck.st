@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #3878] on 19 September 2019 at 1:21:38 pm'!
+'From Cuis 5.0 [latest update: #4024] on 12 January 2020 at 11:35:28 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 85!
+!provides: 'Morphic-Games-Solitaire' 1 86!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 3878 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -4821,7 +4821,7 @@ makeHelpButton
 		 (EnableDisableButton 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 5/25/2018 20:03:06'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 1/12/2020 11:33:51'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
@@ -4831,7 +4831,7 @@ makeLabelArea: lableString
 	 	:= (StringMorph contents: lableString) 
 			emphasis: 1;  "emphasis: bold=1"
 			font: (AbstractFont familyName: 'DejaVu' pointSize: 22). 
-	"@@FIXME: scale"			
+				
 	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 minorDirectionPadding: #left).
 	
 	labelLayout
@@ -4840,7 +4840,7 @@ makeLabelArea: lableString
 			morphHeight: 40;
 			morphWidth: 700; " (self morphWidth) - 4;"
 			padding: #center;
-			layoutSpec: (LayoutSpec  proportionalWidth: 0.9 fixedHeight: self labelAreaHeight);
+			layoutSpec: (LayoutSpec  proportionalWidth: 0.96 fixedHeight: self labelAreaHeight);
 			addMorph: labelMorph.
 
 
