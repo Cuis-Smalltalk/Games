@@ -22,5 +22,5 @@ This program differs from the actual board game as follows:
 - Auditing is continuous
 - Rules enforced consistently
 
-Tested in Cuis 5.0 rev 3690 on 4/6/2019
+Tested in Cuis 5.0 rev 4042 on 2/19/2020
 
