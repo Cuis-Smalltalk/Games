@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 18 February 2020 at 10:00:47 pm'!
+'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 4:08:42 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 218!
+!provides: 'Construction' 1 219!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2885,7 +2885,7 @@ showJobAuctionAt: aPosition
 		morphExtent: 450@300;
 		openInHand! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 9/9/2018 13:47:16'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 14:26:02'!
 showJobView: aTitle
 	"Show window for reporting job results"
 	
@@ -2894,9 +2894,9 @@ showJobView: aTitle
 		openInWorld: pasteup;
 		setWindowColor: model currentPlayer color;
 		morphPosition: self windowPosition;
-		morphExtent: 300 @ 384! !
+		morphExtent: 470 @ 490! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 6/12/2019 12:30:50'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:42:29'!
 showLoan
 	"Show window for reducing debt"
 	| pl win |
@@ -2910,11 +2910,11 @@ showLoan
 		setWindowColor: pl color;
 		startButtons;
 		morphPosition: self windowPosition;
-		morphExtent: 365 @ 220.
+		morphExtent: 385 @ 285.
 				
 	model disableAll: {'Pay Loan'}! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 5/4/2019 11:13:03'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:40:15'!
 showOpts
 	"Show window for buying assets"
 	| pl win |
@@ -2929,10 +2929,10 @@ showOpts
 				setWindowColor: pl color;
 				startButtons;
 				morphPosition: self windowPosition;
-				morphExtent: 300 @ 220.
+				morphExtent: 350 @ 290.
 				model disableAll: {'Purchase'}]! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 3/23/2017 20:57:30'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:36:04'!
 showStats
 	"Open a window on a player's statistics"
 	| pl win |
@@ -2944,7 +2944,7 @@ showStats
 		setLabel: pl identity, '''s Statistics';
 		setWindowColor: pl color;
 		morphPosition: self windowPosition;
-		morphExtent: 300 @ 260.
+		morphExtent: 400 @ 375.
 	model disableAll: {'Stats'}! !
 
 !Construction methodsFor: 'windows' stamp: 'dhn 4/11/2019 11:43:10'!
