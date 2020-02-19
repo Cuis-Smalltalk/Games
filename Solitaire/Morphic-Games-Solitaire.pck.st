@@ -1,9 +1,9 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3750] on 18 May 2019 at 3:48:48 pm'!
+'From Cuis 5.0 [latest update: #4024] on 12 January 2020 at 11:35:28 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 84!
-!requires: 'Cuis-Base' 50 3745 nil!
-!requires: 'Graphics-Files-Additional' 1 nil nil!
+!provides: 'Morphic-Games-Solitaire' 1 86!
 !requires: 'Goodies' 1 3 nil!
+!requires: 'Cuis-Base' 50 3878 nil!
+!requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
 
@@ -4821,7 +4821,7 @@ makeHelpButton
 		 (EnableDisableButton 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 5/25/2018 20:03:06'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 1/12/2020 11:33:51'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
@@ -4831,7 +4831,7 @@ makeLabelArea: lableString
 	 	:= (StringMorph contents: lableString) 
 			emphasis: 1;  "emphasis: bold=1"
 			font: (AbstractFont familyName: 'DejaVu' pointSize: 22). 
-	"@@FIXME: scale"			
+				
 	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 minorDirectionPadding: #left).
 	
 	labelLayout
@@ -4840,7 +4840,7 @@ makeLabelArea: lableString
 			morphHeight: 40;
 			morphWidth: 700; " (self morphWidth) - 4;"
 			padding: #center;
-			layoutSpec: (LayoutSpec  proportionalWidth: 0.9 fixedHeight: self labelAreaHeight);
+			layoutSpec: (LayoutSpec  proportionalWidth: 0.96 fixedHeight: self labelAreaHeight);
 			addMorph: labelMorph.
 
 
@@ -4955,7 +4955,7 @@ removeWinnerText
 			            addMorph: labelMorph.
 		winnerText := nil! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 5/18/2019 15:44:46'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 9/19/2019 13:19:16'!
 showWinnerText
 	"Display Winner Message to user"
 	| widthToFit  pointSizeToUse newText |
@@ -4964,9 +4964,10 @@ showWinnerText
 	"Find a point size which fits"
 	widthToFit := (labelLayout morphExtent x) - 20.
 	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
-		detect: [ :ps |  
-		 (((AbstractFont familyName: 'DejaVu' pointSize: ps) widthOfString: newText)
-		  <= widthToFit) ]
+		detect: [ :ps |  | aFont |
+			aFont := AbstractFont familyName: 'DejaVu' pointSize: ps.
+			((aFont widthOfString: newText) <= widthToFit)
+			and: [aFont lineSpacing <= (labelMorph morphExtent y)]]
 		ifNone: [AbstractFont default].
  	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
 	winnerText := (StringMorph contents: newText )
