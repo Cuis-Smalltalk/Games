@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 12 June 2019 at 3:02:03 pm'!
+'From Cuis 5.0 [latest update: #4042] on 18 February 2020 at 10:00:47 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 217!
+!provides: 'Construction' 1 218!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -3519,13 +3519,15 @@ closeBoxHit
 		enableAll: {'Auction'. 'End Turn'}.
 	super closeBoxHit! !
 
-!AuctionJob methodsFor: 'termination' stamp: 'dhn 5/6/2017 11:12:14'!
+!AuctionJob methodsFor: 'termination' stamp: 'dhn 2/18/2020 21:55:29'!
 endIt
+	"close the Job Auction window"
 	
-	model 
-		jobAuctionItem: nil;
-		jobWinner: currentBidder bid: currentBid;
-		enableAll: {'Auction'. 'End Turn'}.
+	begun ifTrue: [
+		model 
+			jobAuctionItem: nil;
+			jobWinner: currentBidder bid: currentBid;
+			enableAll: {'Auction'. 'End Turn'}].
 	self delete
 ! !
 
