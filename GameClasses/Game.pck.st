@@ -1,6 +1,6 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3765] on 13 June 2019 at 11:10:04 am'!
+'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 7:22:01 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 47!
+!provides: 'Game' 1 48!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1284,14 +1284,14 @@ morphWidth
 	
 	^ Display width! !
 
-!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 4/26/2019 10:44:24'!
+!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 2/19/2020 19:18:45'!
 gameFont
 	"Answer the font for the game"
 	| family |
 	
 	family _  AbstractFont familyNames     
 		detect: [:f | f = 'DejaVu'] ifNone: [^ AbstractFont default].
-	^ AbstractFont familyName: family aroundPointSize: 10
+	^ AbstractFont familyName: family aroundPointSize: 12
 ! !
 
 !GameBoard class methodsFor: 'instance creation' stamp: 'dhn 7/18/2016 10:37'!
