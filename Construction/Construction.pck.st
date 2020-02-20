@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 4:08:42 pm'!
+'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 8:05:42 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 219!
+!provides: 'Construction' 1 218!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2885,7 +2885,7 @@ showJobAuctionAt: aPosition
 		morphExtent: 450@300;
 		openInHand! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 14:26:02'!
+!Construction methodsFor: 'windows' stamp: 'dhn 9/9/2018 13:47:16'!
 showJobView: aTitle
 	"Show window for reporting job results"
 	
@@ -2894,9 +2894,9 @@ showJobView: aTitle
 		openInWorld: pasteup;
 		setWindowColor: model currentPlayer color;
 		morphPosition: self windowPosition;
-		morphExtent: 470 @ 490! !
+		morphExtent: 300 @ 384! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:42:29'!
+!Construction methodsFor: 'windows' stamp: 'dhn 6/12/2019 12:30:50'!
 showLoan
 	"Show window for reducing debt"
 	| pl win |
@@ -2910,11 +2910,11 @@ showLoan
 		setWindowColor: pl color;
 		startButtons;
 		morphPosition: self windowPosition;
-		morphExtent: 385 @ 285.
+		morphExtent: 365 @ 220.
 				
 	model disableAll: {'Pay Loan'}! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:40:15'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 19:36:10'!
 showOpts
 	"Show window for buying assets"
 	| pl win |
@@ -2929,10 +2929,10 @@ showOpts
 				setWindowColor: pl color;
 				startButtons;
 				morphPosition: self windowPosition;
-				morphExtent: 350 @ 290.
+				morphExtent: 390 @ 275.
 				model disableAll: {'Purchase'}]! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 11:36:04'!
+!Construction methodsFor: 'windows' stamp: 'dhn 3/23/2017 20:57:30'!
 showStats
 	"Open a window on a player's statistics"
 	| pl win |
@@ -2944,7 +2944,7 @@ showStats
 		setLabel: pl identity, '''s Statistics';
 		setWindowColor: pl color;
 		morphPosition: self windowPosition;
-		morphExtent: 400 @ 375.
+		morphExtent: 300 @ 260.
 	model disableAll: {'Stats'}! !
 
 !Construction methodsFor: 'windows' stamp: 'dhn 4/11/2019 11:43:10'!
@@ -3519,15 +3519,13 @@ closeBoxHit
 		enableAll: {'Auction'. 'End Turn'}.
 	super closeBoxHit! !
 
-!AuctionJob methodsFor: 'termination' stamp: 'dhn 2/18/2020 21:55:29'!
+!AuctionJob methodsFor: 'termination' stamp: 'dhn 5/6/2017 11:12:14'!
 endIt
-	"close the Job Auction window"
 	
-	begun ifTrue: [
-		model 
-			jobAuctionItem: nil;
-			jobWinner: currentBidder bid: currentBid;
-			enableAll: {'Auction'. 'End Turn'}].
+	model 
+		jobAuctionItem: nil;
+		jobWinner: currentBidder bid: currentBid;
+		enableAll: {'Auction'. 'End Turn'}.
 	self delete
 ! !
 
