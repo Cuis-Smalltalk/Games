@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 7:22:01 pm'!
+'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 8:03:05 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 48!
+!provides: 'Game' 1 49!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1754,7 +1754,7 @@ endIt
 		ifFalse: [begun ifFalse: [model enableAll: {'End Turn'}]].
 	self delete! !
 
-!HistoryView methodsFor: 'initialization' stamp: 'dhn 1/9/2017 09:56:37'!
+!HistoryView methodsFor: 'initialization' stamp: 'dhn 2/19/2020 19:25:45'!
 buildMorphicWindow
 	"Lay out the window for the plots"
 	| goal ix |
@@ -1764,7 +1764,7 @@ buildMorphicWindow
 		color: Color white;
  		addMorph: (MinimalStringMorph contents: '$', model goal printStringWithCommas).
 	self layoutMorph
-		addMorph: goal layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.1 minorDirectionPadding: #bottom);
+		addMorph: goal layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.15 minorDirectionPadding: #bottom);
 		addMorph: (plotter _ PlotGraphMorph new
 			layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.9);
 			yScaleFactor: model goal;
