@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 8:05:42 pm'!
+'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 10:53:21 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 218!
+!provides: 'Construction' 1 219!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2885,7 +2885,7 @@ showJobAuctionAt: aPosition
 		morphExtent: 450@300;
 		openInHand! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 9/9/2018 13:47:16'!
+!Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 21:17:44'!
 showJobView: aTitle
 	"Show window for reporting job results"
 	
@@ -2894,7 +2894,7 @@ showJobView: aTitle
 		openInWorld: pasteup;
 		setWindowColor: model currentPlayer color;
 		morphPosition: self windowPosition;
-		morphExtent: 300 @ 384! !
+		morphExtent: 340 @ 380! !
 
 !Construction methodsFor: 'windows' stamp: 'dhn 6/12/2019 12:30:50'!
 showLoan
