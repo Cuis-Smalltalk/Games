@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 10:53:21 pm'!
+'From Cuis 5.0 [latest update: #4042] on 27 February 2020 at 11:35:58 am'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 219!
+!provides: 'Construction' 1 220!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2314,21 +2314,21 @@ taxDue: aPosition
 	"Answer true if income tax is due at aPosition."
 	^ aPosition = 15! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 7/22/2016 17:43'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:30:28'!
 assetList
 	"Answer a list for the status window"
 	
-	^ Contract equipmentList , Contract franchiseList , {'Yourself'. 'Players'. 'Graphs'. 'Contingencies'}! !
+	^ Contract equipmentList , Contract franchiseList , #('Yourself' 'Players' 'Graphs' 'Contingencies')! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 8/18/2013 06:54'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:28:01'!
 equipmentList
 	"Answer a list in the order needed for purchases and status"
-	^ {'Backhoe'. 'Dozer'. 'Excavator'. 'Grader'. 'Scraper'. 'Truck'}! !
+	^ #('Backhoe' 'Dozer' 'Excavator' 'Grader' 'Scraper' 'Truck')! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 8/18/2013 06:56'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:29:00'!
 franchiseList
 	"Answer a list in the order needed for purchases and status"
-	^ {'Stinky'. 'LostMiner'. 'Westwood'. 'BigPhil'}! !
+	^ #('Stinky' 'LostMiner' 'Westwood' 'BigPhil')! !
 
 !Contract class methodsFor: 'lists' stamp: 'dhn 8/15/2017 09:13:04'!
 season
