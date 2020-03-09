@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4024] on 12 January 2020 at 11:35:28 am'!
+'From Cuis 5.0 [latest update: #4064] on 9 March 2020 at 3:09:40 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 86!
+!provides: 'Morphic-Games-Solitaire' 1 87!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 3878 nil!
+!requires: 'Cuis-Base' 50 4064 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
@@ -482,6 +482,14 @@ isEnabled
 !EnableDisableButton methodsFor: 'testing' stamp: 'KenD 4/17/2013 20:58'!
 isLocked
      ^self isDisabled! !
+
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 3/9/2020 15:09:06'!
+minimumExtent
+
+	"Assure some space for text"
+	| unit |
+	unit := Theme current scrollbarThickness.
+	^ (6 * unit) @ (2 * unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
