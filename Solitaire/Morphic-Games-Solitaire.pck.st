@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4064] on 9 March 2020 at 3:09:40 pm'!
+'From Cuis 5.0 [latest update: #4064] on 9 March 2020 at 6:23:29 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 87!
+!provides: 'Morphic-Games-Solitaire' 1 88!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4064 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -5663,7 +5663,7 @@ defaultExtent
 
 	^ tableExtent.! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/6/2016 21:20'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/9/2020 18:16:02'!
 initializeWithScale: aScale
 	"Setup my layout.  Across the top are 4 Spares and 4 Piles,
 	then a block of 8 Columns, then a Button area."
@@ -5675,6 +5675,7 @@ initializeWithScale: aScale
 		 makeColumnArea;
 		 makeButtonArea;
 		 dealCards;
+		 morphExtent: self minimumExtent;
 		 yourself! !
 
 !FreeCell methodsFor: 'initialization' stamp: 'KenD 5/17/2018 14:53:08'!
@@ -5799,7 +5800,7 @@ maxFaceNumberToMoveToPiles
 	"N is 2"
 	^min + 2! !
 
-!FreeCell methodsFor: 'actions' stamp: 'KenD 8/28/2013 13:04'!
+!FreeCell methodsFor: 'actions' stamp: 'KenD 3/9/2020 18:15:43'!
 newGame
 	"Empty out my Card Containers, shuffle and re-deal."
 	
@@ -6297,7 +6298,7 @@ defaultExtent
 
 	^ tableExtent.! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 4/6/2016 20:06'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 3/9/2020 18:18:16'!
 initializeWithScale: aScale
 	"Setup my layout.  Down the column are 
 	Label, 
@@ -6314,6 +6315,7 @@ initializeWithScale: aScale
 		makeColumnArea;
 		makeButtonArea;
 		dealCards;
+		morphExtent: self minimumExtent;
 		yourself! !
 
 !Klondike methodsFor: 'initialization' stamp: 'KenD 5/17/2018 14:51:40'!
