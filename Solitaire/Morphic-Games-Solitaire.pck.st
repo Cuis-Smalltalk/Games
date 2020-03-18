@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4064] on 9 March 2020 at 6:23:29 pm'!
+'From Cuis 5.0 [latest update: #4069] on 18 March 2020 at 3:33:20 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 88!
+!provides: 'Morphic-Games-Solitaire' 1 94!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4064 nil!
+!requires: 'Cuis-Base' 50 4069 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
@@ -29,8 +29,8 @@ CardContainerMorph class
 
 !classDefinition: #CardColumnMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardColumnMorph
-	instanceVariableNames: 'cardsStack'
-	classVariableNames: 'PixelsPerOverlap'
+	instanceVariableNames: 'cardsStack displayScale'
+	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
 !classDefinition: 'CardColumnMorph class' category: #'Morphic-Games-Solitaire'!
@@ -99,7 +99,7 @@ ScaledCardMorph class
 
 !classDefinition: #CardTableMorph category: #'Morphic-Games-Solitaire'!
 LayoutMorph subclass: #CardTableMorph
-	instanceVariableNames: 'undoStack inCardMove goAgain inUndo undoButton saveGameButton winnerText labelLayout labelMorph mutex scale'
+	instanceVariableNames: 'undoStack inCardMove goAgain inUndo undoButton saveGameButton winnerText labelLayout labelMorph mutex scale sizeUnit'
 	classVariableNames: 'WinnerText'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
@@ -178,12 +178,10 @@ describe any layout required.
 
 See subclasses: CardDeckMorph, CardSpareMorph, CardColumnMorph and CardPileMorph.!
 
-!CardColumnMorph commentStamp: 'KenD 10/22/2004 12:00' prior: 0!
+!CardColumnMorph commentStamp: '<historical>' prior: 0!
 I display a Column of overlapping Cards.
 
 aColumn add: aCard.
-
-PixelsPerOverlap	Integer : The number of pixels displayed in a card under the top one.
 
 When a Card is dropped on me, I ask my CardTable if it is a legal move.!
 
@@ -258,49 +256,50 @@ This is a 52 card deck (no jokers).
 !ScaledCardMorph commentStamp: '<historical>' prior: 0!
 A ScaledCardMorph is a resized/scaled CardMorph.!
 
-!CardTableMorph commentStamp: 'KenD 4/6/2016 15:26' prior: 0!
+!CardTableMorph commentStamp: '<historical>' prior: 0!
 My subclasses implement various Card Games.
 
 See child classes FreeCell and Klondike
 
 Structure:
-  undoStack  	Stack of undoActions'
+  undoStack		Stack of undoActions'
   inCardMove	Boolean -- true when animating card moves to Piles.
-  moveStart	CardContainer -- Set to start container with hand grab [for undo].
-  inUndo		Boolean -- true while undoing.
+  moveStart		CardContainer -- Set to start container with hand grab [for undo].
+  inUndo			Boolean -- true while undoing.
   winnerText	StringMorph -- random winner text
   lableMorph	StringMorph -- e.g. 'Klondike' or 'FreeCell'
   labelLayout	Container of current label: lableMorph or winnerText
-  undoButton     Button is sometimes disabled
+  undoButton  	Button is sometimes disabled
   saveGameButton is sometimes disabled
-  scale           Scale relative to 1.  Uned to grow/shrink display.
+  scale       	Scale relative to 1.  Used to grow/shrink original display size.
+  sizeUnit		PointSize of original windowTitleFont, used as baseline for fontPreferenceChanged
 
 This class abstracts common actions of its subclasses.!
 
-!FreeCell commentStamp: 'KenD 1/25/2011 17:43' prior: 0!
+!FreeCell commentStamp: '<historical>' prior: 0!
 I contain and implement a FreeCell Solitare Game.
 
 FreeCell newGame openInWorld.
 
 Structure:
-  deck			CardDeck -- A Deck of 52 Cards.
+  deck		CardDeck -- A Deck of 52 Cards.
   spares		Array -- 4 CardSpareMorphs
-  piles			Array -- 4 CardPileMorphs
-  columns		Array -- 8 CardColumnMorphs
+  piles		Array -- 4 CardPileMorphs
+  columns	Array -- 8 CardColumnMorphs
 
 
 The table is layed out into areas for spares, piles, columns, and buttons.
 
 	------------------------------------
-	|    		spares        piles      |    ==>  piles area   
+	|    spares        piles      |    ==>  piles area   
 	------------------------------------
-	|                                           |
-	|                                           |
-	|            columns area           |
-	|                                           |
-	|                                           |
+	|                                     |
+	|                                     |
+	|       columns area       |
+	|                                     |
+	|                                     |
 	------------------------------------
-	|            bottons area           |
+	|      bottons area         |
 	------------------------------------
 	
 	A Spare can hold 0 or 1 cards.
@@ -321,19 +320,19 @@ Structure:
   piles			Array -- 4 CardPileMorphs for building up cards in suit
   columns		Array -- 7 CardColumnMorphs
 
-The table is layed out into areas fot spares, piles, columns, and buttons.
+The table is layed out into areas for spares, piles, columns, and buttons.
 
-	-------------------------------------------
-	|   deck + discards   |    piles 	         |  -> piles area
-	-------------------------------------------
-	|                                         			|
-	|                                			      	|
-	|            columns area            		|
-	|                                        			|
-	|                                       			|
-	-------------------------------------------
-	|            bottons area     	     	   	|
-	-------------------------------------------
+	--------------------------------------------------
+	|  deck | discards  |  piles area |
+	--------------------------------------------------
+	|                                                |
+	|                                                |
+	|            columns area             |
+	|                                                |
+	|                                                |
+	------------------------------------------------
+	|            bottons area             |
+	------------------------------------------------
 	
 	The Discard shows the top 3 cards.
 	A Pile builds up a suit in order from Aces.
@@ -621,11 +620,11 @@ defaultLayout
 					 fixedHeight: (CardMorph height + 4) 
 					 minorDirectionPadding: #center! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:12'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 3/17/2020 17:22:48'!
 defaultLayoutWithScale: scale
-	^LayoutSpec  fixedWidth:  (CardMorph width * scale + 4)
-					 fixedHeight: (CardMorph height * scale + 4) 
-					 minorDirectionPadding: #center! !
+	^LayoutSpec  fixedWidth:   (CardMorph width * scale + (2 * self borderWidth))
+					 fixedHeight: (CardMorph height * scale + (2 * self borderWidth)) 
+					 minorDirectionPadding: #top! !
 
 !CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:13'!
 initialize
@@ -691,6 +690,19 @@ setTargetTable
 	(myOwner isKindOf: CardTableMorph)
 		ifTrue: [self targetTable: myOwner]! !
 
+!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 3/17/2020 19:57:36'!
+minimumExtent
+
+	| myTable |
+	myTable := self targetTable.
+	^ (myTable ifNil: [CardMorph extent] ifNotNil: [myTable cardSize]) + (2 * self borderWidth)! !
+
+!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 3/14/2020 15:43:26'!
+rescaleTo: newScale
+
+	"Adapt size to newScale"
+	self layoutSpec: (self defaultLayoutWithScale: newScale)! !
+
 !CardContainerMorph class methodsFor: 'new-morph participation' stamp: 'KenD 10/25/2004 08:08'!
 includeInNewMorphMenu
 	^ false! !
@@ -702,13 +714,13 @@ initialize
 	ContainerOffset _ 2 @ 2.
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 3/2/2015 14:49'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 3/15/2020 15:00:20'!
 addCard: aCard
 
 	| newPos |
 	(self isEmpty)
 	      ifTrue: [newPos := 0 @ 0]
-		ifFalse: [newPos := (0 @ (PixelsPerOverlap * self numberOfCards))].
+		ifFalse: [newPos := (0 @ (self pixelsPerOverlap * self numberOfCards))].
 	self addMorph: aCard.
 	aCard morphPosition: newPos.
 	self! !
@@ -745,6 +757,11 @@ numberOfCardsAbove: aCard
 
 	^submorphs indexOf: aCard! !
 
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 3/15/2020 15:02:00'!
+scale: aScale
+
+	displayScale := aScale! !
+
 !CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 11/20/2004 09:21'!
 showAllCardsFaceDown
 
@@ -771,22 +788,24 @@ singletonCard
 		ifTrue: [^ self submorphs at: 1]
 		ifFalse: [^ nil]! !
 
-!CardColumnMorph methodsFor: 'initialization' stamp: 'KenD 6/25/2011 18:41'!
+!CardColumnMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:59:20'!
 initialize
 
-	super initialize! !
+	super initialize.
+	displayScale := 1.! !
 
-!CardColumnMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:14'!
+!CardColumnMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:59:32'!
 initializeWithScale: scale
 
-	super initializeWithScale: scale! !
+	super initializeWithScale: scale.
+	displayScale := scale.! !
 
 !CardColumnMorph methodsFor: 'testing' stamp: 'KenD 1/9/2013 21:05'!
 isEmpty
 
 	^(self submorphs size = 0)! !
 
-!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 1/9/2013 19:10'!
+!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 3/15/2020 14:55:48'!
 layoutSubmorphsVerticallyIn: layoutBounds
 	"Compute a new layout of submorphs based on the given layout bounds." 
 		"The Cards are overlapped by PixelsPerOverlap"
@@ -796,7 +815,7 @@ layoutSubmorphsVerticallyIn: layoutBounds
 	cardOffset := 0.
 	(self submorphs reversed) do:
 		[ :m | m morphPosition: (0 @ cardOffset ).
-			  cardOffset := cardOffset + PixelsPerOverlap ].
+			  cardOffset := cardOffset + self pixelsPerOverlap ].
 ! !
 
 !CardColumnMorph methodsFor: 'fileIn/out' stamp: 'KenD 1/24/2011 02:08'!
@@ -833,16 +852,10 @@ saveStateToArray
 			aCard cardNumber ].
 	^ { numFaceUp. cardNumArray. }! !
 
-!CardColumnMorph class methodsFor: 'class initialization' stamp: 'KenD 6/25/2011 17:51'!
-initialize
-
-	PixelsPerOverlap := 30. "The number of pixels shownof card under the top one."! !
-
-!CardColumnMorph class methodsFor: 'private' stamp: 'KenD 1/21/2011 17:40'!
+!CardColumnMorph methodsFor: 'geometry' stamp: 'KenD 3/15/2020 14:59:49'!
 pixelsPerOverlap
-	"Cards in column overlap by.."
 
-	^PixelsPerOverlap! !
+	^ CardMorph morphHeight * displayScale // 4! !
 
 !CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 1/24/2011 02:08'!
 acceptDroppingMorph: aCardMorph event: evt 
@@ -1135,16 +1148,16 @@ numCardsToShow
 
 	^numCardsToShow! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 4/11/2016 14:32'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 3/17/2020 17:05:09'!
 numCardsToShow: anInteger
 
 	| newWidth |
 	numCardsToShow := anInteger.
-	newWidth := CardMorph width * scale + ((anInteger - 1) * (scale * PixelOverlap)) + 4.
+	newWidth := CardMorph width * scale + ((anInteger - 1) * (scale * PixelOverlap)) + 8.
 	self morphWidth: newWidth;
 		 layoutSpec: (LayoutSpec fixedWidth: newWidth
 									 fixedHeight: (CardMorph height * scale + 4) 
-									 minorDirectionPadding: #center).
+									 minorDirectionPadding: #top).
 	self redrawNeeded.
 	self showTopCards;
 		yourself! !
@@ -1186,14 +1199,14 @@ isEmpty
 	^cardStack isEmpty & 
 	(self submorphs isNil | self submorphs size = 0)! !
 
-!CardDiscardMorph methodsFor: 'layout' stamp: 'KenD 4/11/2016 14:30'!
+!CardDiscardMorph methodsFor: 'layout' stamp: 'KenD 3/17/2020 17:09:09'!
 layoutSubmorphsHorizontallyIn: layoutBounds
 	"Compute a new layout of submorphs based on the given layout bounds." 
 		"The Cards are overlapped by PixelsPerOverlap"
 		
 	|cardOffset|
 	
-	cardOffset := 0.
+	cardOffset := 2.
 
 	(self submorphs reversed) do:
 		[ :m | m morphPosition: (cardOffset @ 2).
@@ -1240,7 +1253,7 @@ saveStateToArray
 scale
 	^scale! !
 
-!CardDiscardMorph methodsFor: 'drawing' stamp: 'KenD 7/25/2014 19:09'!
+!CardDiscardMorph methodsFor: 'drawing' stamp: 'KenD 3/17/2020 17:05:51'!
 showTopCards
 	"Show numCardsToShow cards (if I contain that many)"
 
@@ -1255,7 +1268,15 @@ showTopCards
 		cardStack push: cardToMove.
 		self removeMorph: cardToMove.
 	].
-	self layoutSubmorphsHorizontallyIn: (0@0 extent: self morphExtent).
+	self layoutSubmorphsHorizontallyIn: (2@2 extent: self morphExtent).
+! !
+
+!CardDiscardMorph methodsFor: 'geometry' stamp: 'KenD 3/17/2020 16:59:18'!
+rescaleTo: newScale
+
+	"Adapt size to newScale"
+	scale := newScale.
+	self numCardsToShow: (self numCardsToShow)
 ! !
 
 !CardDiscardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/22/2011 16:34'!
@@ -1522,7 +1543,7 @@ allowsSubmorphDrag
 
 	^ true! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 1/15/2013 20:21'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 3/15/2020 15:04:48'!
 collectCardsAboveMe 
 	"I'm about to be grabbed by the hand or otherwise moved. 
 	If other cards are above me in a Card Container, then move 
@@ -1542,7 +1563,7 @@ collectCardsAboveMe
 			(self width
 			 @	
 			 (self height + (self submorphCount * (
-							CardColumnMorph pixelsPerOverlap))))].
+							self owner pixelsPerOverlap))))].
 	(self owner isKindOf: CardDiscardMorph)
 	ifTrue: [
 		self morphExtent:
@@ -4496,10 +4517,10 @@ faceForm
 scale
 	 ^scale! !
 
-!ScaledCardMorph methodsFor: 'access' stamp: 'KenD 4/6/2016 16:39'!
+!ScaledCardMorph methodsFor: 'access' stamp: 'KenD 3/15/2020 12:02:11'!
 scale: newScale
 	 scale := newScale.
-	 self image: (super form magnifyBy: newScale)! !
+	 self image: (self isFaceDown ifTrue: [ self backForm ] ifFalse:  [self faceForm ]).! !
 
 !ScaledCardMorph methodsFor: 'initialization' stamp: 'KenD 1/23/2019 15:31:37'!
 initialize
@@ -4530,65 +4551,124 @@ the: num of: suit scale: scale
 "
 	^ self fromCard: (CardMorph the: num of: suit) scale: scale! !
 
-!CardTableMorph methodsFor: 'event handling' stamp: 'KenD 1/22/2013 19:28'!
-aboutToBeGrabbedBy: aHand 
-	"I'm about to be grabbed by the hand.
-	If I let this happen I get picked up instead of cards and you can't play a game..
-	So, don't let this happen!!"
-"
-	Transcript newLine; show: ( self name , ' bad attempt to be grabbed by ' , aHand name ).
-"
-	"^nil"
-	^super aboutToBeGrabbedBy: aHand 
-! !
-
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/28/2015 18:47'!
-addingCardOrCards: cardMorph toContainer: cardContainer
-	"Container is about to add a Card or Cards.  Remember undo action."
-
-	| startContainer |
-	startContainer := cardMorph valueOfProperty: #moveStart.
-	cardMorph removeProperty:  #moveStart.
-	((self inUndo) or: [startContainer = cardContainer ])
-	  ifFalse: [
-"Transcript show: 'Pushing undo for ',  (cardMorph face asString), ' of ', (cardMorph suit asString); newLine."
-		self pushUndoObject: 
-				[ :table :nextAction | 
-					 table animateMoveFrom: cardContainer 
-							to: startContainer 
-							moving: cardMorph
-							next: nextAction ]
-	]
- ! !
-
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 11/18/2004 18:12'!
-makeUndoStackEmpty
-
-	self undoButton disable.
-	undoStack := Stack new initialize.! !
-
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:55'!
-popUndoObject
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/9/2015 10:39'!
+goAgain
+	"When inCardMove, goAgain indicates another checking loop is required"
 	
-	^self undoStack pop! !
+	^ goAgain! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:58'!
-pushUndoObject: anUndoObject
-
-	self undoButton enable.
-	self undoStack push: anUndoObject! !
-
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:50'!
-undoMove
-
-	| table |
-	table := self.
-	table removeWinnerText.
-	table inUndo: true.
-	(self popUndoObject) value: table value: [ table inUndo: false ]
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/9/2015 10:39'!
+goAgain: aBool
+	"When inCardMove, goAgain indicates another checking loop is required"
 	
+	goAgain := aBool! !
 
-! !
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:57'!
+inCardMove
+
+	^inCardMove! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:57'!
+inCardMove: aBoolean
+
+	^inCardMove := aBoolean! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:58'!
+inUndo
+
+	^inUndo! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/22/2015 13:54'!
+inUndo: inUndoBool
+
+	inUndoBool 
+	ifTrue: [ self undoButton disable ]
+	ifFalse:  [ 
+		self undoStackIsEmpty
+		ifFalse: [ self undoButton enable ]
+	].
+	^inUndo := inUndoBool! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 10/12/2011 20:40'!
+mutex
+
+	^mutex! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 4/6/2016 15:32'!
+scale
+
+	^scale! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:59'!
+undoButton
+	
+	^undoButton! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/6/2004 18:41'!
+undoStack
+	"Private"
+	
+	^undoStack! !
+
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/2/2004 13:01'!
+undoStackIsEmpty
+	
+	^undoStack isEmpty! !
+
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 3/8/2015 19:13'!
+dropComplete
+	"Subclasses should overried if they want to do something when
+	Cards have been dropped."
+
+	^false! !
+
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/21/2011 16:14'!
+help
+
+	"Give the user a clue.."
+
+	PopUpMenu inform: self helpText! !
+
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 10/28/2004 15:10'!
+quit
+	"Subclasses should override if they need to do housekeeping"
+
+	self owner == self world
+		ifTrue: [self delete]
+		ifFalse: [self owner delete]! !
+
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/24/2011 04:53'!
+removeWinnerText
+
+		saveGameButton enable.
+		labelLayout removeAllMorphs;
+			            addMorph: labelMorph.
+		winnerText := nil! !
+
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 9/19/2019 13:19:16'!
+showWinnerText
+	"Display Winner Message to user"
+	| widthToFit  pointSizeToUse newText |
+	saveGameButton disable. "No use saving a won game"
+	newText := CardTableMorph randomWinnerText.
+	"Find a point size which fits"
+	widthToFit := (labelLayout morphExtent x) - 20.
+	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
+		detect: [ :ps |  | aFont |
+			aFont := AbstractFont familyName: 'DejaVu' pointSize: ps.
+			((aFont widthOfString: newText) <= widthToFit)
+			and: [aFont lineSpacing <= (labelMorph morphExtent y)]]
+		ifNone: [AbstractFont default].
+ 	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
+	winnerText := (StringMorph contents: newText )
+					emphasis: 1; "bold"
+					font:  (AbstractFont familyName: 'DejaVu' pointSize: pointSizeToUse).
+	winnerText color: Color blue; 
+				layoutSpec: (LayoutSpec  proportionalWidth: 0.9 proportionalHeight: 1.0).
+
+	labelLayout removeAllMorphs;
+			      addMorph: winnerText.
+	winnerText lock.! !
 
 !CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 3/21/2015 08:11'!
 animateMoveFrom: aContainer to: otherContainer moving: someCard next: nextAction
@@ -4737,14 +4817,151 @@ slide: aMorph to: endPoint nSteps: numSteps delay: milliSecondsDelay next: nextA
 	].
 	aMorph startSteppingStepTime: milliSecondsDelay! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 1/9/2013 20:16'!
+!CardTableMorph methodsFor: 'drawing' stamp: 'KenD 8/26/2013 17:36'!
+drawOn: aCanvas
+
+	super drawOn: aCanvas.
+	aCanvas
+		frameRectangle:   (0@0 extent: extent )
+		color: Color gray
+		borderWidth: 4
+		borderStyleSymbol: #raised.! !
+
+!CardTableMorph methodsFor: 'event handling' stamp: 'KenD 1/22/2013 19:28'!
+aboutToBeGrabbedBy: aHand 
+	"I'm about to be grabbed by the hand.
+	If I let this happen I get picked up instead of cards and you can't play a game..
+	So, don't let this happen!!"
+"
+	Transcript newLine; show: ( self name , ' bad attempt to be grabbed by ' , aHand name ).
+"
+	"^nil"
+	^super aboutToBeGrabbedBy: aHand 
+! !
+
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 10/27/2015 19:19'!
+restoreGame: dotSuffixString userMessage: aPromptString
+	"Show a file dialog to the user to pick a game's file to restore.
+	Subclasses restore specific data from compressed Deck and CardContainer objects
+	via #restoreGameFromDataStream:."
+
+	| dialogResult |
+	
+	dialogResult := (StandardFileMenu new) 
+   					oldFileFrom: Smalltalk imagePath asDirectoryEntry 
+					withPattern:  '*.' , dotSuffixString; 
+					startUpWithCaption: 'Select Saved Game or click elsewhere'.
+	
+	(dialogResult isNil)
+	ifTrue: [ ^nil ]
+	ifFalse: [ |  filePath |
+		filePath := (dialogResult directory // dialogResult name) pathName.
+		filePath asFileEntry readStreamDo: [ :file | | aDataStream |
+			file binary.
+			aDataStream := DataStream on: file.
+		     self restoreGameFromDataStream: aDataStream.
+			aDataStream close.
+		].
+		self removeWinnerText. "just in case.."
+	]
+! !
+
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/14/2020 15:33:02'!
+restoreGameFromDataStream: aDataStream
+	"Delegate to subclass -- the Table that implements the game."
+
+	self subclassResponsibility! !
+
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 10/27/2015 19:18'!
+saveGame: dotSuffix userMessage: aPromptString
+	"Show a file dialog to the user to save a game with dotSuffix (e.g. '*.foo').
+	Subclasses save specific data as compressed Deck and CardContainer objects."
+
+	| dialogResult |
+	
+	dialogResult := (StandardFileMenu new) 
+   					newFileFrom: Smalltalk imagePath asDirectoryEntry
+					withPattern:  '*.' , dotSuffix; 
+					startUpWithCaption: aPromptString.
+	
+	(dialogResult isNil)
+	ifTrue: [ ^nil ]
+	ifFalse: [ | filePath |
+		filePath := (dialogResult directory // dialogResult name) pathName.
+		filePath := self ensureFileName: filePath hasSuffix:  '.', dotSuffix.
+		filePath asFileEntry writeStreamDo: [ :file | | aDataStream |
+			aDataStream := DataStream on: file. 
+			self saveGameToDataStream: aDataStream.
+			aDataStream close
+		]
+	]! !
+
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/14/2020 15:32:44'!
+saveGametoDataStream: aDataStream
+	"Delegate to subclass -- the Table that implements the game."
+
+	self subclassResponsibility! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/17/2020 16:45:20'!
+cardSize
+
+	^(CardMorph extent * self scale * self scaleFactor)! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/18/2020 09:02:36'!
+currentScreenExtent
+
+	"Answer extent for 'current' display screen.
+	  In future, we may support multiple screens."
+	^ DisplayScreen actualScreenSize
+	! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/18/2020 15:31:22'!
+fontPreferenceChanged
+
+	self reScale.
+	self morphExtent: self minimumExtent.
+	(self currentScreenExtent < self morphExtent) ifFalse: [
+		self rescaleToFitScreen.
+		self reScale.
+	].
+	self morphExtent: self minimumExtent
+	! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/18/2020 13:42:27'!
+rescaleToFitScreen
+	"I am currently too large to fit.  Fix this"
+	| screenExt myExt excessWidth excessHeight |
+	screenExt := self currentScreenExtent * 0.9. "Don't use more than 90%"
+	myExt       := self morphExtent.
+	"measured excess"
+	excessWidth  := (myExt x  - screenExt x) max: 0.
+	excessHeight := (myExt y - screenExt y) max: 0.
+	"make into ratio" 
+	excessWidth  := (myExt x - excessWidth)  / myExt x.
+	excessHeight := ( myExt y - excessHeight)  / myExt y .
+	"re-scale based to reduce largest discrepency"
+	scale := scale * (excessWidth min: excessHeight)! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/14/2020 15:13:27'!
+scaleFactor
+
+	"We are scaled relative to scale we started at.
+	 Answer ratio of original sizeUnit to current."
+	^ self textScale / sizeUnit! !
+
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 3/14/2020 15:14:19'!
+textScale
+
+	"Answer a point size based on current settings"
+	^ Preferences windowTitleFont pointSize! !
+
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/14/2020 17:07:36'!
 buildButton: aButton
 	"wrap a button or switch in an alignmentMorph to provide some space around the button"
 
 	| |
 	aButton 
-		morphHeight: 40;
-		borderColor: #raised;
+		morphHeight: (Preferences standardButtonFont pointSize) * 3 ;
 		borderWidth: 2;
 		color: Color gray.
 	 	^aButton
@@ -4755,11 +4972,12 @@ defaultExtent
 
 	self subclassResponsibility ! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 18:55'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/14/2020 15:15:04'!
 initialize
 	super initialize.
 	undoStack := Stack new initialize.
 	mutex      := Mutex new initialize.
+	sizeUnit := self textScale.
 	self beColumn; 
 		 separation: 10;
 		 inCardMove: false;
@@ -4779,7 +4997,7 @@ initializeWithScale: aScale
 		 yourself
 	"subclasses setup the layout"! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 8/7/2016 12:37:51'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:41:25'!
 makeButtonArea
 	"Make a new Button Area as a submorph"
 
@@ -4788,30 +5006,29 @@ makeButtonArea
 	buttonColor := Theme current buttonColorFrom: 
 					(Theme current defaultWindowColor).
 
-
 	buttonArea := LayoutMorph newRow separation: 5.
 	buttonArea
 			color: Color transparent;
 			"borderColor: Color transparent;"
-			morphHeight: 50;
+			morphHeight: self buttonAreaHeight;
 			morphWidth: (self morphWidth);
 			padding: #center.
 			
 	"Add some buttons."
 	buttonArea addMorph: (self makeNewGameButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeSameGameButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeUndoButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeHelpButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeSaveGameButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeRestoreGameButton) 
-							proportionalWidth: 0.20;
+							proportionalWidth: 0.14;
 				addMorph: (self makeQuitButton) 
-							proportionalWidth: 0.20.
+							proportionalWidth: 0.14.
 							
 	buttonArea submorphs do: [ :button | button color: buttonColor ].
 	
@@ -4829,28 +5046,27 @@ makeHelpButton
 		 (EnableDisableButton 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 1/12/2020 11:33:51'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:33:27'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
+	| labelHeight |
 	labelLayout := LayoutMorph newRow.
-	
 	labelMorph
 	 	:= (StringMorph contents: lableString) 
 			emphasis: 1;  "emphasis: bold=1"
 			font: (AbstractFont familyName: 'DejaVu' pointSize: 22). 
-				
+	labelHeight := labelMorph font pointSize * 2.		
 	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 minorDirectionPadding: #left).
 	
 	labelLayout
 			color: Color transparent;
 			"borderColor: Color transparent;"
-			morphHeight: 40;
+			morphHeight: labelHeight;
 			morphWidth: 700; " (self morphWidth) - 4;"
-			padding: #center;
-			layoutSpec: (LayoutSpec  proportionalWidth: 0.96 fixedHeight: self labelAreaHeight);
+			padding: #left;
+			layoutSpec: (LayoutSpec  proportionalWidth: 0.96 fixedHeight: labelHeight);
 			addMorph: labelMorph.
-
 
 	self addMorph: labelLayout! !
 
@@ -4893,101 +5109,6 @@ makeUndoButton
 			model: self stateGetter: nil action: #undoMove label: 'Undo').
 	^ self buildButton: undoButton! !
 
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 4/6/2016 19:22'!
-buttonAreaHeight
-
-	^ 30! !
-
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 4/6/2016 19:22'!
-labelAreaHeight
-
-	^ 40! !
-
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 4/5/2015 18:50'!
-undoAll
-	"Test Method -- plays game backward to beginning"
-	
-	| table undoLoop |
-	table := self.
-	table removeWinnerText.
-	table undoStack isEmptyOrNil 
-	ifFalse: [
-		undoLoop := [ 
-			(self undoStack isEmpty)
-			ifTrue: [ table inUndo: false ]
-			ifFalse: [ (self popUndoObject) value: table value: undoLoop ]
-		].
-		table inUndo: true.
-		undoLoop value
-	]
-
-	! !
-
-!CardTableMorph methodsFor: 'drawing' stamp: 'KenD 8/26/2013 17:36'!
-drawOn: aCanvas
-
-	super drawOn: aCanvas.
-	aCanvas
-		frameRectangle:   (0@0 extent: extent )
-		color: Color gray
-		borderWidth: 4
-		borderStyleSymbol: #raised.! !
-
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 3/8/2015 19:13'!
-dropComplete
-	"Subclasses should overried if they want to do something when
-	Cards have been dropped."
-
-	^false! !
-
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/21/2011 16:14'!
-help
-
-	"Give the user a clue.."
-
-	PopUpMenu inform: self helpText! !
-
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 10/28/2004 15:10'!
-quit
-	"Subclasses should override if they need to do housekeeping"
-
-	self owner == self world
-		ifTrue: [self delete]
-		ifFalse: [self owner delete]! !
-
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 1/24/2011 04:53'!
-removeWinnerText
-
-		saveGameButton enable.
-		labelLayout removeAllMorphs;
-			            addMorph: labelMorph.
-		winnerText := nil! !
-
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 9/19/2019 13:19:16'!
-showWinnerText
-	"Display Winner Message to user"
-	| widthToFit  pointSizeToUse newText |
-	saveGameButton disable. "No use saving a won game"
-	newText := CardTableMorph randomWinnerText.
-	"Find a point size which fits"
-	widthToFit := (labelLayout morphExtent x) - 20.
-	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
-		detect: [ :ps |  | aFont |
-			aFont := AbstractFont familyName: 'DejaVu' pointSize: ps.
-			((aFont widthOfString: newText) <= widthToFit)
-			and: [aFont lineSpacing <= (labelMorph morphExtent y)]]
-		ifNone: [AbstractFont default].
- 	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
-	winnerText := (StringMorph contents: newText )
-					emphasis: 1; "bold"
-					font:  (AbstractFont familyName: 'DejaVu' pointSize: pointSizeToUse).
-	winnerText color: Color blue; 
-				layoutSpec: (LayoutSpec  proportionalWidth: 0.9 proportionalHeight: 1.0).
-
-	labelLayout removeAllMorphs;
-			      addMorph: winnerText.
-	winnerText lock.! !
-
 !CardTableMorph methodsFor: 'testing' stamp: 'KenD 11/9/2004 13:06'!
 ensureFileName: fileNameString hasSuffix: suffixString
 	"Answer a string which is the file name guarenteed to have suffix suffixString."
@@ -5028,132 +5149,83 @@ runStartsFrom: aCard in: aColumn
 	"cardIndex = 1"
 	^true! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/9/2015 10:39'!
-goAgain
-	"When inCardMove, goAgain indicates another checking loop is required"
-	
-	^ goAgain! !
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/28/2015 18:47'!
+addingCardOrCards: cardMorph toContainer: cardContainer
+	"Container is about to add a Card or Cards.  Remember undo action."
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/9/2015 10:39'!
-goAgain: aBool
-	"When inCardMove, goAgain indicates another checking loop is required"
-	
-	goAgain := aBool! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:57'!
-inCardMove
-
-	^inCardMove! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:57'!
-inCardMove: aBoolean
-
-	^inCardMove := aBoolean! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:58'!
-inUndo
-
-	^inUndo! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/22/2015 13:54'!
-inUndo: inUndoBool
-
-	inUndoBool 
-	ifTrue: [ self undoButton disable ]
-	ifFalse:  [ 
-		self undoStackIsEmpty
-		ifFalse: [ self undoButton enable ]
-	].
-	^inUndo := inUndoBool! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 10/12/2011 20:40'!
-mutex
-
-	^mutex! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 4/6/2016 15:32'!
-scale
-
-	^scale! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/18/2004 16:59'!
-undoButton
-	
-	^undoButton! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/6/2004 18:41'!
-undoStack
-	"Private"
-	
-	^undoStack! !
-
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 11/2/2004 13:01'!
-undoStackIsEmpty
-	
-	^undoStack isEmpty! !
-
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 10/27/2015 19:19'!
-restoreGame: dotSuffixString userMessage: aPromptString
-	"Show a file dialog to the user to pick a game's file to restore.
-	Subclasses restore specific data from compressed Deck and CardContainer objects
-	via #restoreGameFromDataStream:."
-
-	| dialogResult |
-	
-	dialogResult := (StandardFileMenu new) 
-   					oldFileFrom: Smalltalk imagePath asDirectoryEntry 
-					withPattern:  '*.' , dotSuffixString; 
-					startUpWithCaption: 'Select Saved Game or click elsewhere'.
-	
-	(dialogResult isNil)
-	ifTrue: [ ^nil ]
-	ifFalse: [ |  filePath |
-		filePath := (dialogResult directory // dialogResult name) pathName.
-		filePath asFileEntry readStreamDo: [ :file | | aDataStream |
-			file binary.
-			aDataStream := DataStream on: file.
-		     self restoreGameFromDataStream: aDataStream.
-			aDataStream close.
-		].
-		self removeWinnerText. "just in case.."
+	| startContainer |
+	startContainer := cardMorph valueOfProperty: #moveStart.
+	cardMorph removeProperty:  #moveStart.
+	((self inUndo) or: [startContainer = cardContainer ])
+	  ifFalse: [
+"Transcript show: 'Pushing undo for ',  (cardMorph face asString), ' of ', (cardMorph suit asString); newLine."
+		self pushUndoObject: 
+				[ :table :nextAction | 
+					 table animateMoveFrom: cardContainer 
+							to: startContainer 
+							moving: cardMorph
+							next: nextAction ]
 	]
+ ! !
+
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 11/18/2004 18:12'!
+makeUndoStackEmpty
+
+	self undoButton disable.
+	undoStack := Stack new initialize.! !
+
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:55'!
+popUndoObject
+	
+	^self undoStack pop! !
+
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:58'!
+pushUndoObject: anUndoObject
+
+	self undoButton enable.
+	self undoStack push: anUndoObject! !
+
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 3/22/2015 13:50'!
+undoMove
+
+	| table |
+	table := self.
+	table removeWinnerText.
+	table inUndo: true.
+	(self popUndoObject) value: table value: [ table inUndo: false ]
+	
+
 ! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 11/8/2004 08:23'!
-restoreGameFromDataStream: aDataStream
-	"Delegate to subclass -- the Table that implements the game."
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 3/14/2020 14:25:15'!
+buttonAreaHeight
 
-	Error signal: 'Subclass must implement!!'! !
+	^ (Preferences standardButtonFont pointSize) * 4! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 10/27/2015 19:18'!
-saveGame: dotSuffix userMessage: aPromptString
-	"Show a file dialog to the user to save a game with dotSuffix (e.g. '*.foo').
-	Subclasses save specific data as compressed Deck and CardContainer objects."
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 3/14/2020 14:25:54'!
+labelAreaHeight
 
-	| dialogResult |
+	^ (Preferences windowTitleFont pointSize) * 4! !
+
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 4/5/2015 18:50'!
+undoAll
+	"Test Method -- plays game backward to beginning"
 	
-	dialogResult := (StandardFileMenu new) 
-   					newFileFrom: Smalltalk imagePath asDirectoryEntry
-					withPattern:  '*.' , dotSuffix; 
-					startUpWithCaption: aPromptString.
-	
-	(dialogResult isNil)
-	ifTrue: [ ^nil ]
-	ifFalse: [ | filePath |
-		filePath := (dialogResult directory // dialogResult name) pathName.
-		filePath := self ensureFileName: filePath hasSuffix:  '.', dotSuffix.
-		filePath asFileEntry writeStreamDo: [ :file | | aDataStream |
-			aDataStream := DataStream on: file. 
-			self saveGameToDataStream: aDataStream.
-			aDataStream close
-		]
-	]! !
+	| table undoLoop |
+	table := self.
+	table removeWinnerText.
+	table undoStack isEmptyOrNil 
+	ifFalse: [
+		undoLoop := [ 
+			(self undoStack isEmpty)
+			ifTrue: [ table inUndo: false ]
+			ifFalse: [ (self popUndoObject) value: table value: undoLoop ]
+		].
+		table inUndo: true.
+		undoLoop value
+	]
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 11/8/2004 08:23'!
-saveGametoDataStream: aDataStream
-	"Delegate to subclass -- the Table that implements the game."
-
-	Error signal: 'Subclass must implement!!'! !
+	! !
 
 !CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 3/11/2015 16:32'!
 cpsOverColl: orderedColletion do: aBlock next: nextAction
@@ -5678,11 +5750,11 @@ initializeWithScale: aScale
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 5/17/2018 14:53:08'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/17/2020 20:25:15'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
-	| columnArea columnHeight columnLayout spacerLayout noColor|
+	| columnArea columnHeight columnLayout  noColor|
 	noColor := Color transparent.
 	columnHeight := CardMorph morphHeight * self scale * 5. "pixels"
 	columnArea := LayoutMorph newRow.  "a row of columns"
@@ -5692,30 +5764,19 @@ makeColumnArea
 				morphHeight: columnHeight;
 				morphWidth: (self morphWidth).
 	columnLayout := LayoutSpec  
-							fixedWidth: CardMorph morphWidth * self scale + 4 
+							proportionalWidth: 0.20
 							fixedHeight: columnHeight
 							minorDirectionPadding: #top.
-	
-	spacerLayout := LayoutSpec  
-							proportionalWidth: 0.6
-							fixedHeight: columnHeight
-							minorDirectionPadding: #top.
-									
-	columnArea addMorph: (BorderedRectMorph new color: noColor; borderColor: noColor)
-				layoutSpec: spacerLayout.
-		
+
 	1 to: NumColumns 
 		do: [ :n |
-			| colMorph |
-			colMorph := CardColumnMorph new initialize. 
-			colMorph 
+				| colMorph |
+				colMorph := CardColumnMorph new initializeWithScale: self scale. 
+				colMorph 
 					morphHeight: columnHeight;
 					borderColor: noColor;
 					layoutSpec: columnLayout.
-			columnArea 
-				addMorph: colMorph;
-				addMorph: (BorderedRectMorph new color: noColor;  borderColor: noColor) 
-					layoutSpec:  spacerLayout.
+				columnArea addMorph: colMorph 
 			].
 	columns := (columnArea submorphs 
 					select: [ :whatever | whatever isKindOf: CardContainerMorph ]) reversed..
@@ -5723,7 +5784,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 ! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:39'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/17/2020 14:03:48'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -5755,7 +5816,7 @@ makePilesArea
 	piles := (pilesArea submorphs select: [:thing | thing isKindOf: CardPileMorph]) reversed.
 	
 	self addMorph: pilesArea 
-		layoutSpec: (LayoutSpec  fixedWidth: self morphWidth
+		layoutSpec: (LayoutSpec  proportionalWidth: 1.0
 									fixedHeight: CardMorph morphHeight * self scale+ 30 
 									minorDirectionPadding: #center)
 	! !
@@ -5932,6 +5993,35 @@ setScale: aScale
 	
 	"@@FIXME -- unfinished"
 	
+	! !
+
+!FreeCell methodsFor: 'geometry' stamp: 'KenD 3/18/2020 15:28:05'!
+reScale
+
+	"reScale self based on new font sizes"
+	| newScale columnArea columnLayout columnHeight  |
+	newScale := self scale * self scaleFactor.
+	piles do: [ :pile | pile rescaleTo: newScale].
+	(piles at: 1) owner "pilesArea" 
+		layoutSpec: (LayoutSpec proportionalWidth: 1.0
+									fixedHeight: CardMorph morphHeight + 30 * newScale
+									minorDirectionPadding: #center).
+	columnHeight :=   (CardMorph morphHeight * newScale * 5).
+	columnLayout := (LayoutSpec  
+							fixedWidth:  (CardMorph morphWidth * newScale + 4)
+							fixedHeight: columnHeight
+							minorDirectionPadding: #top).
+	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * newScale + 4.
+
+	columnArea := (columns at: 1) owner. 
+	columnArea layoutSpec fixedHeight: columnHeight.
+	columnArea morphHeight: columnHeight.
+	columns do: [ :column | 
+			column scale: newScale;  
+			layoutSpec: columnLayout;
+			layoutSubmorphsVerticallyIn: columnArea layoutBounds ].
+	deck cards do: [ :c | c scale: newScale ].
+	self spares do: [ :s | s rescaleTo: newScale ]
 	! !
 
 !FreeCell class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 21:19'!
@@ -6318,47 +6408,41 @@ initializeWithScale: aScale
 		morphExtent: self minimumExtent;
 		yourself! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 5/17/2018 14:51:40'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 3/17/2020 20:26:36'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
-	| columnArea columnHeight columnLayout spacerLayout noColor|
-	noColor := Color transparent.
+	| columnArea columnHeight columnLayout |
 	columnHeight := CardMorph morphHeight * self scale * 5. "pixels"
+
 	columnArea := LayoutMorph newRow.  "a row of columns"
 	columnArea color: Color transparent;
-				morphHeight: columnHeight;
-				morphWidth: (self morphWidth).
+				  morphHeight: columnHeight;
+				  morphWidth: (self morphWidth);
+				  padding: #center.
+
 	columnLayout := LayoutSpec  
-							fixedWidth: CardMorph morphWidth * self scale + 4 
+							proportionalWidth: 0.20
 							fixedHeight: columnHeight
 							minorDirectionPadding: #top.
-	
-	spacerLayout := LayoutSpec  
-							proportionalWidth: 0.2 
-							fixedHeight: columnHeight
-							minorDirectionPadding: #center.
-									
-	columnArea addMorph: (BorderedRectMorph new color: noColor; borderColor: noColor)
-				layoutSpec: spacerLayout.
-		
+	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * self scale + 4.
 			
-	1 to: NumColumns 
-		do: [ :n |
+	1 to: NumColumns do: 
+		[ :n |
 			| colMorph |
-			colMorph := CardColumnMorph new initialize. 
+			colMorph := CardColumnMorph new initializeWithScale: self scale. 
 			colMorph morphHeight: columnHeight;
-					  borderColor: Color transparent;
-					  layoutSpec: columnLayout.
+					    borderColor: Color transparent;
+					    layoutSpec: columnLayout.
 			columnArea addMorph: colMorph.
-			columnArea  addMorph: (BorderedRectMorph new color: noColor;  borderColor: noColor)
-						 layoutSpec: spacerLayout
-			].
-	columns := (columnArea submorphs select: [ :whatever | whatever isKindOf: CardContainerMorph ]) reversed..
+		].
+	columns := (columnArea submorphs 
+				select: [ :whatever | whatever isKindOf: CardContainerMorph ]) reversed.
 
-	self addMorph: columnArea layoutSpec: LayoutSpec useAll! !
+	self addMorph: columnArea layoutSpec: LayoutSpec useAll
+	! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 4/6/2016 20:41'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 3/17/2020 14:04:40'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -6396,7 +6480,7 @@ makePilesArea
 	pilesArea addMorph: (BorderedRectMorph new color: noColor; borderColor: noColor; morphWidth: 20)
 			  layoutSpec: (LayoutSpec  
 									proportionalWidth: 0.2
-									fixedHeight: (CardMorph morphHeight * scale + 4)).
+									fixedHeight: (CardMorph morphHeight * self scale + 4)).
 			
 	"trarget piles"
 	1 to: NumPiles do: [ :n | 
@@ -6575,6 +6659,35 @@ saveGameToDataStream: aDataStream
 							#Undo.
 							nil. "FIXME"
 						}! !
+
+!Klondike methodsFor: 'geometry' stamp: 'KenD 3/18/2020 15:20:11'!
+reScale
+
+	"reScale self based on new font sizes"
+	| newScale columnArea columnLayout |
+	newScale := self scale * self scaleFactor.
+	discards rescaleTo: newScale.
+	piles do: [ :pile | pile rescaleTo: newScale].
+	(piles at: 1) owner "pilesArea" 
+		layoutSpec: (LayoutSpec proportionalWidth: 1.0
+									fixedHeight: CardMorph morphHeight + 30 * newScale
+									minorDirectionPadding: #center).
+	columnLayout := (LayoutSpec  
+							fixedWidth:  (CardMorph morphWidth * newScale + 4)
+							fixedHeight: (CardMorph morphHeight * newScale * 5) "pixels"
+							minorDirectionPadding: #top).
+	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * newScale + 4.
+
+	columnArea := (columns at: 1) owner. 
+	columnArea morphHeight:  (CardMorph morphHeight * newScale * 5) . "Column height"
+	columns do: [ :column | 
+			column scale: newScale;  
+			layoutSpec: columnLayout;
+			layoutSubmorphsVerticallyIn: columnArea layoutBounds ].
+	deck rescaleTo: newScale.
+	cardDeck cards do: [ :c | c scale: newScale ].
+	self morphExtent: self minimumExtent
+	! !
 
 !Klondike class methodsFor: 'instance creation' stamp: 'KenD 4/6/2016 20:49'!
 initializedImage
@@ -7108,7 +7221,6 @@ with: anObject
 		push: anObject;
 		yourself! !
 CardContainerMorph initialize!
-CardColumnMorph initialize!
 CardDiscardMorph initialize!
 CardMorph initialize!
 FreeCell initialize!
