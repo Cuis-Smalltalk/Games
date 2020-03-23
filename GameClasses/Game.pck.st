@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 8:03:05 pm'!
+'From Cuis 5.0 [latest update: #4042] on 23 March 2020 at 11:40:51 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 49!
+!provides: 'Game' 1 50!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1311,6 +1311,13 @@ viewPositionLeft
 	"Answer the upper left location for views"
 	
 	^ 50@0! !
+
+!GameView methodsFor: 'initialization' stamp: 'dhn 3/23/2020 11:40:04'!
+cleanTitleBar
+	"Remove buttons from the title bar"
+	
+	self submorphs do: [:ea | 
+		ea class = PluggableButtonMorph ifTrue: [ea delete]]! !
 
 !GameView methodsFor: 'initialization' stamp: 'dhn 8/25/2018 13:54:32'!
 removeWindowMenu
