@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 23 March 2020 at 11:40:51 am'!
+'From Cuis 5.0 [latest update: #4042] on 2 April 2020 at 7:11:34 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 50!
+!provides: 'Game' 1 51!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -931,13 +931,13 @@ setSize
 	h _ w * 0.5.
 	self morphExtent: w@h! !
 
-!Token methodsFor: 'stepping' stamp: 'dhn 4/10/2019 17:50:37'!
+!Token methodsFor: 'stepping' stamp: 'dhn 4/2/2020 16:34:53'!
 jump: aCount
 	"Move the receiver in aCount hops"
 	| step limit i horiz |
 	
 	step _ 30.	"time of each increment of the hop"
-	limit _ hop size * (aCount min: 6).
+	limit _ hop size * aCount.
 	horiz _ (model cells first morphWidth +2)/ (hop size).
 	i _ 0.
 	self when: #morphicStep evaluate: [ :delta |
