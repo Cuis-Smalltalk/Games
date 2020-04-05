@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 2 April 2020 at 7:11:34 pm'!
+'From Cuis 5.0 [latest update: #4042] on 5 April 2020 at 1:33:52 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 51!
+!provides: 'Game' 1 52!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -48,7 +48,7 @@ GameButtonMorph class
 
 !classDefinition: #BidderButton category: #'Game-Graphics'!
 GameButtonMorph subclass: #BidderButton
-	instanceVariableNames: ''
+	instanceVariableNames: 'oldColor'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -1150,6 +1150,32 @@ performAction
 
 	actionSelector ifNotNil: [
 		model perform: actionSelector with: label]! !
+
+!BidderButton methodsFor: 'accessing' stamp: 'dhn 4/5/2020 13:15:55'!
+oldColor: anObject
+	"Set the value of oldColor"
+
+	oldColor _ anObject! !
+
+!BidderButton methodsFor: 'operation' stamp: 'dhn 4/5/2020 13:21:34'!
+disableButton
+	"Change to the disabled state, caching the actionSelector and color"
+	
+	self enabled ifTrue: [
+		self oldTarget: self actionSelector.
+		self oldColor: color.
+		self action: nil.
+		self enabled: false.
+		self color: GameButtonMorph disabledColor]! !
+
+!BidderButton methodsFor: 'operation' stamp: 'dhn 4/5/2020 13:24:47'!
+enableButton
+	"Change to the enabled state"
+	
+	self enabled ifFalse: [
+		oldTarget ifNotNil: [self action: oldTarget].
+		self enabled: true.
+		self color: oldColor]! !
 
 !GameCell methodsFor: 'accessing' stamp: 'dhn 8/14/2017 10:59:26'!
 describe
