@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 5 April 2020 at 1:33:52 pm'!
+'From Cuis 5.0 [latest update: #4112] on 25 April 2020 at 12:23:22 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 52!
+!provides: 'Game' 1 53!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -28,7 +28,7 @@ GamePasteUp class
 
 !classDefinition: #Token category: #'Game-Graphics'!
 EllipseMorph subclass: #Token
-	instanceVariableNames: 'labelArea model count die arrow hop'
+	instanceVariableNames: 'labelArea model count die arrow hop tokenId'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -815,17 +815,17 @@ die: anObject
 
 	die _ anObject! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:53:50'!
+!Token methodsFor: 'accessing' stamp: 'jmv 4/25/2020 12:22:51'!
 id
 	"Answer the value of id"
 
-	^ id! !
+	^ tokenId! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 3/18/2017 13:10:52'!
+!Token methodsFor: 'accessing' stamp: 'jmv 4/25/2020 12:22:56'!
 id: anObject
 	"Set the value of id"
 
-	id _ anObject! !
+	tokenId _ anObject! !
 
 !Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:23:29'!
 labelArea
@@ -883,7 +883,7 @@ initialize
 	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
 a die is "rolled" and the token moves that number of spaces.'! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:51:23'!
+!Token methodsFor: 'initialization' stamp: 'jmv 4/25/2020 12:23:03'!
 makeIdArea
 	"Lay out the area for the player's name"
 	| area |
@@ -893,11 +893,11 @@ makeIdArea
 		name: #id;
 		padding: #center.
 	
-	id _ (StringMorph contents: 'Player') 
+	tokenId _ (StringMorph contents: 'Player') 
 		emphasis: AbstractFont boldCode;
 		font: GameBoard gameFont.
 		
-	area addMorph: id.
+	area addMorph: tokenId.
 	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)! !
 
