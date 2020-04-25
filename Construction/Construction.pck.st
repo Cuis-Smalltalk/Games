@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 19 February 2020 at 10:53:21 pm'!
+'From Cuis 5.0 [latest update: #4120] on 25 April 2020 at 12:06:07 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 219!
+!provides: 'Construction' 1 220!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2439,7 +2439,7 @@ makeDoubledArea
 	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:49:21'!
+!ContractToken methodsFor: 'initialization' stamp: 'jmv 4/25/2020 12:04:29'!
 makeIdArea
 	"Lay out the area for the arrow"
 	| area |
@@ -2449,11 +2449,11 @@ makeIdArea
 		name: #id;
 		padding: #center.
 	
-	id _ (StringMorph contents: 'Player') 
+	tokenId _ (StringMorph contents: 'Player') 
 		emphasis: AbstractFont boldCode;
 		font: GameBoard gameFont.
 		
-	area addMorph: id.
+	area addMorph: tokenId.
 	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 

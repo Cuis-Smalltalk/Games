@@ -28,7 +28,7 @@ GamePasteUp class
 
 !classDefinition: #Token category: #'Game-Graphics'!
 EllipseMorph subclass: #Token
-	instanceVariableNames: 'labelArea model count die arrow id hop'
+	instanceVariableNames: 'labelArea model count die arrow hop'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
