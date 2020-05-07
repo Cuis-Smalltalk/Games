@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4112] on 25 April 2020 at 12:23:22 pm'!
+'From Cuis 5.0 [latest update: #4119] on 6 May 2020 at 9:17:30 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 53!
+!provides: 'Game' 1 54!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1357,6 +1357,10 @@ wantsToBeDroppedInto: aMorph
 	"This message is sent to the dragged morph, not to the owner."
 
 	^true! !
+
+!GameView methodsFor: 'testing' stamp: 'dhn 5/6/2020 21:16:32'!
+is: aSymbol
+	^ aSymbol == #GameView or: [ super is: aSymbol ]! !
 
 !GameView class methodsFor: 'class initialization' stamp: 'dhn 8/25/2018 13:54:32'!
 open: aModel label: aString
