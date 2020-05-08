@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4119] on 6 May 2020 at 9:17:30 pm'!
+'From Cuis 5.0 [latest update: #4128] on 7 May 2020 at 9:13:49 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 54!
+!provides: 'Game' 1 55!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -493,7 +493,7 @@ move
 	bone adjustTo: token.
 	bone show: bone class faces shuffled! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 4/10/2019 18:10:13'!
+!Game methodsFor: 'operating' stamp: 'dhn 5/7/2020 20:10:31'!
 nextPlayer
 	"Begin the next player's turn"
 	| x |
@@ -507,7 +507,7 @@ nextPlayer
 		removeMarkers.
 	token openInWorld: world.
 	token morphPosition: tokenPos.
-	token id contents: currentPlayer identity.
+	token tokenId contents: currentPlayer identity.
 	token doubled contents: currentPlayer doubledString.
 	token color: currentPlayer color.
 	token setBalloonText: 'token for ', currentPlayer identity.
@@ -815,18 +815,6 @@ die: anObject
 
 	die _ anObject! !
 
-!Token methodsFor: 'accessing' stamp: 'jmv 4/25/2020 12:22:51'!
-id
-	"Answer the value of id"
-
-	^ tokenId! !
-
-!Token methodsFor: 'accessing' stamp: 'jmv 4/25/2020 12:22:56'!
-id: anObject
-	"Set the value of id"
-
-	tokenId _ anObject! !
-
 !Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:23:29'!
 labelArea
 	"Answer the value of labelArea"
@@ -838,6 +826,18 @@ labelArea: anObject
 	"Set the value of labelArea"
 
 	labelArea _ anObject! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 15:22:58'!
+tokenId
+	"Answer the value of tokenId"
+
+	^ tokenId! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 20:08:29'!
+tokenId: anObject
+	"Set the value of tokenId"
+
+	tokenId _ anObject! !
 
 !Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:47'!
 arrowLeft
@@ -883,14 +883,14 @@ initialize
 	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
 a die is "rolled" and the token moves that number of spaces.'! !
 
-!Token methodsFor: 'initialization' stamp: 'jmv 4/25/2020 12:23:03'!
+!Token methodsFor: 'initialization' stamp: 'dhn 5/7/2020 20:09:30'!
 makeIdArea
 	"Lay out the area for the player's name"
 	| area |
 	
 	area _ LayoutMorph newRow
 		color: Color transparent;
-		name: #id;
+		name: #tokenId;
 		padding: #center.
 	
 	tokenId _ (StringMorph contents: 'Player') 
