@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4120] on 25 April 2020 at 12:06:07 pm'!
+'From Cuis 5.0 [latest update: #4128] on 7 May 2020 at 9:19:12 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 220!
+!provides: 'Construction' 1 221!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -456,7 +456,7 @@ jobAuctionList
 
 	^ self class bidIncrement! !
 
-!Contract methodsFor: 'auction' stamp: 'dhn 4/10/2019 18:08:29'!
+!Contract methodsFor: 'auction' stamp: 'dhn 5/7/2020 20:47:15'!
 jobWinner: aName bid: aBid
 	"Change current player to aName and move to job, if necessary"
 	| space playr |
@@ -476,7 +476,7 @@ jobWinner: aName bid: aBid
 			(spaces at: playr position) markRemFor: playr.
 			token openInWorld: world.
 			token morphPosition: tokenPos.
-			token id contents: currentPlayer identity.
+			token tokenId contents: currentPlayer identity.
 			token doubled contents: currentPlayer doubledString.
 			token color: currentPlayer color.
 			token setBalloonText: 'token for ', currentPlayer identity.
