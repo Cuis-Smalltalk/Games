@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4128] on 7 May 2020 at 9:19:12 pm'!
+'From Cuis 5.0 [latest update: #4140] on 10 May 2020 at 2:45:05 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 221!
+!provides: 'Construction' 1 222!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -38,7 +38,7 @@ Construction class
 
 !classDefinition: #AuctionJob category: #'Construction-Graphics'!
 AuctionView subclass: #AuctionJob
-	instanceVariableNames: ''
+	instanceVariableNames: 'currentBump'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Construction-Graphics'!
@@ -2867,7 +2867,7 @@ showAssetAuction
 		morphPosition: self windowPosition;
 		morphExtent: 450@300! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 11/11/2016 16:31:33'!
+!Construction methodsFor: 'windows' stamp: 'dhn 5/9/2020 22:31:08'!
 showJobAuctionAt: aPosition
 	"Open a job auction window on the job at aPosition"
 	| win seas |
@@ -2880,10 +2880,12 @@ showJobAuctionAt: aPosition
 		setWindowColor: Color lightBrown;
 		setLabel: seas desc, ' job auction'.
 	win 
-		soldEndButtons;
 		buyerButtons;
 		morphExtent: 450@300;
-		openInHand! !
+		openInHand.
+	win chant addFirst: 'The auction has started, what am I bid?'.
+	win showChant.
+	win beat: #announceSold! !
 
 !Construction methodsFor: 'windows' stamp: 'dhn 2/19/2020 21:17:44'!
 showJobView: aTitle
@@ -3382,21 +3384,30 @@ how
 	Construction start.
 	"! !
 
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 10/28/2016 12:18:16'!
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 5/10/2020 12:25:20'!
 buildMorphicWindow
 	"Lay out the window for auctioning a job"
 	
-	buttonsArea _ (LayoutMorph newRow)
-		name: #buttons;
+	textPane _ (TextModelMorph
+		withModel: (TextModel withText: '')) 	"note the different model specification"
+			askBeforeDiscardingEdits: false;	"discard changes to the text"
+			name: 'chant'. 	"give the TextModelMorph a name which will appear in the halos"
+	textPane 
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
-			proportionalHeight: 0.15
+			proportionalHeight: 1.0
 			minorDirectionPadding: #center).
 			
 	self layoutMorph
-		addMorph: buttonsArea;
-		addMorph: self setUpMidRow;
+		addMorph: textPane;
 		addMorph: (buyers _ self setUpBuyers)! !
+
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 5/10/2020 12:17:40'!
+initialize
+
+	super initialize.
+	currentBid _ 0.
+	currentBump _ 1000! !
 
 !AuctionJob methodsFor: 'initialization' stamp: 'dhn 8/28/2018 18:26:41'!
 setUpMidRow
@@ -3478,17 +3489,27 @@ buyerButtons
 					setBalloonText: 'bidder')].
 			buyers addAllMorphs: col reversed]! !
 
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 9/26/2016 21:33:07'!
-details
-	"Not required for job auctions"
-! !
+!AuctionJob methodsFor: 'buttons' stamp: 'dhn 5/10/2020 13:29:11'!
+makeEndButton
+	"Answer the 'End' button"
+	
+	endButton _ GameButtonMorph 
+		label: 'End' 
+		action: #jobSold 
+		state: true 
+		model: self.
+	endButton 
+		morphExtent: 70@30;
+		setBalloonText: 'Finish the auction and close the window.'.
+	^ endButton! !
 
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 10/7/2018 15:48:05'!
-jobSold
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 22:47:03'!
+announceSold
 	"SOLD!! the job"
 	
-	endButton enableButton.
-	buyers removeAllMorphs.
+	buyers 
+		removeAllMorphs
+		addMorph: self makeEndButton.
 	chant addFirst: (String streamContents: [:str |
 		str
 			nextPutAll: 'SOLD!! Job awarded to ';
@@ -3498,18 +3519,89 @@ jobSold
 	self showChant
 ! !
 
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 8/20/2018 14:26:34'!
-offer: aName
-	"Record a bid by aName"
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 22:27:27'!
+beat: aSymbol
+	"Produce the auctioneer's chant; perform aSymbol when limit is exceeded"
+	| limit |
 	
-	model jobAuctionItem > 0 
-		ifTrue: [self offer: model jobAuctionItem by: aName]
-		ifFalse: [
-			buyers submorphsDo: [:ea | ea enableButton].
-			(buyers findDeepSubmorphThat: [:mm | mm label = currentBidder] ifAbsent: [^ self]) disableButton].
-	begun ifFalse: [
-		self beat: #jobSold.
-		begun _ true]! !
+	limit _ 4.
+	self when: #morphicStep evaluate: [ :delta |
+		begun 
+			ifTrue: [
+				self going: self going + 1.
+				self going <= limit 
+					ifTrue: [
+						self going > 1 ifTrue: [
+							chant addFirst: (String streamContents: [:str |
+							str
+								nextPutAll: '...going ';
+								nextPutAll: (self class degree: self going); newLine]).
+						self showChant]]
+					ifFalse: [
+						self stopStepping.
+						self perform: aSymbol.
+						self removeActionsForEvent: #morphicStep]]].
+	self startSteppingStepTime: model chantBeat. 	"time between chants"! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 21:49:29'!
+bidBump
+	"Answer the bid increments"
+	
+	^ 1000 * #(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 21:48:22'!
+bidIncrementList
+	"Answer the list of bid increments"
+	| col |
+	
+	col _ OrderedCollection new.
+	self bidBump do: [:each | col add: '$', each printStringWithCommas].
+	^ col
+! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 9/26/2016 21:33:07'!
+details
+	"Not required for job auctions"
+! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/10/2020 11:56:34'!
+jobSold
+	"Turn things over to the winner"
+
+	model jobWinner: currentBidder bid: currentBid.
+	self delete
+! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 21:59:41'!
+offer: aName
+	"Record a bid by aName and start the auction"
+
+	self offer: currentBid + currentBump by: aName.
+	begun  _ true! !
+
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 22:01:40'!
+offer: anObject by: aName
+	"State that an offer referred to by anObject was made by aName"
+
+	self currentBid: anObject.
+	currentBidder _ aName.
+	self chant addFirst: (String streamContents: [:str |
+		str
+			nextPut: $$;
+			nextPutAll: self currentBid printStringWithCommas;
+			nextPutAll: ' was bid by '; 
+			nextPutAll: currentBidder; newLine]).
+	self showChant.
+	going _ 0.
+	buyers submorphsDo: [:ea | ea enableButton].
+	(buyers findDeepSubmorphThat: [:mm | mm label = aName] ifAbsent: []) disableButton
+! !
+
+!AuctionJob methodsFor: 'accessing' stamp: 'dhn 5/9/2020 21:55:54'!
+currentBump: anObject
+	"Set the value of currentBump"
+
+	currentBump _ anObject! !
 
 !AuctionJob methodsFor: 'termination' stamp: 'dhn 11/11/2016 15:39:33'!
 closeBoxHit
