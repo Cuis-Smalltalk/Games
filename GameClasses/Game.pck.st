@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4140] on 9 May 2020 at 9:23:26 pm'!
+'From Cuis 5.0 [latest update: #4140] on 10 May 2020 at 1:21:16 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 57!
+!provides: 'Game' 1 58!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1177,16 +1177,18 @@ enableButton
 		self enabled: true.
 		self color: oldColor]! !
 
-!BidderButton methodsFor: 'event handling' stamp: 'dhn 5/9/2020 21:22:24'!
+!BidderButton methodsFor: 'event handling' stamp: 'dhn 5/10/2020 13:03:18'!
 mouseButton2Down: event localPosition: point 
 	"Bring up the bid increment menu"
 	| x |
 
-	x _ (PopUpMenu labelArray: model bidIncrementList) 
-		startUpWithCaption: 'Bid Increment'.
-	x _ x max: 1.
-	model currentBump: (model bidBump at: x).
-	model offer: label! !
+	enabled
+		ifTrue: [
+			x _ (PopUpMenu labelArray: model bidIncrementList) 
+				startUpWithCaption: 'Bid Increment'.
+			x _ x max: 1.
+			model currentBump: (model bidBump at: x).
+			model offer: label]! !
 
 !GameCell methodsFor: 'accessing' stamp: 'dhn 8/14/2017 10:59:26'!
 describe
