@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4140] on 10 May 2020 at 1:21:16 pm'!
+'From Cuis 5.0 [latest update: #4140] on 11 May 2020 at 2:39:12 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 58!
+!provides: 'Game' 1 59!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -98,7 +98,7 @@ AuctionView class
 
 !classDefinition: #AuctionAsset category: #'Game-Graphics'!
 AuctionView subclass: #AuctionAsset
-	instanceVariableNames: 'asset'
+	instanceVariableNames: 'asset currentBump'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -1429,21 +1429,15 @@ beat: aSymbol
 				self removeActionsForEvent: #morphicStep]].
 	self startSteppingStepTime: model chantBeat. 	"time between chants"! !
 
-!AuctionView methodsFor: 'operation' stamp: 'dhn 9/3/2018 15:05:29'!
+!AuctionView methodsFor: 'operation' stamp: 'dhn 5/11/2020 10:40:49'!
 beginAuction
-	"Show the bid increments and let the bidding begin"
+	"Show buttons for buyers and let the bidding begin"
 	
 	begun _ true.
 	self 
 		soldEndButtons;
 		beat: #assetSold;
-		buyerButtons.
-	model 
-		auctionList: model class bidIncrement;
-		assetAuctionItem: 1;
-		changed: #assetAuctionList.
-	heading contents: 'Bid Increment'
-! !
+		buyerButtons! !
 
 !AuctionView methodsFor: 'operation' stamp: 'dhn 10/27/2016 16:31:27'!
 going
@@ -1472,11 +1466,11 @@ list: anObject
 	list _ anObject
 ! !
 
-!AuctionView methodsFor: 'operation' stamp: 'dhn 9/3/2018 15:06:28'!
+!AuctionView methodsFor: 'operation' stamp: 'dhn 5/11/2020 11:05:13'!
 offer: anObject by: aName
 	"State that an offer referred to by anObject was made by aName"
 
-	self currentBid: self currentBid + (model class bidBump at: anObject).
+	currentBid _ currentBid + (self bidBump at: anObject).
 	currentBidder _ aName.
 	self chant addFirst: (String streamContents: [:str |
 		str
@@ -1633,6 +1627,24 @@ assetSold
 		model updateHistory.
 		model enableAll: {'End Turn'}].
 	model updatePlayer! !
+
+!AuctionAsset methodsFor: 'operation' stamp: 'dhn 5/11/2020 10:52:49'!
+bidBump
+	"Answer the bid increments"
+	
+	^ (1000 to: 20000 by: 1000) asOrderedCollection ! !
+
+!AuctionAsset methodsFor: 'operation' stamp: 'dhn 5/11/2020 14:21:28'!
+bidIncrementList
+	"Answer the list of bid increments"
+	
+	^ self bidBump collect: [:each | '$', each printStringWithCommas]! !
+
+!AuctionAsset methodsFor: 'operation' stamp: 'dhn 5/11/2020 10:54:19'!
+currentBump: anObject
+	"Set the value of currentBump"
+
+	currentBump _ anObject! !
 
 !AuctionAsset methodsFor: 'operation' stamp: 'dhn 9/26/2016 20:07:10'!
 details
