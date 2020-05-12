@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4140] on 11 May 2020 at 2:39:12 pm'!
+'From Cuis 5.0 [latest update: #4140] on 12 May 2020 at 3:31:52 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 59!
+!provides: 'Game' 1 60!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -2306,16 +2306,15 @@ menu: aMenuMorph
 	"#accept is a method of PluggableTextMorph"
 	^ aMenuMorph! !
 
-!DieMorph methodsFor: 'drawing' stamp: 'dhn 8/21/2017 11:13:10'!
+!DieMorph methodsFor: 'drawing' stamp: 'dhn 5/12/2020 15:25:25'!
 adjustTo: aMorph
-	"Set position based on anObject"
+	"Set position based on aMorph"
 	| s |
 	
 	s _ aMorph morphExtent x * 50 / 132.
 	self 
-		morphExtent: s@s;
-		setDots;
-		referencePosition: aMorph referencePosition - (0@2 * aMorph morphHeight)! !
+		shape: s@s
+		at: aMorph referencePosition - (0@2 * aMorph morphHeight)! !
 
 !DieMorph methodsFor: 'drawing' stamp: 'dhn 8/21/2017 09:40:34'!
 bottom
@@ -2462,14 +2461,17 @@ initialize
 		borderWidth: 2;
 		color: Color lightGreen! !
 
-!DieMorph methodsFor: 'initialization' stamp: 'dhn 8/21/2017 11:27:25'!
-setDots
-	"Initialize the dot"
+!DieMorph methodsFor: 'initialization' stamp: 'dhn 5/12/2020 15:28:36'!
+shape: aPoint at: aLocation
+	"Set the size and position of self"
 	
+	self morphExtent: aPoint.
 	dot _ EllipseMorph new
 		color: Color black;
 		borderWidth: 0;
-		morphExtent: self morphExtent * 0.24! !
+		morphExtent: self morphExtent * 0.24.
+	self referencePosition: aLocation
+! !
 
 !DieMorph methodsFor: 'operation' stamp: 'dhn 9/6/2017 22:10:55'!
 show: aCollection
