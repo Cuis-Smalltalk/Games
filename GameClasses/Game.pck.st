@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4140] on 12 May 2020 at 3:31:52 pm'!
+'From Cuis 5.0 [latest update: #4140] on 13 May 2020 at 4:13:37 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 60!
+!provides: 'Game' 1 61!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -148,7 +148,7 @@ ListView class
 
 !classDefinition: #DieMorph category: #'Game-Graphics'!
 PluggableMorph subclass: #DieMorph
-	instanceVariableNames: 'dot value'
+	instanceVariableNames: 'dot value results'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
@@ -300,7 +300,7 @@ A window which makes it possible for players to make purchases.!
 An abstract class for game windows.!
 
 !DieMorph commentStamp: '<historical>' prior: 0!
-A die (one half of a pair of dice).!
+A die (one half of a pair of dice). Multiple instances can cache values in #results.!
 
 !ArrowMorph commentStamp: '<historical>' prior: 0!
 Enable a form to be opened on a world.!
@@ -2453,10 +2453,11 @@ top
 	^ self morphExtent y * 0.10
 ! !
 
-!DieMorph methodsFor: 'initialization' stamp: 'dhn 8/21/2017 11:17:03'!
+!DieMorph methodsFor: 'initialization' stamp: 'dhn 5/12/2020 16:13:37'!
 initialize
 
 	super initialize.
+	results _ OrderedCollection new.
 	self 
 		borderWidth: 2;
 		color: Color lightGreen! !
@@ -2471,6 +2472,56 @@ shape: aPoint at: aLocation
 		borderWidth: 0;
 		morphExtent: self morphExtent * 0.24.
 	self referencePosition: aLocation
+! !
+
+!DieMorph methodsFor: 'operation' stamp: 'dhn 5/13/2020 16:11:23'!
+roll1: aCollection then: aSymbol
+	"Display the succession of faces in aCollection; perform aSymbol with the value of the final face"
+	| limit linger t i |
+	
+	limit _ 1600 + (500 atRandom).
+	linger _ limit + 700. 	"to pause before vanishing"
+	t _ 0.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :delta |
+		i _ i + 1.
+		t _ t + delta.
+		t < limit 	"limit on the total time of activity"
+			ifTrue: [value _ self perform: (aCollection atWrap: i)]
+			ifFalse: [
+				t > linger ifTrue: [
+					self stopStepping.
+					self removeActionsForEvent: #morphicStep.
+					owner removeMorph: self.
+					model perform: aSymbol with: value.
+					]]].
+	self startSteppingStepTime: 85. 	"time of each step in the activity"
+! !
+
+!DieMorph methodsFor: 'operation' stamp: 'dhn 5/12/2020 17:45:22'!
+roll2: aCollection then: aSymbol
+	"Display the faces in aCollection on the receiver in succession and store the final value in results. If 2 values have been collected in results, have the model perform aSymbol"
+	| limit linger t i x |
+	
+	limit _ 1600 + (500 atRandom).
+	linger _ limit + 700. 	"to pause before vanishing"
+	t _ 0.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :delta |
+		i _ i + 1.
+		t _ t + delta.
+		t < limit 	"limit on the total time of activity"
+			ifTrue: [x _ self perform: (aCollection atWrap: i)]
+			ifFalse: [
+				model testMode ifTrue: [self perform: (self class faces at: (model hardRoll * 2))].
+				t > linger ifTrue: [
+					self stopStepping.
+					model hops add: x.
+					model hops size > 1 
+						ifTrue: [model perform: aSymbol].
+					self removeActionsForEvent: #morphicStep.
+					owner removeMorph: self]]].
+	self startSteppingStepTime: 85. 	"time of each step in the activity"
 ! !
 
 !DieMorph methodsFor: 'operation' stamp: 'dhn 9/6/2017 22:10:55'!
