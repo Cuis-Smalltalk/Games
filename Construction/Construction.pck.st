@@ -1,4 +1,4 @@
-'From Cuis 5.0 [latest update: #4140] on 10 May 2020 at 2:45:05 pm'!
+'From Cuis 5.0 [latest update: #4042] on 27 February 2020 at 1:33:34 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
 !provides: 'Construction' 1 222!
 !requires: 'Game' 1 24 nil!
@@ -256,6 +256,76 @@ ConAsset subclass: #You
 You class
 	instanceVariableNames: ''!
 
+!classDefinition: #BidWar category: #'Construction-Model'!
+BoardSpace subclass: #BidWar
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'BidWar class' category: #'Construction-Model'!
+BidWar class
+	instanceVariableNames: ''!
+
+!classDefinition: #Exclusive category: #'Construction-Model'!
+BoardSpace subclass: #Exclusive
+	instanceVariableNames: 'brand'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'Exclusive class' category: #'Construction-Model'!
+Exclusive class
+	instanceVariableNames: ''!
+
+!classDefinition: #Job category: #'Construction-Model'!
+BoardSpace subclass: #Job
+	instanceVariableNames: 'market'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'Job class' category: #'Construction-Model'!
+Job class
+	instanceVariableNames: ''!
+
+!classDefinition: #Market category: #'Construction-Model'!
+BoardSpace subclass: #Market
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'Market class' category: #'Construction-Model'!
+Market class
+	instanceVariableNames: ''!
+
+!classDefinition: #SkidPad category: #'Construction-Model'!
+BoardSpace subclass: #SkidPad
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'SkidPad class' category: #'Construction-Model'!
+SkidPad class
+	instanceVariableNames: ''!
+
+!classDefinition: #Weather category: #'Construction-Model'!
+BoardSpace subclass: #Weather
+	instanceVariableNames: 'amount'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'Weather class' category: #'Construction-Model'!
+Weather class
+	instanceVariableNames: ''!
+
+!classDefinition: #YearEnd category: #'Construction-Model'!
+BoardSpace subclass: #YearEnd
+	instanceVariableNames: ''
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Model'!
+!classDefinition: 'YearEnd class' category: #'Construction-Model'!
+YearEnd class
+	instanceVariableNames: ''!
+
 !classDefinition: #Contractor category: #'Construction-Model'!
 Gamer subclass: #Contractor
 	instanceVariableNames: 'markets options priceFactor shutDown split drawnOption jobRoll jobCount jobDone rollAdjustment jobMAvg'
@@ -364,6 +434,27 @@ Other players.!
 
 !You commentStamp: 'dhn 8/22/2016 15:55:22' prior: 0!
 The current player.!
+
+!BidWar commentStamp: '<historical>' prior: 0!
+Competition for a construction job.!
+
+!Exclusive commentStamp: '<historical>' prior: 0!
+Characteristics of a franchise license.!
+
+!Job commentStamp: '<historical>' prior: 0!
+Characteristics of a construction job.!
+
+!Market commentStamp: '<historical>' prior: 0!
+Doubles income for the market. Records receivables amount.!
+
+!SkidPad commentStamp: '<historical>' prior: 0!
+Deal with having pneumonia.!
+
+!Weather commentStamp: '<historical>' prior: 0!
+Gain or lose based on the weather.!
+
+!YearEnd commentStamp: '<historical>' prior: 0!
+The first board space. Gives gifts at Christmas. Records receivables amount.!
 
 !Contractor commentStamp: 'dhn 4/15/2012 12:50' prior: 0!
 A player in the Construction Game.
@@ -2301,6 +2392,62 @@ requiredEquipment
 		add: #'BIG PHIL' -> #BigPhil;
 		yourself! !
 
+!Contract class methodsFor: 'operation' stamp: 'dhn 2/27/2020 13:30:19'!
+spaceAttributes
+	"Attributes of the spaces on the board."
+	
+	^ OrderedCollection new
+		add: YearEnd new;
+		add: Market new;
+		add: Market new;
+		add: Market new;
+		add: Market new;
+		add: Market new;
+		add: (Weather new amount: 5000);
+		add: (Weather new amount: -5000);
+		add: SkidPad new;
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #'HEAVY HIGHWAY');
+		add: (Job new market: #'HEAVY HIGHWAY');
+		add: (Job new market: #'HEAVY HIGHWAY');
+		add: (Job new market: #'HEAVY HIGHWAY');
+		add: (Job new market: #'HEAVY HIGHWAY');
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #RESIDENTIAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #INSTITUTIONAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #COMMERCIAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Job new market: #MUNICIPAL);
+		add: (Exclusive new brand: #STINKY);
+		add: (Exclusive new brand: #'LOST MINER');
+		add: (Exclusive new brand: #WESTWOOD);
+		add: (Exclusive new brand: #'BIG PHIL');
+	yourself! !
+
 !Contract class methodsFor: 'operation' stamp: 'dhn 1/6/2018 13:55:09'!
 taleAtChristmas
 	"Answer the popup text for space 1"
@@ -2314,21 +2461,21 @@ taxDue: aPosition
 	"Answer true if income tax is due at aPosition."
 	^ aPosition = 15! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 7/22/2016 17:43'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:30:28'!
 assetList
 	"Answer a list for the status window"
 	
-	^ Contract equipmentList , Contract franchiseList , {'Yourself'. 'Players'. 'Graphs'. 'Contingencies'}! !
+	^ Contract equipmentList , Contract franchiseList , #('Yourself' 'Players' 'Graphs' 'Contingencies')! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 8/18/2013 06:54'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:28:01'!
 equipmentList
 	"Answer a list in the order needed for purchases and status"
-	^ {'Backhoe'. 'Dozer'. 'Excavator'. 'Grader'. 'Scraper'. 'Truck'}! !
+	^ #('Backhoe' 'Dozer' 'Excavator' 'Grader' 'Scraper' 'Truck')! !
 
-!Contract class methodsFor: 'lists' stamp: 'dhn 8/18/2013 06:56'!
+!Contract class methodsFor: 'lists' stamp: 'dhn 2/27/2020 11:29:00'!
 franchiseList
 	"Answer a list in the order needed for purchases and status"
-	^ {'Stinky'. 'LostMiner'. 'Westwood'. 'BigPhil'}! !
+	^ #('Stinky' 'LostMiner' 'Westwood' 'BigPhil')! !
 
 !Contract class methodsFor: 'lists' stamp: 'dhn 8/15/2017 09:13:04'!
 season
@@ -4374,6 +4521,42 @@ reset! !
 !You class methodsFor: 'as yet unclassified' stamp: 'dhn 4/17/2012 11:57'!
 price
 	^ 0! !
+
+!Exclusive methodsFor: 'accessing' stamp: 'dhn 2/27/2020 13:21:42'!
+brand
+	"Answer the value of brand"
+
+	^ brand! !
+
+!Exclusive methodsFor: 'accessing' stamp: 'dhn 2/27/2020 13:21:42'!
+brand: anObject
+	"Set the value of brand"
+
+	brand _ anObject! !
+
+!Job methodsFor: 'accessing' stamp: 'dhn 2/27/2020 12:21:34'!
+market
+	"Answer the value of market"
+
+	^ market! !
+
+!Job methodsFor: 'accessing' stamp: 'dhn 2/27/2020 12:21:34'!
+market: anObject
+	"Set the value of market"
+
+	market _ anObject! !
+
+!Weather methodsFor: 'accessing' stamp: 'dhn 2/27/2020 12:14:15'!
+amount
+	"Answer the value of amount"
+
+	^ amount! !
+
+!Weather methodsFor: 'accessing' stamp: 'dhn 2/27/2020 12:14:15'!
+amount: anObject
+	"Set the value of amount"
+
+	amount _ anObject! !
 
 !Contractor methodsFor: 'accessing' stamp: 'dhn 4/15/2012 12:45'!
 addOption: anObject
