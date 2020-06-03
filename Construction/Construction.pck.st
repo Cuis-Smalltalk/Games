@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4042] on 27 February 2020 at 1:33:34 pm'!
+'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 4:41:18 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 222!
+!provides: 'Construction' 1 226!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -34,6 +34,16 @@ GameBoard subclass: #Construction
 	category: 'Construction-Graphics'!
 !classDefinition: 'Construction class' category: #'Construction-Graphics'!
 Construction class
+	instanceVariableNames: ''!
+
+!classDefinition: #AuctionMachinery category: #'Construction-Graphics'!
+AuctionAsset subclass: #AuctionMachinery
+	instanceVariableNames: 'acknowledged'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Graphics'!
+!classDefinition: 'AuctionMachinery class' category: #'Construction-Graphics'!
+AuctionMachinery class
 	instanceVariableNames: ''!
 
 !classDefinition: #AuctionJob category: #'Construction-Graphics'!
@@ -88,7 +98,7 @@ StatsView class
 
 !classDefinition: #ConAsset category: #'Construction-Model'!
 Asset subclass: #ConAsset
-	instanceVariableNames: 'costAvoided holder'
+	instanceVariableNames: 'costAvoided holder expense'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Construction-Model'!
@@ -371,6 +381,9 @@ Construction start.
 Reference:
 
 http://farmgame.com/product/the-construction-game/!
+
+!AuctionMachinery commentStamp: '<historical>' prior: 0!
+A Construction Game window which makes it possible for players to raise money by auctioning equipment.!
 
 !AuctionJob commentStamp: '<historical>' prior: 0!
 A Construction Game window which makes it possible for players to bid on competitive jobs.!
@@ -1442,6 +1455,20 @@ goalProgress
 	
 	^ String streamContents: [ :strm | 
 		(self currentPlayer netAssets / self goal * 100) printOn: strm fractionDigits: 1]! !
+
+!Contract methodsFor: 'operating' stamp: 'dhn 5/27/2020 16:43:54'!
+hammerDown: aBid for: aProperty by: aBidder
+	"Record the sale at auction"
+	| winner |
+	
+	winner _ players detect: [:a | a identity = aBidder] ifNone: [].
+	winner tally: aBid negated.
+	aProperty expense: aProperty cost + aBid.
+	winner assets add: aProperty.
+	winner assets reSort.
+	aProperty owner: winner.
+	self triggerEvent: #itemChange
+! !
 
 !Contract methodsFor: 'operating' stamp: 'dhn 10/6/2018 20:33:17'!
 numbersReport
@@ -2994,16 +3021,16 @@ displayInvoice: details title: aTitle
 		morphExtent: 310@180;						
 		details: details! !
 
-!Construction methodsFor: 'windows' stamp: 'dhn 8/29/2018 14:26:30'!
+!Construction methodsFor: 'windows' stamp: 'dhn 5/24/2020 12:05:32'!
 showAssetAuction
-	"Open an asset auction window"
+	"Open an auction machinery window"
 	| pl win purpose |
 	
 	model disableAll: {'Auction'. 'End Turn'}.
 	model auctionList: model assetsToSell.
 	pl _ model currentPlayer.
 	purpose _ pl identity, '''s Assets'.
-	win _ AuctionAsset openOn: model.			
+	win _ AuctionMachinery openOn: model.			
 	win buyers color: Color lightBrown.
 	win openInWorld: pasteup.
 	win 
@@ -3531,6 +3558,90 @@ how
 	Construction start.
 	"! !
 
+!AuctionMachinery methodsFor: 'operation' stamp: 'dhn 5/27/2020 16:41:30'!
+beginAuction
+
+	model assetAuctionItem: 0.
+	currentBump _ self bidBump first.
+	begun _ true.
+	self 
+		soldEndButtons;
+		buyerButtons;
+		beat: #propertySold! !
+
+!AuctionMachinery methodsFor: 'operation' stamp: 'dhn 5/27/2020 16:41:12'!
+details
+	"Set the contents of the chant pane"
+	
+	model assetAuctionItem > 0
+		ifTrue: [
+			self openingFor: model assetAuctionItem.
+			beginButton enableButton]! !
+
+!AuctionMachinery methodsFor: 'operation' stamp: 'dhn 5/26/2020 21:23:21'!
+offer: aName
+	"Record a bid by aName and start the auction"
+
+	self offer: currentBid + currentBump by: aName.
+	begun  _ true! !
+
+!AuctionMachinery methodsFor: 'operation' stamp: 'dhn 5/27/2020 16:27:33'!
+offer: anAmount by: aName
+	"State that a bid of anAmount was made by aName"
+
+	currentBidder _ aName.
+	self chant addFirst: (String streamContents: [:str |
+		str
+			nextPut: $$;
+			nextPutAll: anAmount printStringWithCommas;
+			nextPutAll: ' was bid by '; 
+			nextPutAll: currentBidder; newLine]).
+	self showChant.
+	going _ 0.
+	buyers submorphsDo: [:ea | ea enableButton].
+	(buyers findDeepSubmorphThat: [:mm | mm label = aName] ifAbsent: []) disableButton
+! !
+
+!AuctionMachinery methodsFor: 'operation' stamp: 'dhn 5/26/2020 18:39:28'!
+propertySold
+	"Finalize the sale"
+	
+	model assetAuctionItem: 0.
+	currentBidder = model class bankName
+		ifTrue: [
+			asset owner tally: currentBid.
+			asset owner: nil] 
+		ifFalse: [
+			model hammerDown: currentBid for: asset by: currentBidder].
+	acknowledged _ true.
+	"model possiblyEnable."
+	self delete
+! !
+
+!AuctionMachinery methodsFor: 'buttons' stamp: 'dhn 5/27/2020 12:48:31'!
+buyerButtons
+	"Set bidding buttons for players."
+	| col |
+	
+	col _ OrderedCollection new.
+	model players do: [:ea |
+		col add: ((BidderButton label: ea identity action: #offer: state: true model: self)
+			morphExtent: 70@30;
+			color: ea color;
+			setProperty: #'handlesMouseDown:' toValue: true;
+			setBalloonText: 'bidder')].
+	buyers addAllMorphs: col reversed! !
+
+!AuctionMachinery methodsFor: 'buttons' stamp: 'dhn 5/26/2020 21:36:14'!
+makeEndButton
+	"Answer the 'End' button"
+	
+	endButton _ GameButtonMorph label: 'End' action: #propertySold state: false model: self.
+	endButton 
+		morphExtent: 70@30;
+		setBalloonText: 'Close the auction window.'.
+	^ endButton! !
+
 !AuctionJob methodsFor: 'initialization' stamp: 'dhn 5/10/2020 12:25:20'!
 buildMorphicWindow
 	"Lay out the window for auctioning a job"
@@ -3690,21 +3801,17 @@ beat: aSymbol
 						self removeActionsForEvent: #morphicStep]]].
 	self startSteppingStepTime: model chantBeat. 	"time between chants"! !
 
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 21:49:29'!
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 6/3/2020 14:05:30'!
 bidBump
 	"Answer the bid increments"
 	
-	^ 1000 * #(1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20)! !
+	^ (1000 to: 20000 by: 1000) asOrderedCollection ! !
 
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 5/9/2020 21:48:22'!
+!AuctionJob methodsFor: 'operation' stamp: 'dhn 6/3/2020 13:56:35'!
 bidIncrementList
 	"Answer the list of bid increments"
-	| col |
 	
-	col _ OrderedCollection new.
-	self bidBump do: [:each | col add: '$', each printStringWithCommas].
-	^ col
-! !
+	^ self bidBump collect: [:each | '$', each printStringWithCommas]! !
 
 !AuctionJob methodsFor: 'operation' stamp: 'dhn 9/26/2016 21:33:07'!
 details
@@ -3970,6 +4077,18 @@ costAvoided: anObject
 	"Set the value of costAvoided"
 
 	costAvoided := anObject! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 6/3/2020 14:38:13'!
+expense
+	"Answer the value of expense"
+
+	^ expense ifNil: [expense _ 0]! !
+
+!ConAsset methodsFor: 'accessing' stamp: 'dhn 6/3/2020 14:38:48'!
+expense: anObject
+	"Set the value of expense"
+
+	expense _ anObject! !
 
 !ConAsset methodsFor: 'accessing' stamp: 'dhn 7/21/2013 12:06'!
 holder
@@ -4782,12 +4901,13 @@ sellAsset: aString for: aNumber
 	asset value holder = self
 		ifTrue: [asset value holder: nil]! !
 
-!Contractor methodsFor: 'initialize-release' stamp: 'dhn 4/29/2019 10:14:40'!
+!Contractor methodsFor: 'initialize-release' stamp: 'dhn 5/27/2020 15:50:45'!
 initialize
 
 	cash _ 100000.
 	debt _ 0.
 	assets _ self setupAssets.
+	assets do: [:ea | ea quantity > 0 ifTrue: [ea owner: self]].
 	markets _ self setupMarkets.
 	options _ OrderedCollection new.
 	history _ OrderedCollection with: self netAssets.
