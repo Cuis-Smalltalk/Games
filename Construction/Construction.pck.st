@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 4:41:18 pm'!
+'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 6:14:02 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 226!
+!provides: 'Construction' 1 227!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -3806,12 +3806,6 @@ bidBump
 	"Answer the bid increments"
 	
 	^ (1000 to: 20000 by: 1000) asOrderedCollection ! !
-
-!AuctionJob methodsFor: 'operation' stamp: 'dhn 6/3/2020 13:56:35'!
-bidIncrementList
-	"Answer the list of bid increments"
-	
-	^ self bidBump collect: [:each | '$', each printStringWithCommas]! !
 
 !AuctionJob methodsFor: 'operation' stamp: 'dhn 9/26/2016 21:33:07'!
 details

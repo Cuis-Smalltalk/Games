@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4140] on 13 May 2020 at 4:13:37 pm'!
+'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 6:14:05 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 61!
+!provides: 'Game' 1 62!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1439,6 +1439,12 @@ beginAuction
 		beat: #assetSold;
 		buyerButtons! !
 
+!AuctionView methodsFor: 'operation' stamp: 'dhn 6/3/2020 16:48:11'!
+bidIncrementList
+	"Answer the list of bid increments"
+	
+	^ self bidBump collect: [:each | '$', each printStringWithCommas]! !
+
 !AuctionView methodsFor: 'operation' stamp: 'dhn 10/27/2016 16:31:27'!
 going
 	"Answer the value of going"
@@ -1633,12 +1639,6 @@ bidBump
 	"Answer the bid increments"
 	
 	^ (1000 to: 20000 by: 1000) asOrderedCollection ! !
-
-!AuctionAsset methodsFor: 'operation' stamp: 'dhn 5/11/2020 14:21:28'!
-bidIncrementList
-	"Answer the list of bid increments"
-	
-	^ self bidBump collect: [:each | '$', each printStringWithCommas]! !
 
 !AuctionAsset methodsFor: 'operation' stamp: 'dhn 5/11/2020 10:54:19'!
 currentBump: anObject
