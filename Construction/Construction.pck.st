@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 6:14:02 pm'!
+'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 9:14:41 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 227!
+!provides: 'Construction' 1 228!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -266,16 +266,6 @@ ConAsset subclass: #You
 You class
 	instanceVariableNames: ''!
 
-!classDefinition: #BidWar category: #'Construction-Model'!
-BoardSpace subclass: #BidWar
-	instanceVariableNames: ''
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Construction-Model'!
-!classDefinition: 'BidWar class' category: #'Construction-Model'!
-BidWar class
-	instanceVariableNames: ''!
-
 !classDefinition: #Exclusive category: #'Construction-Model'!
 BoardSpace subclass: #Exclusive
 	instanceVariableNames: 'brand'
@@ -447,9 +437,6 @@ Other players.!
 
 !You commentStamp: 'dhn 8/22/2016 15:55:22' prior: 0!
 The current player.!
-
-!BidWar commentStamp: '<historical>' prior: 0!
-Competition for a construction job.!
 
 !Exclusive commentStamp: '<historical>' prior: 0!
 Characteristics of a franchise license.!
