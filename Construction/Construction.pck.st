@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 9:14:41 pm'!
+'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 3:06:14 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 228!
+!provides: 'Construction' 1 229!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2844,7 +2844,7 @@ makeCellsArea
 		
 ! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 11/8/2016 16:54:11'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:57:15'!
 makeNumbersArea
 	"Lay out the area for player cash on hand"
 	
@@ -2858,8 +2858,8 @@ makeNumbersArea
 			padding: #center.
 			
 	^ numbersArea addMorph: ((StringMorph contents: '') 
-		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' pointSize: 22))
+		emphasis: 1;
+		font: (FontFamily familyName: 'DejaVu' pointSize: 22))
 		! !
 
 !Construction methodsFor: 'initialization' stamp: 'dhn 11/8/2016 16:54:24'!
@@ -2921,7 +2921,7 @@ setupToken: aPlayer
 	pasteup addMorph: model token.
 	^ model token! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 10/20/2016 19:54:47'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:48:17'!
 showSeasons: associations 
 	"Display the seasons contained in associations"
 	| width set bm txt dx |
@@ -2941,7 +2941,7 @@ showSeasons: associations
 			bm color: sea color.
 			txt _ StringMorph new
 				emphasis: 1;  "emphasis: bold=1"
-				font: (AbstractFont familyName: 'DejaVu' pointSize: 18).
+				font: (FontFamily familyName: 'DejaVu' pointSize: 18).
 			bm addMorph: txt..
 			txt color: (sea textColor
 				ifTrue: [Color white]
@@ -3116,7 +3116,7 @@ windowPosition
 	
 	^ self morphPosition + (model windowPosition: self class viewPositionLeft)! !
 
-!Construction methodsFor: 'operation' stamp: 'dhn 10/6/2018 20:56:46'!
+!Construction methodsFor: 'operation' stamp: 'dhn 6/5/2020 13:57:01'!
 displayNumbers
 	"Display financial state of the players"
 	| otherLead pluralForm others |
@@ -3133,9 +3133,9 @@ displayNumbers
 			nextPutAll: pluralForm;
 			nextPutAll: ' Cash: '])).
 	otherLead
-		emphasis: AbstractFont boldCode;
+		emphasis: 1;
 		color: Color lightBrown;
-		font: (AbstractFont familyName: 'DejaVu' pointSize: 18).
+		font: (FontFamily familyName: 'DejaVu' pointSize: 18).
 	othersArea 
 		removeAllMorphs;
 		addMorph: otherLead.
@@ -3143,10 +3143,10 @@ displayNumbers
 	others do: [:ea | | x |
 		x _ ' $', ea cash truncated printStringWithCommas.
 		othersArea addMorph: ((StringMorph contents: x) 
-			emphasis: AbstractFont boldCode;
+			emphasis: 1;
 			color: ea color;
 			setBalloonText: 'cash held by ', ea identity;
-			font: (AbstractFont familyName: 'DejaVu' pointSize: 18))]! !
+			font: (FontFamily familyName: 'DejaVu' pointSize: 18))]! !
 
 !Construction methodsFor: 'operation' stamp: 'dhn 10/23/2016 14:53:10'!
 doTour
@@ -3185,7 +3185,7 @@ showToken
 		morphPosition: self morphExtent * (0.006@0.72);
 		openInWorld: pasteup! !
 
-!Construction methodsFor: 'operation' stamp: 'dhn 10/6/2018 20:57:17'!
+!Construction methodsFor: 'operation' stamp: 'dhn 6/5/2020 13:57:49'!
 titleChange: aPlayer
 	"Change the title, showing player data in color"
 	"Display financial state of the players"
@@ -3206,9 +3206,9 @@ titleChange: aPlayer
 			nextPutAll: pluralForm;
 			nextPutAll: ' Cash: '])).
 	otherLead
-		emphasis: AbstractFont boldCode;
+		emphasis: 1;
 		color: Color lightBrown;
-		font: (AbstractFont familyName: 'DejaVu' pointSize: 18).
+		font: (FontFamily familyName: 'DejaVu' pointSize: 18).
 	othersArea 
 		removeAllMorphs;
 		addMorph: otherLead.
@@ -3216,10 +3216,10 @@ titleChange: aPlayer
 	others do: [:ea | | x |
 		x _ ' $', ea cash truncated printStringWithCommas.
 		othersArea addMorph: ((StringMorph contents: x) 
-			emphasis: AbstractFont boldCode;
+			emphasis: 1;
 			color: ea color;
 			setBalloonText: 'cash held by ', ea identity;
-			font: (AbstractFont familyName: 'DejaVu' pointSize: 18))]! !
+			font: (FontFamily familyName: 'DejaVu' pointSize: 18))]! !
 
 !Construction methodsFor: 'operation' stamp: 'dhn 1/11/2017 15:45:58'!
 tourAt: anInterval 
@@ -3654,7 +3654,7 @@ initialize
 	currentBid _ 0.
 	currentBump _ 1000! !
 
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 8/28/2018 18:26:41'!
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:56:44'!
 setUpMidRow
 	"Answer the layout for the middle row of the Job Auction window"
 	| listMorph row leftPane headingArea |
@@ -3674,8 +3674,8 @@ setUpMidRow
 				minorDirectionPadding: #center).
 
 	heading _ ((StringMorph contents: 'Bid Increment') 
-		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' pointSize: 10)).
+		emphasis: 1;
+		font: (FontFamily familyName: 'DejaVu' pointSize: 10)).
 	headingArea _ (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0

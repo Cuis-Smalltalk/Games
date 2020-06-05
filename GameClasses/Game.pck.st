@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4202] on 3 June 2020 at 6:14:05 pm'!
+'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 3:05:12 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 62!
+!provides: 'Game' 1 63!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1323,14 +1323,14 @@ morphWidth
 	
 	^ Display width! !
 
-!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 2/19/2020 19:18:45'!
+!GameBoard class methodsFor: 'instance creation' stamp: 'dhn 6/5/2020 13:45:57'!
 gameFont
 	"Answer the font for the game"
 	| family |
 	
-	family _  AbstractFont familyNames     
-		detect: [:f | f = 'DejaVu'] ifNone: [^ AbstractFont default].
-	^ AbstractFont familyName: family aroundPointSize: 12
+	family _  FontFamily familyNames     
+		detect: [:f | f = 'DejaVu'] ifNone: [^ FontFamily default].
+	^ FontFamily familyName: family aroundPointSize: 12
 ! !
 
 !GameBoard class methodsFor: 'instance creation' stamp: 'dhn 7/18/2016 10:37'!
@@ -1710,7 +1710,7 @@ buildMorphicWindow
 		addMorph: self setUpMidRow;
 		addMorph: (buyers _ self setUpBuyers)! !
 
-!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 8/28/2018 18:27:08'!
+!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:56:10'!
 setUpMidRow
 	"Answer the layout for the middle row of the Asset Auction window"
 	| listMorph row leftPane headingArea |
@@ -1730,8 +1730,8 @@ setUpMidRow
 				minorDirectionPadding: #center).
 
 	heading _ ((StringMorph contents: 'Assets') 
-		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' pointSize: 10)).
+		emphasis: 1;
+		font: (FontFamily familyName: 'DejaVu' pointSize: 10)).
 	headingArea _ (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
@@ -1816,7 +1816,7 @@ endIt
 		ifFalse: [begun ifFalse: [model enableAll: {'End Turn'}]].
 	self delete! !
 
-!HistoryView methodsFor: 'initialization' stamp: 'dhn 2/19/2020 19:25:45'!
+!HistoryView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:58:46'!
 buildMorphicWindow
 	"Lay out the window for the plots"
 	| goal ix |
@@ -1839,8 +1839,8 @@ buildMorphicWindow
 		ix _ ix + 1.
 		legend addMorph: ((LayoutMorph newRow name: ix asString)
 			addMorph: ((StringMorph contents: '') 
-				emphasis: AbstractFont boldCode;
-				font: (AbstractFont familyName: 'DejaVu' pointSize: 10)))].
+				emphasis: 1;
+				font: (FontFamily familyName: 'DejaVu' pointSize: 10)))].
 	plotter addMorph: legend! !
 
 !HistoryView methodsFor: 'termination' stamp: 'dhn 9/28/2016 18:37:58'!
