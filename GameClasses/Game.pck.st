@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 3:05:12 pm'!
+'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 4:45:34 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 63!
+!provides: 'Game' 1 64!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1297,7 +1297,7 @@ labelAreaHeight
 
 	^ 50! !
 
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 4/26/2019 11:25:52'!
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 6/5/2020 15:17:58'!
 makeTitleArea
 	"Lay out the area for title"
 	| area |
@@ -1309,8 +1309,8 @@ makeTitleArea
 		padding: #center.
 	
 	gameTitle _ (StringMorph contents: '') 
-		emphasis: AbstractFont boldCode;
-		font: (AbstractFont familyName: 'DejaVu' aroundPointSize: 24).
+		emphasis: 1;
+		font: (FontFamily familyName: 'DejaVu' aroundPointSize: 24).
 		
 	area addMorph: gameTitle.
 	^ area layoutSpec: (LayoutSpec  
