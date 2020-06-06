@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 5 June 2020 at 10:22:43 pm'!
+'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 11:27:18 am'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 230!
+!provides: 'Construction' 1 231!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2785,7 +2785,7 @@ layoutSubmorphs
     super layoutSubmorphs.
     self board morphExtent: self board owner morphExtent! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:25:14'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:19:05'!
 makeButtonArea
 	"Lay out the area for buttons"
 	
@@ -2793,7 +2793,7 @@ makeButtonArea
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: self class titleHeight
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	buttonArea
 			color: Color transparent;
 			name: #buttons;
@@ -2804,7 +2804,7 @@ makeButtonArea
 	^ buttonArea
 		! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:25:47'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:19:28'!
 makeCellsArea
 	"Lay out the area which shows some spaces of the board"
 	| cellArea view mm mt |
@@ -2813,7 +2813,7 @@ makeCellsArea
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 1.0
-			minorDirectionPadding: #center);
+			offAxisEdgeWeight: #center);
 		name: #'cell area'.
 	
 	1 to: self class cellsForGame do: [:ix |
@@ -2831,7 +2831,7 @@ makeCellsArea
 			layoutSpec: (LayoutSpec 
 				proportionalWidth: 1.0
 				fixedHeight: 20
-				minorDirectionPadding: #center);
+				offAxisEdgeWeight: #center);
 			color: self class cellColor;
 			axisEdgeWeight: #center;
 			name: #marks).
@@ -2844,14 +2844,14 @@ makeCellsArea
 		
 ! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:26:07'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:20:38'!
 makeNumbersArea
 	"Lay out the area for player cash on hand"
 	
 	numbersArea _ (LayoutMorph newRow separation: 0)
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0
 			proportionalHeight: self class titleHeight
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	numbersArea
 			color: Color transparent;
 			name: #numbers;
@@ -2862,20 +2862,20 @@ makeNumbersArea
 		font: (FontFamily familyName: 'DejaVu' pointSize: 22))
 		! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:27:02'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:21:13'!
 makeOthersArea
 	"Lay out the area for player cash on hand"
 	
 	othersArea _ (LayoutMorph newRow separation: 0)
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0
 			proportionalHeight: self class titleHeight
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	^ othersArea
 		color: Color transparent;
 		name: #others;
 		axisEdgeWeight: #center! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 10/20/2016 18:49:29'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:20:58'!
 makeSeasonsArea
 	"Lay out the area for seasons"
 	
@@ -2883,7 +2883,7 @@ makeSeasonsArea
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.08
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	^ seasonsArea
 			color: Color lightGreen;
 			name: #seasons! !
@@ -3629,7 +3629,7 @@ makeEndButton
 		setBalloonText: 'Close the auction window.'.
 	^ endButton! !
 
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 5/10/2020 12:25:20'!
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:23:35'!
 buildMorphicWindow
 	"Lay out the window for auctioning a job"
 	
@@ -3641,7 +3641,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 1.0
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 			
 	self layoutMorph
 		addMorph: textPane;
@@ -3654,7 +3654,7 @@ initialize
 	currentBid _ 0.
 	currentBump _ 1000! !
 
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:30:13'!
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:23:14'!
 setUpMidRow
 	"Answer the layout for the middle row of the Job Auction window"
 	| listMorph row leftPane headingArea |
@@ -3671,7 +3671,7 @@ setUpMidRow
 			layoutSpec: (LayoutSpec 
 				proportionalWidth: 1.0
 				proportionalHeight: 0.9
-				minorDirectionPadding: #center).
+				offAxisEdgeWeight: #center).
 
 	heading _ ((StringMorph contents: 'Bid Increment') 
 		emphasis: 1;
@@ -3680,7 +3680,7 @@ setUpMidRow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.1
-			minorDirectionPadding: #center);
+			offAxisEdgeWeight: #center);
 		name: 'heading area';
 		axisEdgeWeight: #left.
 	headingArea addMorph: heading.
@@ -3699,13 +3699,13 @@ setUpMidRow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 0.6
 			proportionalHeight: 1.0
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 
 	row _ (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.7
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	row
 		name: 'mid row';
 		addMorph: leftPane proportionalWidth: 0.4;
@@ -3895,7 +3895,7 @@ buy
 		enableAll: {'doJob'}.
 	self details! !
 
-!JobView methodsFor: 'initialization' stamp: 'dhn 9/9/2018 12:09:16'!
+!JobView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:25:05'!
 buildMorphicWindow
 	"Lay out the window for job invoice"
 	| top bottom left right text amount |
@@ -3906,7 +3906,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	layoutMorph
 		addMorph: top proportionalHeight: 0.85;
 		addMorph: bottom proportionalHeight: 0.15.

@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 5 June 2020 at 10:22:40 pm'!
+'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 11:27:14 am'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 65!
+!provides: 'Game' 1 66!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -1549,7 +1549,7 @@ initialize
 	super initialize.
 	begun _ false! !
 
-!AuctionView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:28:33'!
+!AuctionView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:21:45'!
 setUpBuyers
 	"Answer the layout for the buyers buttons"
 	
@@ -1559,7 +1559,7 @@ setUpBuyers
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
-			minorDirectionPadding: #center)! !
+			offAxisEdgeWeight: #center)! !
 
 !AuctionView methodsFor: 'buttons' stamp: 'dhn 9/16/2016 11:36:50'!
 makeBeginButton
@@ -1694,7 +1694,7 @@ openingFor: anItem
 			nextPutAll: ' (half the list price).'; newLine]).
 	self showChant! !
 
-!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 10/1/2016 15:33:53'!
+!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:22:42'!
 buildMorphicWindow
 	"Lay out the window for auctioning an asset"
 	
@@ -1703,14 +1703,14 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 			
 	self layoutMorph
 		addMorph: buttonsArea;
 		addMorph: self setUpMidRow;
 		addMorph: (buyers _ self setUpBuyers)! !
 
-!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:50:52'!
+!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:22:25'!
 setUpMidRow
 	"Answer the layout for the middle row of the Asset Auction window"
 	| listMorph row leftPane headingArea |
@@ -1727,7 +1727,7 @@ setUpMidRow
 			layoutSpec: (LayoutSpec 
 				proportionalWidth: 1.0
 				proportionalHeight: 0.9
-				minorDirectionPadding: #center).
+				offAxisEdgeWeight: #center).
 
 	heading _ ((StringMorph contents: 'Assets') 
 		emphasis: 1;
@@ -1736,7 +1736,7 @@ setUpMidRow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.1
-			minorDirectionPadding: #center);
+			offAxisEdgeWeight: #center);
 		name: 'heading area';
 		axisEdgeWeight: #rowLeft.
 	headingArea addMorph: heading.
@@ -1755,13 +1755,13 @@ setUpMidRow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 0.6
 			proportionalHeight: 1.0
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 
 	row _ (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.7
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	row
 		name: 'mid row';
 		addMorph: leftPane proportionalWidth: 0.4;
@@ -1816,7 +1816,7 @@ endIt
 		ifFalse: [begun ifFalse: [model enableAll: {'End Turn'}]].
 	self delete! !
 
-!HistoryView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:30:43'!
+!HistoryView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:23:59'!
 buildMorphicWindow
 	"Lay out the window for the plots"
 	| goal ix |
@@ -1826,7 +1826,7 @@ buildMorphicWindow
 		color: Color white;
  		addMorph: (MinimalStringMorph contents: '$', model goal printStringWithCommas).
 	self layoutMorph
-		addMorph: goal layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.15 minorDirectionPadding: #bottom);
+		addMorph: goal layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.15 offAxisEdgeWeight: #bottom);
 		addMorph: (plotter _ PlotGraphMorph new
 			layoutSpec: (LayoutSpec proportionalWidth: 1.0 proportionalHeight: 0.9);
 			yScaleFactor: model goal;
@@ -1904,7 +1904,7 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!LoanView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:31:08'!
+!LoanView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:24:19'!
 buildMorphicWindow
 	"Lay out the window for paying down debt"
 	| list1 rightPane |
@@ -1924,7 +1924,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	buttonArea
 		name: #buttons;
 		axisEdgeWeight: #center.
@@ -1938,7 +1938,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.85
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 
 	rightPane _ LayoutMorph newColumn.
 	rightPane
@@ -2107,7 +2107,7 @@ paymentIncrement
 	
 	^ 1000! !
 
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:31:41'!
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:24:43'!
 buildMorphicWindow
 	"Lay out the window for purchases"
 	| rightPane |
@@ -2127,7 +2127,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 	buttonArea
 		name: #buttons;
 		axisEdgeWeight: #center.
@@ -2141,7 +2141,7 @@ buildMorphicWindow
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.85
-			minorDirectionPadding: #center).
+			offAxisEdgeWeight: #center).
 
 	rightPane _ LayoutMorph newColumn.
 	rightPane
