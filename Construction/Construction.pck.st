@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 11:27:18 am'!
+'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 2:36:46 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 231!
+!provides: 'Construction' 1 232!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -3653,68 +3653,6 @@ initialize
 	super initialize.
 	currentBid _ 0.
 	currentBump _ 1000! !
-
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:23:14'!
-setUpMidRow
-	"Answer the layout for the middle row of the Job Auction window"
-	| listMorph row leftPane headingArea |
-	
-	listMorph _ (PluggableListMorph
-		model: model
-		listGetter: #jobAuctionList
-		indexGetter: #jobAuctionItem
-		indexSetter: #jobAuctionItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
-			name: #catalog;
-			layoutSpec: (LayoutSpec 
-				proportionalWidth: 1.0
-				proportionalHeight: 0.9
-				offAxisEdgeWeight: #center).
-
-	heading _ ((StringMorph contents: 'Bid Increment') 
-		emphasis: 1;
-		font: (FontFamily familyName: 'DejaVu' pointSize: 10)).
-	headingArea _ (LayoutMorph newRow)
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.1
-			offAxisEdgeWeight: #center);
-		name: 'heading area';
-		axisEdgeWeight: #left.
-	headingArea addMorph: heading.
-
-	
-	leftPane _ (LayoutMorph newColumn)
-		name: 'left pane';
-		addMorph: headingArea;
-		addMorph: listMorph.
-
-	textPane _ (TextModelMorph
-		withModel: (TextModel withText: '')) 	"note the different model specification"
-			askBeforeDiscardingEdits: false;	"discard changes to the text"
-			name: 'chant'. 	"give the TextModelMorph a name which will appear in the halos"
-	textPane 
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 0.6
-			proportionalHeight: 1.0
-			offAxisEdgeWeight: #center).
-
-	row _ (LayoutMorph newRow)
-		layoutSpec: (LayoutSpec 
-			proportionalWidth: 1.0
-			proportionalHeight: 0.7
-			offAxisEdgeWeight: #center).
-	row
-		name: 'mid row';
-		addMorph: leftPane proportionalWidth: 0.4;
-		addAdjusterAndMorph: textPane layoutSpec: (LayoutSpec useAll).
-		
-	^ row
-	
-
-! !
 
 !AuctionJob methodsFor: 'buttons' stamp: 'dhn 4/12/2017 18:08:03'!
 buyerButtons
