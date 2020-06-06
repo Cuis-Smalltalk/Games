@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 5:00:49 pm'!
+'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 5:51:02 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 28!
+!provides: 'AnagramAid' 1 29!
 SystemOrganization addCategory: #AnagramAid!
 
 
@@ -16,7 +16,7 @@ Anagram class
 
 !classDefinition: #AnagramMorph category: #AnagramAid!
 SystemWindow subclass: #AnagramMorph
-	instanceVariableNames: 'buttonPane statusString cluesString'
+	instanceVariableNames: 'buttonPane statusString cluesString cluesMorph'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AnagramAid'!
@@ -32,8 +32,10 @@ With a long anagram, random re-arrangements are listed as clues. One may remove 
 
 The setting which determines whether clues are random or permuted is in Anagram class>>permuteLimit.!
 
-!AnagramMorph commentStamp: 'dhn 1/26/2015 18:39' prior: 0!
-The window for Anagram Aid.!
+!AnagramMorph commentStamp: '<historical>' prior: 0!
+The window for Anagram Aid.
+
+AnagramMorph open.!
 
 !AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
 initializedInstance
@@ -69,11 +71,11 @@ configureButtons
 				ifTrue: [ self putButtons: {self newButton} ]
 				ifFalse: [ self putButtons: {self newButton. self withoutButton. self revertButton} ]].! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 12/5/2015 07:54'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:43:50'!
 entry
 	"Acquire a new anagram"
 	| ans |
-	ans _ FillInTheBlankMorph
+	ans _ StringRequestMorph
 		request: 'Enter the Anagram'
 		initialAnswer: ''.
 	ans isEmpty ifFalse: [
@@ -84,12 +86,12 @@ entry
 			more;
 			configureButtons]! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 9/2/2015 16:55'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:41:50'!
 fontName
 	"Answer the family name of a font for the clues"
 	
-	^ AbstractFont familyNames     
-		detect: [:f | f = 'DejaVu Sans Mono'] ifNone: [^ AbstractFont default familyName]! !
+	^ FontFamily familyNames     
+		detect: [:f | f = 'DejaVu Sans Mono'] ifNone: [^ FontFamily defaultFamilyName]! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 1/31/2016 17:31'!
 letterCount: aString
@@ -182,11 +184,11 @@ showStatistics
 		newLine.
 	self board statusString actualContents: str contents.! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 9/1/2015 14:59'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:39:53'!
 without
 	"Remove letters, if specified, from the anagram and produce more clues"
 	| col what str |
-	what _ FillInTheBlankMorph
+	what _ StringRequestMorph
 		request: 'Enter the letters to be omitted.'
 		initialAnswer: ''.
 	what isEmpty ifFalse: [
@@ -287,10 +289,10 @@ addAllButtons: aCollection
 			addMorph: ea
 			proportionalWidth: self class buttonWidth]! !
 
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 6/6/2020 16:59:44'!
+!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 6/6/2020 17:25:16'!
 buildMorphicWindow
 	"Specify the layout for the Anagram Assistant window"
-	| status cluesMorph statusMorph clues |
+	| status statusMorph clues |
 	
 	status _ LayoutMorph newRow
 		name: 'status area';
