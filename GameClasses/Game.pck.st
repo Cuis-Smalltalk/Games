@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 4:45:34 pm'!
+'From Cuis 5.0 [latest update: #4208] on 5 June 2020 at 10:22:40 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 64!
+!provides: 'Game' 1 65!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -883,7 +883,7 @@ initialize
 	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
 a die is "rolled" and the token moves that number of spaces.'! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 5/7/2020 20:09:30'!
+!Token methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:21:49'!
 makeIdArea
 	"Lay out the area for the player's name"
 	| area |
@@ -891,10 +891,10 @@ makeIdArea
 	area _ LayoutMorph newRow
 		color: Color transparent;
 		name: #tokenId;
-		padding: #center.
+		axisEdgeWeight: #center.
 	
 	tokenId _ (StringMorph contents: 'Player') 
-		emphasis: AbstractFont boldCode;
+		emphasis: 1;
 		font: GameBoard gameFont.
 		
 	area addMorph: tokenId.
@@ -1297,7 +1297,7 @@ labelAreaHeight
 
 	^ 50! !
 
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 6/5/2020 15:17:58'!
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:24:03'!
 makeTitleArea
 	"Lay out the area for title"
 	| area |
@@ -1306,7 +1306,7 @@ makeTitleArea
 	area
 		color: Color transparent;
 		name: #title;
-		padding: #center.
+		axisEdgeWeight: #center.
 	
 	gameTitle _ (StringMorph contents: '') 
 		emphasis: 1;
@@ -1549,13 +1549,13 @@ initialize
 	super initialize.
 	begun _ false! !
 
-!AuctionView methodsFor: 'initialization' stamp: 'dhn 9/17/2016 12:46:07'!
+!AuctionView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:28:33'!
 setUpBuyers
 	"Answer the layout for the buyers buttons"
 	
 	^ (LayoutMorph newRow)
 		name: #buyers;
-		padding: #center;
+		axisEdgeWeight: #center;
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
@@ -1589,14 +1589,14 @@ makeEndButton
 		setBalloonText: 'End the auction.'.
 	^ endButton! !
 
-!AuctionView methodsFor: 'buttons' stamp: 'dhn 11/13/2016 13:55:05'!
+!AuctionView methodsFor: 'buttons' stamp: 'dhn 6/5/2020 21:28:10'!
 soldEndButtons
 	"Replace buttons with the End button"
 	
 	buttonsArea
 		removeAllMorphs;
 		addMorph: self makeEndButton;
-		padding: #center! !
+		axisEdgeWeight: #center! !
 
 !AuctionView class methodsFor: 'data base' stamp: 'dhn 10/29/2016 19:47:56'!
 degree: anIndex
@@ -1710,7 +1710,7 @@ buildMorphicWindow
 		addMorph: self setUpMidRow;
 		addMorph: (buyers _ self setUpBuyers)! !
 
-!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:56:10'!
+!AuctionAsset methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:50:52'!
 setUpMidRow
 	"Answer the layout for the middle row of the Asset Auction window"
 	| listMorph row leftPane headingArea |
@@ -1738,7 +1738,7 @@ setUpMidRow
 			proportionalHeight: 0.1
 			minorDirectionPadding: #center);
 		name: 'heading area';
-		padding: #left.
+		axisEdgeWeight: #rowLeft.
 	headingArea addMorph: heading.
 
 	
@@ -1785,7 +1785,7 @@ buyerButtons
 			setBalloonText: 'bidder')].
 	buyers addAllMorphs: col reversed! !
 
-!AuctionAsset methodsFor: 'buttons' stamp: 'dhn 9/20/2016 13:16:38'!
+!AuctionAsset methodsFor: 'buttons' stamp: 'dhn 6/5/2020 21:29:33'!
 startButtons
 	"Set the initial buttons for asset auction"
 	
@@ -1793,7 +1793,7 @@ startButtons
 		removeAllMorphs;
 		addMorph: self makeBeginButton;
 		addMorph: self makeCancelButton;
-		padding: #center
+		axisEdgeWeight: #center
 ! !
 
 !AuctionAsset methodsFor: 'termination' stamp: 'dhn 11/11/2016 14:25:19'!
@@ -1816,13 +1816,13 @@ endIt
 		ifFalse: [begun ifFalse: [model enableAll: {'End Turn'}]].
 	self delete! !
 
-!HistoryView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:58:46'!
+!HistoryView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:30:43'!
 buildMorphicWindow
 	"Lay out the window for the plots"
 	| goal ix |
 	
 	goal _ (LayoutMorph newRow name: #goal)
-		padding: #center;
+		axisEdgeWeight: #center;
 		color: Color white;
  		addMorph: (MinimalStringMorph contents: '$', model goal printStringWithCommas).
 	self layoutMorph
@@ -1904,7 +1904,7 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!LoanView methodsFor: 'initialization' stamp: 'dhn 6/13/2019 11:01:39'!
+!LoanView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:31:08'!
 buildMorphicWindow
 	"Lay out the window for paying down debt"
 	| list1 rightPane |
@@ -1927,7 +1927,7 @@ buildMorphicWindow
 			minorDirectionPadding: #center).
 	buttonArea
 		name: #buttons;
-		padding: #center.
+		axisEdgeWeight: #center.
 	model when: #payButton: send: #payButton: to: self with: #state.
 
 	textPane _ (TextModelMorph
@@ -1951,7 +1951,7 @@ buildMorphicWindow
 		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
 ! !
 
-!LoanView methodsFor: 'initialization' stamp: 'dhn 9/16/2016 16:30:09'!
+!LoanView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:31:23'!
 startButtons
 	"Set the Loan Payment buttons"
 	
@@ -1969,7 +1969,7 @@ startButtons
 		removeAllMorphs;
 		addMorph: payButton;
 		addMorph: cancelButton;
-		padding: #center.
+		axisEdgeWeight: #center.
 ! !
 
 !LoanView methodsFor: 'termination' stamp: 'dhn 9/12/2016 17:01:31'!
@@ -2107,7 +2107,7 @@ paymentIncrement
 	
 	^ 1000! !
 
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/12/2019 13:00:06'!
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:31:41'!
 buildMorphicWindow
 	"Lay out the window for purchases"
 	| rightPane |
@@ -2130,7 +2130,7 @@ buildMorphicWindow
 			minorDirectionPadding: #center).
 	buttonArea
 		name: #buttons;
-		padding: #center.
+		axisEdgeWeight: #center.
 	model when: #buyButton: send: #buyButton: to: self with: #state.
 
 	textPane _ (TextModelMorph
@@ -2154,7 +2154,7 @@ buildMorphicWindow
 		addAdjusterAndMorph: rightPane layoutSpec: (LayoutSpec useAll)	
 ! !
 
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 9/17/2016 10:20:02'!
+!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:32:02'!
 startButtons
 	"Set the buttons for buying assets"
 	
@@ -2172,7 +2172,7 @@ startButtons
 		removeAllMorphs;
 		addMorph: buyButton;
 		addMorph: cancelButton;
-		padding: #center.
+		axisEdgeWeight: #center.
 ! !
 
 !OptionsView methodsFor: 'accessing' stamp: 'dhn 5/6/2019 10:39:05'!

@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4204] on 5 June 2020 at 3:06:14 pm'!
+'From Cuis 5.0 [latest update: #4208] on 5 June 2020 at 10:22:43 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 229!
+!provides: 'Construction' 1 230!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2560,7 +2560,7 @@ doubled
 
 	^ doubled! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 11/13/2016 17:01:27'!
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:51'!
 initialize
 
 	super initialize.
@@ -2570,7 +2570,7 @@ initialize
 		color: Color transparent;
 		name: 'label area';
 		separation: 1;
-		padding: #center.
+		axisEdgeWeight: #center.
 	labelArea
 		addMorph: self makeIdArea;
 		addMorph: self makeDoubledArea.
@@ -2582,7 +2582,7 @@ layoutSubmorphs
 
 	labelArea morphExtent: self morphExtent! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:56:56'!
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:26'!
 makeDoubledArea
 	"Lay out the area for the arrow"
 	| area |
@@ -2590,17 +2590,17 @@ makeDoubledArea
 	area _ LayoutMorph newRow
 		color: Color transparent;
 		name: #doubled;
-		padding: #center.
+		axisEdgeWeight: #center.
 	
 	doubled _ (StringMorph contents: '') 
-		emphasis: AbstractFont boldCode;
+		emphasis: 1;
 		font: GameBoard gameFont.
 		
 	area addMorph: doubled.
 	^ area layoutSpec: (LayoutSpec  
 		proportionalWidth: 1.0)	! !
 
-!ContractToken methodsFor: 'initialization' stamp: 'jmv 4/25/2020 12:04:29'!
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:23:17'!
 makeIdArea
 	"Lay out the area for the arrow"
 	| area |
@@ -2608,10 +2608,10 @@ makeIdArea
 	area _ LayoutMorph newRow
 		color: Color transparent;
 		name: #id;
-		padding: #center.
+		axisEdgeWeight: #center.
 	
 	tokenId _ (StringMorph contents: 'Player') 
-		emphasis: AbstractFont boldCode;
+		emphasis: 1;
 		font: GameBoard gameFont.
 		
 	area addMorph: tokenId.
@@ -2785,7 +2785,7 @@ layoutSubmorphs
     super layoutSubmorphs.
     self board morphExtent: self board owner morphExtent! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 3/6/2017 12:19:48'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:25:14'!
 makeButtonArea
 	"Lay out the area for buttons"
 	
@@ -2797,14 +2797,14 @@ makeButtonArea
 	buttonArea
 			color: Color transparent;
 			name: #buttons;
-			padding: #center.
+			axisEdgeWeight: #center.
 			
 	board addMorph: buttonArea.
 	
 	^ buttonArea
 		! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 1/16/2017 10:37:33'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:25:47'!
 makeCellsArea
 	"Lay out the area which shows some spaces of the board"
 	| cellArea view mm mt |
@@ -2833,7 +2833,7 @@ makeCellsArea
 				fixedHeight: 20
 				minorDirectionPadding: #center);
 			color: self class cellColor;
-			padding: #center;
+			axisEdgeWeight: #center;
 			name: #marks).
 		view 
 			marksPane: mm;
@@ -2844,7 +2844,7 @@ makeCellsArea
 		
 ! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:57:15'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:26:07'!
 makeNumbersArea
 	"Lay out the area for player cash on hand"
 	
@@ -2855,14 +2855,14 @@ makeNumbersArea
 	numbersArea
 			color: Color transparent;
 			name: #numbers;
-			padding: #center.
+			axisEdgeWeight: #center.
 			
 	^ numbersArea addMorph: ((StringMorph contents: '') 
 		emphasis: 1;
 		font: (FontFamily familyName: 'DejaVu' pointSize: 22))
 		! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 11/8/2016 16:54:24'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:27:02'!
 makeOthersArea
 	"Lay out the area for player cash on hand"
 	
@@ -2873,7 +2873,7 @@ makeOthersArea
 	^ othersArea
 		color: Color transparent;
 		name: #others;
-		padding: #center! !
+		axisEdgeWeight: #center! !
 
 !Construction methodsFor: 'initialization' stamp: 'dhn 10/20/2016 18:49:29'!
 makeSeasonsArea
@@ -2921,7 +2921,7 @@ setupToken: aPlayer
 	pasteup addMorph: model token.
 	^ model token! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:48:17'!
+!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:27:28'!
 showSeasons: associations 
 	"Display the seasons contained in associations"
 	| width set bm txt dx |
@@ -2933,7 +2933,7 @@ showSeasons: associations
 			first _ k key x - 1.
 			last _ k key y.
 			bm _ LayoutMorph newRow
-				padding: #center;
+				axisEdgeWeight: #center;
 				name: #season.
 			seasonsArea addMorph: bm
 				layoutSpec: (LayoutSpec proportionalWidth: width * (last - first) proportionalHeight: 1.0).
@@ -3654,7 +3654,7 @@ initialize
 	currentBid _ 0.
 	currentBump _ 1000! !
 
-!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/5/2020 13:56:44'!
+!AuctionJob methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:30:13'!
 setUpMidRow
 	"Answer the layout for the middle row of the Job Auction window"
 	| listMorph row leftPane headingArea |
@@ -3682,7 +3682,7 @@ setUpMidRow
 			proportionalHeight: 0.1
 			minorDirectionPadding: #center);
 		name: 'heading area';
-		padding: #left.
+		axisEdgeWeight: #left.
 	headingArea addMorph: heading.
 
 	
