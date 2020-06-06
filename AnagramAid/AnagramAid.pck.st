@@ -1,6 +1,9 @@
-'From Cuis 4.2 of 25 July 2013 [latest update: #2690] on 22 February 2016 at 6:29:24.643073 pm'!
+'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 5:00:49 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 27!
+!provides: 'AnagramAid' 1 28!
+SystemOrganization addCategory: #AnagramAid!
+
+
 !classDefinition: #Anagram category: #AnagramAid!
 TextModel subclass: #Anagram
 	instanceVariableNames: 'board clues cluesFont count jmb omitted omit'
@@ -32,10 +35,11 @@ The setting which determines whether clues are random or permuted is in Anagram 
 !AnagramMorph commentStamp: 'dhn 1/26/2015 18:39' prior: 0!
 The window for Anagram Aid.!
 
-!TextComposition methodsFor: '*AnagramAid' stamp: 'dhn 8/26/2015 18:32'!
-editor
+!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
+initializedInstance
+	"Enable instantiation from the new morph menu"
 
-	^ editor! !
+	^ self open! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 9/3/2015 11:48'!
 atRandom
@@ -51,15 +55,6 @@ atRandom
 	self board cluesString actualContents: (Text 
 		initialFont: cluesFont stringOrText: str contents).
 	count _ count + set size! !
-
-!Anagram methodsFor: 'accessing'!
-board
-	^ board.! !
-
-!Anagram methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:11'!
-board: anObject
-	"Set the value of board to anObject"
-	board _ anObject! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 8/30/2015 13:26'!
 configureButtons
@@ -95,12 +90,6 @@ fontName
 	
 	^ AbstractFont familyNames     
 		detect: [:f | f = 'DejaVu Sans Mono'] ifNone: [^ AbstractFont default familyName]! !
-
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 9/3/2015 11:47'!
-initialize
-	super initialize.
-	cluesFont _ AbstractFont familyName: self fontName aroundPointSize: 10
-! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 1/31/2016 17:31'!
 letterCount: aString
@@ -145,28 +134,6 @@ more
 	self board adjustExtentFor: jmb.
 	self showStatistics! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:16'!
-moreButton
-	"Answer the More button"
-	^ PluggableButtonMorph new
-		model: self;
-		label: 'More';
-		action: #more;
-		color: Color white;
-		setBalloonText: 'Displays additional
-letter combinations.'.! !
-
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/30/2015 09:17'!
-newButton
-	"Answer the New button"
-	^ PluggableButtonMorph new
-		model: self;
-		label: 'New';
-		action: #entry;
-		color: Color white;
-		setBalloonText: 'Asks for letters of a new anagram,
-then displays different combinations of those letters.'.! !
-
 !Anagram methodsFor: 'operating' stamp: 'dhn 9/3/2015 11:48'!
 permuted
 	"Display a set of permuted clues"
@@ -187,13 +154,6 @@ permuted
 		initialFont: cluesFont stringOrText: str contents).
 	count _ count + set size! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:19'!
-putButtons: aCollection
-	"Remove all buttons then add all the buttons in aCollection"
-	self board
-		removeButtons;
-		addAllButtons: aCollection.! !
-
 !Anagram methodsFor: 'operating' stamp: 'dhn 8/30/2015 13:25'!
 revert
 	"Return the omitted characters to the anagram"
@@ -201,17 +161,6 @@ revert
 	omitted _ String new.
 	self configureButtons.
 	self more! !
-
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:15'!
-revertButton
-	"Answer the Revert button"
-	^ PluggableButtonMorph new
-		model: self;
-		label: 'Revert';
-		action: #revert;
-		color: Color white;
-		setBalloonText: 'Re-inserts removed characters,
-then displays the original set.'.! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 8/26/2015 13:40'!
 separators
@@ -254,6 +203,61 @@ without
 			configureButtons;
 			more]! !
 
+!Anagram methodsFor: 'accessing'!
+board
+	^ board.! !
+
+!Anagram methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:11'!
+board: anObject
+	"Set the value of board to anObject"
+	board _ anObject! !
+
+!Anagram methodsFor: 'initialize-release' stamp: 'dhn 9/3/2015 11:47'!
+initialize
+	super initialize.
+	cluesFont _ AbstractFont familyName: self fontName aroundPointSize: 10
+! !
+
+!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:16'!
+moreButton
+	"Answer the More button"
+	^ PluggableButtonMorph new
+		model: self;
+		label: 'More';
+		action: #more;
+		color: Color white;
+		setBalloonText: 'Displays additional
+letter combinations.'.! !
+
+!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/30/2015 09:17'!
+newButton
+	"Answer the New button"
+	^ PluggableButtonMorph new
+		model: self;
+		label: 'New';
+		action: #entry;
+		color: Color white;
+		setBalloonText: 'Asks for letters of a new anagram,
+then displays different combinations of those letters.'.! !
+
+!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:19'!
+putButtons: aCollection
+	"Remove all buttons then add all the buttons in aCollection"
+	self board
+		removeButtons;
+		addAllButtons: aCollection.! !
+
+!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:15'!
+revertButton
+	"Answer the Revert button"
+	^ PluggableButtonMorph new
+		model: self;
+		label: 'Revert';
+		action: #revert;
+		color: Color white;
+		setBalloonText: 'Re-inserts removed characters,
+then displays the original set.'.! !
+
 !Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:14'!
 withoutButton
 	"Answer the Without button"
@@ -283,6 +287,54 @@ addAllButtons: aCollection
 			addMorph: ea
 			proportionalWidth: self class buttonWidth]! !
 
+!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 6/6/2020 16:59:44'!
+buildMorphicWindow
+	"Specify the layout for the Anagram Assistant window"
+	| status cluesMorph statusMorph clues |
+	
+	status _ LayoutMorph newRow
+		name: 'status area';
+		addMorph: (statusMorph _ TextModelMorph 
+			withModel: (statusString _ TextModel withText: 'Status Area')).
+	statusMorph 
+		name: #status;
+		layoutSpec: LayoutSpec useAll.
+			
+	buttonPane _ LayoutMorph newRow
+		name: #buttons;
+		axisEdgeWeight: #center;
+		doAdoptWidgetsColor.
+	
+	clues _ LayoutMorph newRow
+		name: 'clue area';
+		addMorph: (cluesMorph _ TextModelMorph 
+			withModel: (cluesString _ TextModel withText: 'Clues Area')).
+	cluesMorph 
+		name: #clues;
+		layoutSpec: LayoutSpec useAll.
+
+			
+	statusMorph askBeforeDiscardingEdits: false;
+		wrapFlag: true.
+			
+	cluesMorph askBeforeDiscardingEdits: false;
+		wrapFlag: true.
+		
+	self layoutMorph
+			addMorph: status proportionalHeight: 0.15; 	
+			addMorph: buttonPane fixedHeight: 26;		
+			addMorph: clues proportionalHeight: 1.0.
+! !
+
+!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 8/25/2015 17:18'!
+initialize
+	super initialize! !
+
+!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:44'!
+removeButtons
+	"Remove all buttons from the button pane"
+	buttonPane removeAllMorphs.! !
+
 !AnagramMorph methodsFor: 'resizing' stamp: 'dhn 8/31/2015 13:16'!
 adjustExtentFor: aString
 	"Set width of extent  such that clues of aString appear in columns"
@@ -307,57 +359,9 @@ adjustExtentFor: aString
 	
 	self morphExtent: newWidth @ (oldExtent y).! !
 
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 2/22/2016 18:26'!
-buildMorphicWindow
-	"Specify the layout for the Anagram Assistant window"
-	| status cluesMorph statusMorph clues |
-	
-	status _ LayoutMorph newRow
-		name: 'status area';
-		addMorph: (statusMorph _ TextModelMorph 
-			withModel: (statusString _ TextModel withText: 'Status Area')).
-	statusMorph 
-		name: #status;
-		layoutSpec: LayoutSpec useAll.
-			
-	buttonPane _ LayoutMorph newRow
-		name: #buttons;
-		padding: #center; "#center causes the buttons to be centered in the row"
-		doAdoptWidgetsColor.
-	
-	clues _ LayoutMorph newRow
-		name: 'clue area';
-		addMorph: (cluesMorph _ TextModelMorph 
-			withModel: (cluesString _ TextModel withText: 'Clues Area')).
-	cluesMorph 
-		name: #clues;
-		layoutSpec: LayoutSpec useAll.
-
-			
-	statusMorph askBeforeDiscardingEdits: false;
-		wrapFlag: true.
-			
-	cluesMorph askBeforeDiscardingEdits: false;
-		wrapFlag: true.
-		
-	self layoutMorph
-			addMorph: status proportionalHeight: 0.15; 	
-			addMorph: buttonPane fixedHeight: 26;		
-			addMorph: clues proportionalHeight: 1.0.
-! !
-
 !AnagramMorph methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:41'!
 cluesString
 	^ cluesString! !
-
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 8/25/2015 17:18'!
-initialize
-	super initialize! !
-
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:44'!
-removeButtons
-	"Remove all buttons from the button pane"
-	buttonPane removeAllMorphs.! !
 
 !AnagramMorph methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:41'!
 statusString
@@ -380,12 +384,6 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
-initializedInstance
-	"Enable instantiation from the new morph menu"
-
-	^ self open! !
-
 !AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 12/5/2015 07:50'!
 open
 "
@@ -399,3 +397,8 @@ open
 		setWindowColor: Color lightGreen;
 		addAllButtons: {mod newButton}.
 	^ win! !
+
+!TextComposition methodsFor: '*AnagramAid' stamp: 'dhn 8/26/2015 18:32'!
+editor
+
+	^ editor! !
