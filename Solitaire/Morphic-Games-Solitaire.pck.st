@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4069] on 18 March 2020 at 3:33:20 pm'!
+'From Cuis 5.0 [latest update: #4209] on 5 June 2020 at 8:16:25 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 94!
+!provides: 'Morphic-Games-Solitaire' 1 96!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4069 nil!
+!requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
@@ -459,7 +459,7 @@ mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
 	ifTrue: [ super mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition ]
 ! !
 
-!EnableDisableButton methodsFor: 'initialization' stamp: 'KenD 1/23/2013 10:40'!
+!EnableDisableButton methodsFor: 'initialization' stamp: 'KenD 6/2/2020 13:32:54'!
 initialize
 	"Start out enabled"
 
@@ -614,17 +614,17 @@ topCard
 	ifTrue: [ ^nil ]
 	ifFalse: [ ^cards at: 1 ]! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 1/21/2011 04:38'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 07:54:18'!
 defaultLayout
 	^LayoutSpec  fixedWidth: (CardMorph width + 4)
 					 fixedHeight: (CardMorph height + 4) 
-					 minorDirectionPadding: #center! !
+					 offAxisEdgeWeight: #center! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 3/17/2020 17:22:48'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:05:22'!
 defaultLayoutWithScale: scale
 	^LayoutSpec  fixedWidth:   (CardMorph width * scale + (2 * self borderWidth))
 					 fixedHeight: (CardMorph height * scale + (2 * self borderWidth)) 
-					 minorDirectionPadding: #top! !
+					 offAxisEdgeWeight: #leftOrTop! !
 
 !CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:13'!
 initialize
@@ -1148,7 +1148,7 @@ numCardsToShow
 
 	^numCardsToShow! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 3/17/2020 17:05:09'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 6/5/2020 08:06:32'!
 numCardsToShow: anInteger
 
 	| newWidth |
@@ -1157,7 +1157,7 @@ numCardsToShow: anInteger
 	self morphWidth: newWidth;
 		 layoutSpec: (LayoutSpec fixedWidth: newWidth
 									 fixedHeight: (CardMorph height * scale + 4) 
-									 minorDirectionPadding: #top).
+									 offAxisEdgeWeight: #leftOrTop).
 	self redrawNeeded.
 	self showTopCards;
 		yourself! !
@@ -1357,14 +1357,8 @@ backForm
 
 	^FormsArray at: 53.! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 05:09'!
-cardNumber
-	"private"
-
-	^cardNumber! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:53'!
-color
+!CardMorph methodsFor: 'access' stamp: 'KenD 6/2/2020 13:32:06'!
+cardColor
 	"Answer a symbol denoting the color of this card"
 	"clubs diamonds hearts spades => black red red black"
 
@@ -1375,6 +1369,12 @@ color
 	ifFalse: [(suitNum = 4)
 			ifTrue: [ ^#Black ]
 			ifFalse: [ ^#Red ]].! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/18/2004 05:09'!
+cardNumber
+	"private"
+
+	^cardNumber! !
 
 !CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
 face
@@ -1815,7 +1815,7 @@ isFaceUp
 isRed
 	^(self suitColor) == #Red! !
 
-!CardMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 16:13'!
+!CardMorph methodsFor: 'initialization' stamp: 'KenD 6/2/2020 13:28:25'!
 withCardNumber: cardNum
 	"Private"
 	
@@ -1824,9 +1824,10 @@ withCardNumber: cardNum
 	cardNumber := cardNum.
 	grabPreowner := nil.
 	self image: (self faceForm);
+		color: Color transparent;
 		yourself! !
 
-!CardMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 16:13'!
+!CardMorph methodsFor: 'initialization' stamp: 'KenD 6/2/2020 13:28:39'!
 withCardNumber: cardNum image: form
 	"Private"
 	
@@ -1835,6 +1836,7 @@ withCardNumber: cardNum image: form
 	cardNumber := cardNum.
 	grabPreowner := nil.
 	self image: form;
+		color: Color transparent;
 		yourself! !
 
 !CardMorph class methodsFor: 'accessing' stamp: 'KenD 8/12/2015 06:46'!
@@ -4471,7 +4473,7 @@ initializeFromPNGfixShadow
 		at: 53 
 		put: ((Form fromFileNamed: (imageDirNamePrefix , 'back.png')) asFormOfDepth: 32)! !
 
-!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 10/5/2006 09:25'!
+!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 6/2/2020 13:26:33'!
 the: face of: suit
 	"Return an Card instance"
 	
@@ -4499,6 +4501,7 @@ the: face of: suit
 	
 	"Translate between zero based cardNumber and 1 based arrays"
 	newInst := (super new) withCardNumber: (suitNum - 1 + (4 * (faceNum - 1))).
+	newInst color: Color transparent.
 	^newInst! !
 
 !ScaledCardMorph methodsFor: 'access' stamp: 'KenD 4/6/2016 16:02'!
@@ -4997,7 +5000,7 @@ initializeWithScale: aScale
 		 yourself
 	"subclasses setup the layout"! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:41:25'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:03:34'!
 makeButtonArea
 	"Make a new Button Area as a submorph"
 
@@ -5012,7 +5015,7 @@ makeButtonArea
 			"borderColor: Color transparent;"
 			morphHeight: self buttonAreaHeight;
 			morphWidth: (self morphWidth);
-			padding: #center.
+			axisEdgeWeight: #center.
 			
 	"Add some buttons."
 	buttonArea addMorph: (self makeNewGameButton) 
@@ -5037,7 +5040,7 @@ makeButtonArea
 	self addMorph: buttonArea 
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0  
 										proportionalHeight: 0.1
-										minorDirectionPadding: #center)! !
+										offAxisEdgeWeight: #center)! !
 
 !CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
 makeHelpButton
@@ -5046,7 +5049,7 @@ makeHelpButton
 		 (EnableDisableButton 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/15/2020 14:33:27'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:00:03'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
@@ -5057,14 +5060,14 @@ makeLabelArea: lableString
 			emphasis: 1;  "emphasis: bold=1"
 			font: (AbstractFont familyName: 'DejaVu' pointSize: 22). 
 	labelHeight := labelMorph font pointSize * 2.		
-	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 minorDirectionPadding: #left).
+	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 offAxisEdgeWeight: #rowTop).
 	
 	labelLayout
 			color: Color transparent;
 			"borderColor: Color transparent;"
 			morphHeight: labelHeight;
 			morphWidth: 700; " (self morphWidth) - 4;"
-			padding: #left;
+			axisEdgeWeight: #rowLeft;
 			layoutSpec: (LayoutSpec  proportionalWidth: 0.96 fixedHeight: labelHeight);
 			addMorph: labelMorph.
 
@@ -5750,7 +5753,7 @@ initializeWithScale: aScale
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/17/2020 20:25:15'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:03:10'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -5759,14 +5762,14 @@ makeColumnArea
 	columnHeight := CardMorph morphHeight * self scale * 5. "pixels"
 	columnArea := LayoutMorph newRow.  "a row of columns"
 	columnArea 
-				padding: #center;
+				axisEdgeWeight: #center;
 				color: noColor;
 				morphHeight: columnHeight;
 				morphWidth: (self morphWidth).
 	columnLayout := LayoutSpec  
 							proportionalWidth: 0.20
 							fixedHeight: columnHeight
-							minorDirectionPadding: #top.
+							offAxisEdgeWeight: #columnLeft.
 
 	1 to: NumColumns 
 		do: [ :n |
@@ -5784,7 +5787,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 ! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/17/2020 14:03:48'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:01:30'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -5793,7 +5796,7 @@ makePilesArea
 	noColor := Color transparent.
 	
 	pilesArea :=  LayoutMorph newRow separation: 10.
-	pilesArea padding: #center;
+	pilesArea axisEdgeWeight: #center;
 			  color: noColor.
 
 	"Card Spares"
@@ -5818,7 +5821,7 @@ makePilesArea
 	self addMorph: pilesArea 
 		layoutSpec: (LayoutSpec  proportionalWidth: 1.0
 									fixedHeight: CardMorph morphHeight * self scale+ 30 
-									minorDirectionPadding: #center)
+									offAxisEdgeWeight: #center)
 	! !
 
 !FreeCell methodsFor: 'initialization' stamp: 'KenD 1/10/2013 14:34'!
@@ -5973,7 +5976,7 @@ saveGameToDataStream: aDataStream
 	aDataStream nextPut: someData.
 ! !
 
-!FreeCell methodsFor: 'scaling' stamp: 'KenD 4/6/2016 15:21'!
+!FreeCell methodsFor: 'scaling' stamp: 'KenD 6/5/2020 07:56:15'!
 setScale: aScale
 	"Resize me based on new card size"
 	
@@ -5989,13 +5992,13 @@ setScale: aScale
 	columnLayout := LayoutSpec  
 									fixedWidth: cardWidth + 4 
 									fixedHeight: cardHeight * 5
-									minorDirectionPadding: #center.
+									offAxisEdgeWeight: #center.
 	
 	"@@FIXME -- unfinished"
 	
 	! !
 
-!FreeCell methodsFor: 'geometry' stamp: 'KenD 3/18/2020 15:28:05'!
+!FreeCell methodsFor: 'geometry' stamp: 'KenD 6/5/2020 08:01:40'!
 reScale
 
 	"reScale self based on new font sizes"
@@ -6005,12 +6008,12 @@ reScale
 	(piles at: 1) owner "pilesArea" 
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0
 									fixedHeight: CardMorph morphHeight + 30 * newScale
-									minorDirectionPadding: #center).
+									offAxisEdgeWeight: #center).
 	columnHeight :=   (CardMorph morphHeight * newScale * 5).
 	columnLayout := (LayoutSpec  
 							fixedWidth:  (CardMorph morphWidth * newScale + 4)
 							fixedHeight: columnHeight
-							minorDirectionPadding: #top).
+							offAxisEdgeWeight: #columnLeft).
 	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * newScale + 4.
 
 	columnArea := (columns at: 1) owner. 
@@ -6408,7 +6411,7 @@ initializeWithScale: aScale
 		morphExtent: self minimumExtent;
 		yourself! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 3/17/2020 20:26:36'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:02:10'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -6419,12 +6422,12 @@ makeColumnArea
 	columnArea color: Color transparent;
 				  morphHeight: columnHeight;
 				  morphWidth: (self morphWidth);
-				  padding: #center.
+				  axisEdgeWeight: #center.
 
 	columnLayout := LayoutSpec  
 							proportionalWidth: 0.20
 							fixedHeight: columnHeight
-							minorDirectionPadding: #top.
+							offAxisEdgeWeight: #columnLeft.
 	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * self scale + 4.
 			
 	1 to: NumColumns do: 
@@ -6442,7 +6445,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 	! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 3/17/2020 14:04:40'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:02:26'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -6493,7 +6496,7 @@ makePilesArea
 	self addMorph: pilesArea 
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0
 									fixedHeight: CardMorph morphHeight * scale + 30 
-									minorDirectionPadding: #center).! !
+									offAxisEdgeWeight: #center).! !
 
 !Klondike methodsFor: 'initialization' stamp: 'KenD 1/24/2011 02:11'!
 reDealCards
@@ -6660,7 +6663,7 @@ saveGameToDataStream: aDataStream
 							nil. "FIXME"
 						}! !
 
-!Klondike methodsFor: 'geometry' stamp: 'KenD 3/18/2020 15:20:11'!
+!Klondike methodsFor: 'geometry' stamp: 'KenD 6/5/2020 08:02:35'!
 reScale
 
 	"reScale self based on new font sizes"
@@ -6671,11 +6674,11 @@ reScale
 	(piles at: 1) owner "pilesArea" 
 		layoutSpec: (LayoutSpec proportionalWidth: 1.0
 									fixedHeight: CardMorph morphHeight + 30 * newScale
-									minorDirectionPadding: #center).
+									offAxisEdgeWeight: #center).
 	columnLayout := (LayoutSpec  
 							fixedWidth:  (CardMorph morphWidth * newScale + 4)
 							fixedHeight: (CardMorph morphHeight * newScale * 5) "pixels"
-							minorDirectionPadding: #top).
+							offAxisEdgeWeight: #columnLeft).
 	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * newScale + 4.
 
 	columnArea := (columns at: 1) owner. 
@@ -6774,13 +6777,13 @@ setUp
 	threeOfHearts    := CardMorph the: 3 of: #hearts.
 	fiveOfHearts     := CardMorph the: #five of: #hearts! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 10/20/2004 10:23'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 6/2/2020 13:32:06'!
 testColor
-	self assert: (jackOfClubs color == #Black).
-	self assert: (twoOfDiamonds color == #Red).
-	self assert: (threeOfHearts color == #Red).
-	self assert: (aceOfSpades color == #Black).
-	self assert: (fiveOfHearts color == #Red).
+	self assert: (jackOfClubs cardColor == #Black).
+	self assert: (twoOfDiamonds cardColor == #Red).
+	self assert: (threeOfHearts cardColor == #Red).
+	self assert: (aceOfSpades cardColor == #Black).
+	self assert: (fiveOfHearts cardColor == #Red).
 	
 	self assert: (jackOfClubs hasSameColorAs: aceOfSpades).
 	self assert: (fiveOfHearts hasSameColorAs: twoOfDiamonds).
