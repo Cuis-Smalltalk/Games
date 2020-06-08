@@ -1,12 +1,12 @@
-'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 5:51:02 pm'!
+'From Cuis 5.0 [latest update: #4208] on 7 June 2020 at 9:28:23 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 29!
+!provides: 'AnagramAid' 1 32!
 SystemOrganization addCategory: #AnagramAid!
 
 
 !classDefinition: #Anagram category: #AnagramAid!
 TextModel subclass: #Anagram
-	instanceVariableNames: 'board clues cluesFont count jmb omitted omit'
+	instanceVariableNames: 'clues cluesFont count jmb omitted'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'AnagramAid'!
@@ -25,17 +25,17 @@ AnagramMorph class
 	instanceVariableNames: ''!
 
 
-!Anagram commentStamp: 'dhn 9/22/2015 19:27' prior: 0!
+!Anagram commentStamp: '<historical>' prior: 0!
+Model for Anagram Aid!
+
+!AnagramMorph commentStamp: '<historical>' prior: 0!
 An aid for solving anagrams with different behavior for short and long anagrams. 
+
+AnagramMorph open.
 
 With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.
 
 The setting which determines whether clues are random or permuted is in Anagram class>>permuteLimit.!
-
-!AnagramMorph commentStamp: '<historical>' prior: 0!
-The window for Anagram Aid.
-
-AnagramMorph open.!
 
 !AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
 initializedInstance
@@ -43,38 +43,40 @@ initializedInstance
 
 	^ self open! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 9/3/2015 11:48'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 19:42:02'!
 atRandom
-	"Display randomly selected clues"
+	"Answer randomly selected clues"
 	| set str |
+	
 	set _ Set new.
-	self class cluesToDisplay timesRepeat: [set add: jmb shuffled].	"avoid duplicates"
+	self class cluesToDisplay timesRepeat: [set add: jmb shuffled].  "set avoids duplicates"
 	str _ String new writeStream.
 	set do: [:ea |
 		str
 			nextPutAll: ea;
 			nextPutAll: self separators].
-	self board cluesString actualContents: (Text 
-		initialFont: cluesFont stringOrText: str contents).
-	count _ count + set size! !
+	count _ count + set size.
+	^ str contents! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 8/30/2015 13:26'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:54:27'!
 configureButtons
-	"Choose which buttons to show based on the sizes of #jmb and #omitted"
-	jmb size > self class permuteLimit
-		ifTrue: [
-			omitted size isZero
-				ifTrue: [ self putButtons: {self newButton. self moreButton. self withoutButton} ]
-				ifFalse: [ self putButtons: {self newButton. self moreButton. self withoutButton. self revertButton} ]]
-		ifFalse: [
-			omitted size isZero
-				ifTrue: [ self putButtons: {self newButton} ]
-				ifFalse: [ self putButtons: {self newButton. self withoutButton. self revertButton} ]].! !
+	"Answer the buttons to show based on the sizes of #jmb and #omitted"
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:43:50'!
+	self jmb size > self class permuteLimit
+		ifTrue: [
+			self omitted size isZero
+				ifTrue: [ ^ {self newButton. self moreButton. self withoutButton} ]
+				ifFalse: [ ^ {self newButton. self moreButton. self withoutButton. self revertButton} ]]
+		ifFalse: [
+			self omitted size isZero
+				ifTrue: [ ^ {self newButton} ]
+				ifFalse: [ ^ {self newButton. self withoutButton. self revertButton} ]].! !
+
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 21:05:46'!
 entry
 	"Acquire a new anagram"
 	| ans |
+	
 	ans _ StringRequestMorph
 		request: 'Enter the Anagram'
 		initialAnswer: ''.
@@ -82,16 +84,8 @@ entry
 		jmb _ (ans copyWithout: $ ) asUppercase.
 		count _ 0.
 		omitted _ String new.
-		self 
-			more;
-			configureButtons]! !
-
-!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:41:50'!
-fontName
-	"Answer the family name of a font for the clues"
-	
-	^ FontFamily familyNames     
-		detect: [:f | f = 'DejaVu Sans Mono'] ifNone: [^ FontFamily defaultFamilyName]! !
+		self more].
+	self triggerEvent: #update! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 1/31/2016 17:31'!
 letterCount: aString
@@ -127,34 +121,34 @@ lettersOmitted
 				nextPutAll: omitted; newLine.
 			^ str contents]! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 8/26/2015 18:02'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:58:38'!
 more
 	"Display the next set of clues, either at random or permuted"
-	jmb size > self class permuteLimit
+	
+	clues _ jmb size > self class permuteLimit
 		ifTrue: [ self atRandom ]
 		ifFalse: [ self permuted ].
-	self board adjustExtentFor: jmb.
-	self showStatistics! !
+	self triggerEvent: #update! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 9/3/2015 11:48'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:56:11'!
 permuted
 	"Display a set of permuted clues"
 	| set clue str |
+	
 	clue _ String new writeStream.
 	set _ Set new.
 	(1 to: jmb size) permutationsDo: [ :letter |
 		clue reset.
 		(1 to: jmb size) do: [ :ix |
 			clue nextPut: (jmb at: (letter at: ix))].
-		set add: clue contents].	"avoid duplicates"
+		set add: clue contents].  "set avoids duplicates"
 	str _ String new writeStream.
 	set do: [:ea |
 		str
 			nextPutAll: ea;
 			nextPutAll: self separators].
-	self board cluesString actualContents: (Text 
-		initialFont: cluesFont stringOrText: str contents).
-	count _ count + set size! !
+	count _ count + set size.
+	^ str contents! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 8/30/2015 13:25'!
 revert
@@ -169,25 +163,26 @@ separators
 	"Answer the string which separates the clues"
 	^ '  '! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 8/30/2015 13:16'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 22:02:15'!
 showStatistics
-	"Update the status area"
-	| str |
-	str _ String new writeStream
-		nextPutAll: self lettersOmitted;
-		nextPutAll: 'Number of clues so far = ';
-		nextPutAll: count asString;
-		newLine;
-		nextPutAll: 'characters = ';
-		nextPutAll: jmb size asString;
-		nextPutAll: (self letterCount: jmb);
-		newLine.
-	self board statusString actualContents: str contents.! !
+	"Answer text for  the status area"
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 17:39:53'!
+	^ String streamContents: [:string |
+		string
+			nextPutAll: self lettersOmitted;
+			nextPutAll: 'Number of clues so far = ';
+			nextPutAll: count asString;
+			newLine;
+			nextPutAll: 'characters = ';
+			nextPutAll: jmb size asString;
+			nextPutAll: (self letterCount: jmb);
+			newLine]! !
+
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:56:46'!
 without
 	"Remove letters, if specified, from the anagram and produce more clues"
 	| col what str |
+	
 	what _ StringRequestMorph
 		request: 'Enter the letters to be omitted.'
 		initialAnswer: ''.
@@ -202,25 +197,33 @@ without
 			str nextPut: remainingLetter].
 		jmb _ str contents.
 		self
-			configureButtons;
-			more]! !
+			more;
+			configureButtons].
+		self triggerEvent: #update! !
 
-!Anagram methodsFor: 'accessing'!
-board
-	^ board.! !
+!Anagram methodsFor: 'accessing' stamp: 'dhn 6/7/2020 21:23:12'!
+clues
+	"Answer the value of clues"
+	
+	^ clues ifNil: [clues _ '']! !
 
-!Anagram methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:11'!
-board: anObject
-	"Set the value of board to anObject"
-	board _ anObject! !
+!Anagram methodsFor: 'accessing' stamp: 'dhn 6/7/2020 21:23:38'!
+jmb
+	"Answer the value of jmb"
+	
+	^ jmb ifNil: [jmb _ '']! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 9/3/2015 11:47'!
+!Anagram methodsFor: 'accessing' stamp: 'dhn 6/7/2020 21:24:07'!
+omitted
+	"Answer the value of omitted"
+	
+	^ omitted ifNil: [omitted _ '']! !
+
+!Anagram methodsFor: 'initialization' stamp: 'dhn 6/7/2020 21:09:57'!
 initialize
-	super initialize.
-	cluesFont _ AbstractFont familyName: self fontName aroundPointSize: 10
-! !
+	super initialize! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:16'!
+!Anagram methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:16'!
 moreButton
 	"Answer the More button"
 	^ PluggableButtonMorph new
@@ -231,7 +234,7 @@ moreButton
 		setBalloonText: 'Displays additional
 letter combinations.'.! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/30/2015 09:17'!
+!Anagram methodsFor: 'initialization' stamp: 'dhn 1/30/2015 09:17'!
 newButton
 	"Answer the New button"
 	^ PluggableButtonMorph new
@@ -242,14 +245,7 @@ newButton
 		setBalloonText: 'Asks for letters of a new anagram,
 then displays different combinations of those letters.'.! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:19'!
-putButtons: aCollection
-	"Remove all buttons then add all the buttons in aCollection"
-	self board
-		removeButtons;
-		addAllButtons: aCollection.! !
-
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:15'!
+!Anagram methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:15'!
 revertButton
 	"Answer the Revert button"
 	^ PluggableButtonMorph new
@@ -260,7 +256,7 @@ revertButton
 		setBalloonText: 'Re-inserts removed characters,
 then displays the original set.'.! !
 
-!Anagram methodsFor: 'initialize-release' stamp: 'dhn 1/26/2015 18:14'!
+!Anagram methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:14'!
 withoutButton
 	"Answer the Without button"
 	^ PluggableButtonMorph new
@@ -281,15 +277,46 @@ permuteLimit
 	"Answer the maximum size of the anagram which will be permuted"
 	^ 5! !
 
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 11/6/2015 11:07'!
-addAllButtons: aCollection
-	"Add all the buttons in aCollection to the button pane"
-	aCollection do: [ :ea |
-		buttonPane
-			addMorph: ea
-			proportionalWidth: self class buttonWidth]! !
+!AnagramMorph methodsFor: 'operating' stamp: 'dhn 6/6/2020 21:27:32'!
+cluesFont
+	"Answer the font for clues"
+	
+	^ Preferences standardCodeFont
+! !
 
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 6/6/2020 17:25:16'!
+!AnagramMorph methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:49:01'!
+update
+	cluesString actualContents: model clues.
+	buttonPane 
+		removeAllMorphs;
+		addAllMorphs: model configureButtons reverse.
+	statusString actualContents: model showStatistics! !
+
+!AnagramMorph methodsFor: 'resizing' stamp: 'dhn 8/31/2015 13:16'!
+adjustExtentFor: aString
+	"Set width of extent  such that clues of aString appear in columns"
+	| innerMorph charPixels oldExtent newWidth scrollPixels nl pad clue cols |
+	
+	innerMorph _ self findDeepSubmorphThat: [:s | s is: #InnerTextMorph] ifAbsent: [^ nil].
+	charPixels _ innerMorph textComposition editor lastFont widthOf: $M.		"width per character"
+	oldExtent _ self morphExtent.
+	
+	(innerMorph owner verticalScrollBar valueOfProperty: #visible)
+		ifTrue: [scrollPixels _ ScrollBar scrollbarThickness]
+		ifFalse: [scrollPixels _ 0].
+		
+	nl _ charPixels.			"new line width"
+	pad _ charPixels * self model separators size.	"padding width"
+	clue _ charPixels * aString size.		"clue width"
+	
+	cols _ ((oldExtent x) + pad - nl - scrollPixels) / (clue + pad).
+	cols _ 3 max: cols floor.		"at least 3 columns"
+	
+	newWidth _ (cols * (clue + pad)) + nl + scrollPixels.
+	
+	self morphExtent: newWidth @ (oldExtent y).! !
+
+!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 6/6/2020 19:46:39'!
 buildMorphicWindow
 	"Specify the layout for the Anagram Assistant window"
 	| status statusMorph clues |
@@ -326,48 +353,17 @@ buildMorphicWindow
 			addMorph: status proportionalHeight: 0.15; 	
 			addMorph: buttonPane fixedHeight: 26;		
 			addMorph: clues proportionalHeight: 1.0.
+			
+	model when: #update send: #update to: self.
 ! !
 
 !AnagramMorph methodsFor: 'initialization' stamp: 'dhn 8/25/2015 17:18'!
 initialize
 	super initialize! !
 
-!AnagramMorph methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:44'!
-removeButtons
-	"Remove all buttons from the button pane"
-	buttonPane removeAllMorphs.! !
-
-!AnagramMorph methodsFor: 'resizing' stamp: 'dhn 8/31/2015 13:16'!
-adjustExtentFor: aString
-	"Set width of extent  such that clues of aString appear in columns"
-	| innerMorph charPixels oldExtent newWidth scrollPixels nl pad clue cols |
-	
-	innerMorph _ self findDeepSubmorphThat: [:s | s is: #InnerTextMorph] ifAbsent: [^ nil].
-	charPixels _ innerMorph textComposition editor lastFont widthOf: $M.		"width per character"
-	oldExtent _ self morphExtent.
-	
-	(innerMorph owner verticalScrollBar valueOfProperty: #visible)
-		ifTrue: [scrollPixels _ ScrollBar scrollbarThickness]
-		ifFalse: [scrollPixels _ 0].
-		
-	nl _ charPixels.			"new line width"
-	pad _ charPixels * self model separators size.	"padding width"
-	clue _ charPixels * aString size.		"clue width"
-	
-	cols _ ((oldExtent x) + pad - nl - scrollPixels) / (clue + pad).
-	cols _ 3 max: cols floor.		"at least 3 columns"
-	
-	newWidth _ (cols * (clue + pad)) + nl + scrollPixels.
-	
-	self morphExtent: newWidth @ (oldExtent y).! !
-
-!AnagramMorph methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:41'!
-cluesString
-	^ cluesString! !
-
-!AnagramMorph methodsFor: 'accessing' stamp: 'dhn 1/26/2015 18:41'!
-statusString
-	^ statusString! !
+!AnagramMorph methodsFor: 'accessing' stamp: 'dhn 6/6/2020 18:20:21'!
+buttonPane
+	^ buttonPane! !
 
 !AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 1/26/2015 18:38'!
 buttonWidth
@@ -386,18 +382,16 @@ includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
 
-!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 12/5/2015 07:50'!
+!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 6/7/2020 21:11:22'!
 open
 "
 	AnagramMorph open.
 "
-	| mod win |
+	| win |
 
-	win _ self open: (mod _ Anagram new) label: 'Anagram Aid'	.
-	mod board: win.
-	win 
-		setWindowColor: Color lightGreen;
-		addAllButtons: {mod newButton}.
+	win _ self open: Anagram new label: 'Anagram Aid'.	.
+	win setWindowColor: Color lightGreen.
+	win buttonPane addAllMorphs: win model configureButtons.
 	^ win! !
 
 !TextComposition methodsFor: '*AnagramAid' stamp: 'dhn 8/26/2015 18:32'!
