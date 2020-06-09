@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 7 June 2020 at 9:28:23 pm'!
+'From Cuis 5.0 [latest update: #4208] on 9 June 2020 at 1:18:59 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 32!
+!provides: 'AnagramAid' 1 33!
 SystemOrganization addCategory: #AnagramAid!
 
 
@@ -58,19 +58,19 @@ atRandom
 	count _ count + set size.
 	^ str contents! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 20:54:27'!
+!Anagram methodsFor: 'operating' stamp: 'dhn 6/9/2020 13:15:47'!
 configureButtons
 	"Answer the buttons to show based on the sizes of #jmb and #omitted"
 
-	self jmb size > self class permuteLimit
+	^ self jmb size > self class permuteLimit
 		ifTrue: [
 			self omitted size isZero
-				ifTrue: [ ^ {self newButton. self moreButton. self withoutButton} ]
-				ifFalse: [ ^ {self newButton. self moreButton. self withoutButton. self revertButton} ]]
+				ifTrue: [ {self newButton. self moreButton. self withoutButton} ]
+				ifFalse: [ {self newButton. self moreButton. self withoutButton. self revertButton} ]]
 		ifFalse: [
 			self omitted size isZero
-				ifTrue: [ ^ {self newButton} ]
-				ifFalse: [ ^ {self newButton. self withoutButton. self revertButton} ]].! !
+				ifTrue: [ {self newButton} ]
+				ifFalse: [ {self newButton. self withoutButton. self revertButton} ]].! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 6/7/2020 21:05:46'!
 entry
