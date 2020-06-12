@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 6 June 2020 at 2:36:46 pm'!
+'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:45:08 am'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 232!
+!provides: 'Construction' 1 233!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -2844,7 +2844,7 @@ makeCellsArea
 		
 ! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:20:38'!
+!Construction methodsFor: 'initialization' stamp: 'jmv 6/11/2020 16:31:40'!
 makeNumbersArea
 	"Lay out the area for player cash on hand"
 	
@@ -2859,7 +2859,7 @@ makeNumbersArea
 			
 	^ numbersArea addMorph: ((StringMorph contents: '') 
 		emphasis: 1;
-		font: (FontFamily familyName: 'DejaVu' pointSize: 22))
+		font: (FontFamily defaultFamilyPointSize: 22))
 		! !
 
 !Construction methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:21:13'!
@@ -2921,7 +2921,7 @@ setupToken: aPlayer
 	pasteup addMorph: model token.
 	^ model token! !
 
-!Construction methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:27:28'!
+!Construction methodsFor: 'initialization' stamp: 'jmv 6/11/2020 16:31:44'!
 showSeasons: associations 
 	"Display the seasons contained in associations"
 	| width set bm txt dx |
@@ -2941,7 +2941,7 @@ showSeasons: associations
 			bm color: sea color.
 			txt _ StringMorph new
 				emphasis: 1;  "emphasis: bold=1"
-				font: (FontFamily familyName: 'DejaVu' pointSize: 18).
+				font: (FontFamily defaultFamilyPointSize: 18).
 			bm addMorph: txt..
 			txt color: (sea textColor
 				ifTrue: [Color white]
@@ -3116,7 +3116,7 @@ windowPosition
 	
 	^ self morphPosition + (model windowPosition: self class viewPositionLeft)! !
 
-!Construction methodsFor: 'operation' stamp: 'dhn 6/5/2020 13:57:01'!
+!Construction methodsFor: 'operation' stamp: 'jmv 6/11/2020 16:31:37'!
 displayNumbers
 	"Display financial state of the players"
 	| otherLead pluralForm others |
@@ -3135,7 +3135,7 @@ displayNumbers
 	otherLead
 		emphasis: 1;
 		color: Color lightBrown;
-		font: (FontFamily familyName: 'DejaVu' pointSize: 18).
+		font: (FontFamily defaultFamilyPointSize: 18).
 	othersArea 
 		removeAllMorphs;
 		addMorph: otherLead.
@@ -3146,7 +3146,7 @@ displayNumbers
 			emphasis: 1;
 			color: ea color;
 			setBalloonText: 'cash held by ', ea identity;
-			font: (FontFamily familyName: 'DejaVu' pointSize: 18))]! !
+			font: (FontFamily defaultFamilyPointSize: 18))]! !
 
 !Construction methodsFor: 'operation' stamp: 'dhn 10/23/2016 14:53:10'!
 doTour
@@ -3185,7 +3185,7 @@ showToken
 		morphPosition: self morphExtent * (0.006@0.72);
 		openInWorld: pasteup! !
 
-!Construction methodsFor: 'operation' stamp: 'dhn 6/5/2020 13:57:49'!
+!Construction methodsFor: 'operation' stamp: 'jmv 6/11/2020 16:31:52'!
 titleChange: aPlayer
 	"Change the title, showing player data in color"
 	"Display financial state of the players"
@@ -3208,7 +3208,7 @@ titleChange: aPlayer
 	otherLead
 		emphasis: 1;
 		color: Color lightBrown;
-		font: (FontFamily familyName: 'DejaVu' pointSize: 18).
+		font: (FontFamily defaultFamilyPointSize: 18).
 	othersArea 
 		removeAllMorphs;
 		addMorph: otherLead.
@@ -3219,7 +3219,7 @@ titleChange: aPlayer
 			emphasis: 1;
 			color: ea color;
 			setBalloonText: 'cash held by ', ea identity;
-			font: (FontFamily familyName: 'DejaVu' pointSize: 18))]! !
+			font: (FontFamily defaultFamilyPointSize: 18))]! !
 
 !Construction methodsFor: 'operation' stamp: 'dhn 1/11/2017 15:45:58'!
 tourAt: anInterval 

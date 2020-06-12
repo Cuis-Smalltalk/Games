@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4209] on 5 June 2020 at 8:16:25 am'!
+'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:43:21 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 96!
+!provides: 'Morphic-Games-Solitaire' 1 97!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -4648,7 +4648,7 @@ removeWinnerText
 			            addMorph: labelMorph.
 		winnerText := nil! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 9/19/2019 13:19:16'!
+!CardTableMorph methodsFor: 'actions' stamp: 'jmv 6/11/2020 16:45:47'!
 showWinnerText
 	"Display Winner Message to user"
 	| widthToFit  pointSizeToUse newText |
@@ -4656,16 +4656,16 @@ showWinnerText
 	newText := CardTableMorph randomWinnerText.
 	"Find a point size which fits"
 	widthToFit := (labelLayout morphExtent x) - 20.
-	pointSizeToUse :=  (FontFamily pointSizesFor: 'DejaVu') reverse 
+	pointSizeToUse :=  (FontFamily pointSizesFor: FontFamily defaultFamilyName) reverse 
 		detect: [ :ps |  | aFont |
-			aFont := AbstractFont familyName: 'DejaVu' pointSize: ps.
+			aFont := FontFamily defaultFamilyPointSize: ps.
 			((aFont widthOfString: newText) <= widthToFit)
 			and: [aFont lineSpacing <= (labelMorph morphExtent y)]]
-		ifNone: [AbstractFont default].
+		ifNone: [FontFamily defaultFamilyAndPointSize].
  	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
 	winnerText := (StringMorph contents: newText )
 					emphasis: 1; "bold"
-					font:  (AbstractFont familyName: 'DejaVu' pointSize: pointSizeToUse).
+					font:  (FontFamily defaultFamilyPointSize: pointSizeToUse).
 	winnerText color: Color blue; 
 				layoutSpec: (LayoutSpec  proportionalWidth: 0.9 proportionalHeight: 1.0).
 
@@ -5049,7 +5049,7 @@ makeHelpButton
 		 (EnableDisableButton 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:00:03'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'jmv 6/11/2020 16:30:02'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
@@ -5058,7 +5058,7 @@ makeLabelArea: lableString
 	labelMorph
 	 	:= (StringMorph contents: lableString) 
 			emphasis: 1;  "emphasis: bold=1"
-			font: (AbstractFont familyName: 'DejaVu' pointSize: 22). 
+			font: (FontFamily defaultFamilyPointSize: 22). 
 	labelHeight := labelMorph font pointSize * 2.		
 	labelMorph  layoutSpec: (LayoutSpec  proportionalWidth: 1.0 fixedHeight: 30 offAxisEdgeWeight: #rowTop).
 	
