@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:44:24 am'!
+'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:47:25 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 68!
+!provides: 'Game' 1 69!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
@@ -493,7 +493,7 @@ move
 	bone adjustTo: token.
 	bone show: bone class faces shuffled! !
 
-!Game methodsFor: 'operating' stamp: 'dhn 5/7/2020 20:10:31'!
+!Game methodsFor: 'operating' stamp: 'dhn 6/14/2020 17:37:30'!
 nextPlayer
 	"Begin the next player's turn"
 	| x |
@@ -512,7 +512,7 @@ nextPlayer
 	token color: currentPlayer color.
 	token setBalloonText: 'token for ', currentPlayer identity.
 	self testMode ifTrue: [
-	x _ (FillInTheBlankMorph request: 'How many spaces' initialAnswer: '6' onCancel: ['0']) asNumber.
+	x _ (StringRequestMorph request: 'How many spaces' initialAnswer: '6' orCancel: ['0']) asNumber.
 	self hardRoll: ((1 to: 6) asArray atWrap: x)]! !
 
 !Game methodsFor: 'operating' stamp: 'dhn 1/11/2017 15:52:14'!
@@ -709,22 +709,22 @@ scramble: aCollection
 	^temp shuffled.
 ! !
 
-!Game methodsFor: 'initialize' stamp: 'dhn 10/28/2016 15:13:22'!
+!Game methodsFor: 'initialize' stamp: 'dhn 6/14/2020 17:26:55'!
 setBeat
 	"Set the time between '...going', '...going' "
 	| value x |
 	
 	value _ self chantBeat / 1000.0.
-	x _ (FillInTheBlankMorph request: 'Auctioneer pause time (sec)' initialAnswer: value asString).
+	x _ (StringRequestMorph request: 'Auctioneer pause time (sec)' initialAnswer: value asString).
 	x ~= '' ifTrue:  [chantBeat _ (x asNumber * 1000.0) asInteger]! !
 
-!Game methodsFor: 'initialize' stamp: 'dhn 10/16/2016 12:07:28'!
+!Game methodsFor: 'initialize' stamp: 'dhn 6/14/2020 17:27:30'!
 setGoal
 	"Set the goal of the game"
 	| x |
 	
 	goal ifNil: [goal _ self class defaultGoal].
-	x _ (FillInTheBlankMorph request: 'Net assets to win the game?' initialAnswer: goal asString).
+	x _ (StringRequestMorph request: 'Net assets to win the game?' initialAnswer: goal asString).
 	x ~= '' ifTrue:  [goal _ x asNumber]! !
 
 !Game methodsFor: 'initialize' stamp: 'dhn 8/6/2017 21:32:46'!
@@ -1253,7 +1253,7 @@ defaultExtent
 
 	^ (Display width) @ (Display height * 0.6)! !
 
-!GameBoard methodsFor: 'initialization' stamp: 'dhn 4/1/2019 15:26:43'!
+!GameBoard methodsFor: 'initialization' stamp: 'dhn 6/14/2020 17:27:55'!
 getPlayers
 	"Get the names of two to six players"
 	| x y cnt clrs |
@@ -1261,7 +1261,7 @@ getPlayers
 	model disableAll: {'Players'. 'Tour'}.
 	clrs _ Token colors shuffled.
 	cnt _ 0.
-	x _ FillInTheBlankMorph request: 'First player''s name?' initialAnswer: ''.
+	x _ StringRequestMorph request: 'First player''s name?' initialAnswer: ''.
 	x 
 		ifEmpty: [
 			model enableAll: {'Players'. 'Tour'}.
@@ -1271,7 +1271,7 @@ getPlayers
 			model setupPlayer: x color: (clrs at: cnt)].
 	
 	[cnt < 6] whileTrue: [
-		y _ FillInTheBlankMorph request: 'Next player''s name?' initialAnswer: ''.
+		y _ StringRequestMorph request: 'Next player''s name?' initialAnswer: ''.
 		y
 			ifEmpty: [
 				cnt > 1 

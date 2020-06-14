@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:45:08 am'!
+'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:48:03 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 233!
+!provides: 'Construction' 1 234!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -1731,7 +1731,7 @@ setupPlayer: aName color: aColor
 	currentPlayer _ pl.
 	self availableOptions do: [:opt | pl options addLast: opt]! !
 
-!Contract methodsFor: 'initialize-release' stamp: 'dhn 10/16/2016 15:53:53'!
+!Contract methodsFor: 'initialize-release' stamp: 'dhn 6/14/2020 17:41:55'!
 testGoal
 	"Answer the value of TestGoal"
 	| g x |
@@ -1740,7 +1740,7 @@ testGoal
 		TestGoal 
 			ifNil: [g _ goal asString]
 			ifNotNil: [g _ TestGoal asString].
-		x _ (FillInTheBlankMorph request: 'Test Goal?' initialAnswer: g).
+		x _ (StringRequestMorph request: 'Test Goal?' initialAnswer: g).
 		x ~= '' 
 			ifTrue:  [self testGoal: x asNumber]
 			ifFalse: [self testGoal: self goal].
@@ -3148,7 +3148,7 @@ displayNumbers
 			setBalloonText: 'cash held by ', ea identity;
 			font: (FontFamily defaultFamilyPointSize: 18))]! !
 
-!Construction methodsFor: 'operation' stamp: 'dhn 10/23/2016 14:53:10'!
+!Construction methodsFor: 'operation' stamp: 'dhn 6/14/2020 17:34:19'!
 doTour
 	"Start the tour of the board"
 	| choice resp |
@@ -3159,7 +3159,7 @@ doTour
 	choice = 2 ifTrue: [
 		resp _ '1'.
 		[resp ~= ''] whileTrue: [
-			resp _ FillInTheBlankMorph request: 'Board starting where?' initialAnswer: resp.
+			resp _ StringRequestMorph request: 'Board starting where?' initialAnswer: resp.
 			(resp notEmpty and: [resp asNumber > 0]) ifTrue: [
 				self showSeasons: (model parseSeasonsAt: resp asNumber).
 				self model cellsAt: resp asNumber]]].
