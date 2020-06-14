@@ -6,4 +6,4 @@ Looking at the clues can bypass the mental block preventing you from seeing the 
 
 AnagramMorph open.
 
-Tested in Cuis 5.0  rev rev 3633 on 2/25/2019
+Tested in Cuis 5.0 rev 4208 on 6/14/2020
