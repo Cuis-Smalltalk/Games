@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4219] on 12 June 2020 at 11:43:21 am'!
+'From Cuis 5.0 [latest update: #4226] on 16 June 2020 at 4:16:41 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 97!
+!provides: 'Morphic-Games-Solitaire' 1 98!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -6093,6 +6093,11 @@ initialize
 	NumPiles       _ 4.
 	^self! !
 
+!FreeCell class methodsFor: 'environments' stamp: 'KenD 6/16/2020 16:16:32'!
+environmentsExportMe
+	"Register me (make me visible) from Smalltalk SystemDictionary"
+	^true! !
+
 !Klondike methodsFor: 'undo' stamp: 'KenD 3/28/2015 18:45'!
 addingCardOrCards: cardMorph toContainer: cardContainer
 	"Container is about to add a Card or Cards.  Remember undo action."
@@ -6768,6 +6773,11 @@ initialize
 	NumColumns := 7.
 	NumPiles := 4.
 	^self! !
+
+!Klondike class methodsFor: 'environments' stamp: 'KenD 6/16/2020 16:16:10'!
+environmentsExportMe
+	"Register me (make me visible) from Smalltalk SystemDictionary"
+	^true! !
 
 !CardTests methodsFor: 'Running' stamp: 'KenD 10/20/2004 09:49'!
 setUp
