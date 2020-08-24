@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4226] on 16 June 2020 at 4:16:41 pm'!
+'From Cuis 5.0 [latest update: #4362] on 24 August 2020 at 12:21:34 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 98!
+!provides: 'Morphic-Games-Solitaire' 1 99!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -1774,6 +1774,13 @@ makeFaceUp
 
 	self isFaceUp ifFalse: [ self flip ]! !
 
+!CardMorph methodsFor: 'geometry' stamp: 'jmv 8/23/2020 20:10:26'!
+displayFullBounds
+	"Answer enough room for our shadow, even if not present."
+	| r |
+	r _ super displayFullBounds.
+	^r quickMerge: (r translatedBy: self dropShadowOffset)! !
+
 !CardMorph methodsFor: 'geometry' stamp: 'KenD 8/12/2015 09:07'!
 fullExtentRect
 
@@ -1838,6 +1845,10 @@ withCardNumber: cardNum image: form
 	self image: form;
 		color: Color transparent;
 		yourself! !
+
+!CardMorph methodsFor: 'geometry testing' stamp: 'jmv 8/23/2020 20:15:51'!
+submorphsMightProtrude
+	^true! !
 
 !CardMorph class methodsFor: 'accessing' stamp: 'KenD 8/12/2015 06:46'!
 dropShadowMorph
