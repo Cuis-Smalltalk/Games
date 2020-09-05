@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4372] on 6 September 2020 at 5:05:36 pm'!
+'From Cuis 5.0 [latest update: #4373] on 4 September 2020 at 5:53:22 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 101!
+!provides: 'Morphic-Games-Solitaire' 1 102!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -482,14 +482,14 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 17:03:48'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/4/2020 17:52:13'!
 minimumExtent
 
 	"Assure some space for text."
 	"Note that button area defined width of table, so really be minimal.."
 	| unit |
 	unit :=  Preferences windowTitleFont pointSize.
-	^ (4 * unit) @ (6 + unit)! !
+	^ (4 * unit) @ (2 * unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
