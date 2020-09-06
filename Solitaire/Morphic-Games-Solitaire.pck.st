@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4362] on 24 August 2020 at 12:21:34 pm'!
+'From Cuis 5.0 [latest update: #4372] on 6 September 2020 at 2:59:51 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 99!
+!provides: 'Morphic-Games-Solitaire' 1 100!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -482,12 +482,12 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 3/9/2020 15:09:06'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 02:16:08'!
 minimumExtent
 
 	"Assure some space for text"
 	| unit |
-	unit := Theme current scrollbarThickness.
+	unit :=  Preferences windowTitleFont pointSize."Theme current scrollbarThickness."
 	^ (6 * unit) @ (2 * unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
