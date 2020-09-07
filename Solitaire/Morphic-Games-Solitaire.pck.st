@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4372] on 6 September 2020 at 2:59:51 pm'!
+'From Cuis 5.0 [latest update: #4372] on 6 September 2020 at 5:05:36 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 100!
+!provides: 'Morphic-Games-Solitaire' 1 101!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -482,13 +482,14 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 02:16:08'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 17:03:48'!
 minimumExtent
 
-	"Assure some space for text"
+	"Assure some space for text."
+	"Note that button area defined width of table, so really be minimal.."
 	| unit |
-	unit :=  Preferences windowTitleFont pointSize."Theme current scrollbarThickness."
-	^ (6 * unit) @ (2 * unit)! !
+	unit :=  Preferences windowTitleFont pointSize.
+	^ (4 * unit) @ (6 + unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
@@ -5749,7 +5750,7 @@ defaultExtent
 
 	^ tableExtent.! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 3/9/2020 18:16:02'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 9/6/2020 16:39:20'!
 initializeWithScale: aScale
 	"Setup my layout.  Across the top are 4 Spares and 4 Piles,
 	then a block of 8 Columns, then a Button area."
@@ -5761,6 +5762,7 @@ initializeWithScale: aScale
 		 makeColumnArea;
 		 makeButtonArea;
 		 dealCards;
+		 reScale;
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
@@ -6407,7 +6409,7 @@ defaultExtent
 
 	^ tableExtent.! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 3/9/2020 18:18:16'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 9/6/2020 16:40:07'!
 initializeWithScale: aScale
 	"Setup my layout.  Down the column are 
 	Label, 
@@ -6424,6 +6426,7 @@ initializeWithScale: aScale
 		makeColumnArea;
 		makeButtonArea;
 		dealCards;
+		reScale;
 		morphExtent: self minimumExtent;
 		yourself! !
 
