@@ -1,4 +1,4 @@
-'From Cuis 5.0 [latest update: #4373] on 4 September 2020 at 5:53:22 pm'!
+'From Cuis 5.0 [latest update: #4218] on 8 September 2020 at 1:09:24 pm'!
 'Description Solitaire Card Games'!
 !provides: 'Morphic-Games-Solitaire' 1 102!
 !requires: 'Goodies' 1 3 nil!
@@ -482,14 +482,14 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/4/2020 17:52:13'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 17:03:48'!
 minimumExtent
 
 	"Assure some space for text."
 	"Note that button area defined width of table, so really be minimal.."
 	| unit |
 	unit :=  Preferences windowTitleFont pointSize.
-	^ (4 * unit) @ (2 * unit)! !
+	^ (4 * unit) @ (6 + unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
@@ -6011,7 +6011,7 @@ setScale: aScale
 	
 	! !
 
-!FreeCell methodsFor: 'geometry' stamp: 'KenD 6/5/2020 08:01:40'!
+!FreeCell methodsFor: 'geometry' stamp: 'KenD 9/8/2020 13:08:14'!
 reScale
 
 	"reScale self based on new font sizes"
@@ -6030,7 +6030,7 @@ reScale
 	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * newScale + 4.
 
 	columnArea := (columns at: 1) owner. 
-	columnArea layoutSpec fixedHeight: columnHeight.
+	columnArea layoutSpec proportionalHeight: 0.9.
 	columnArea morphHeight: columnHeight.
 	columns do: [ :column | 
 			column scale: newScale;  
