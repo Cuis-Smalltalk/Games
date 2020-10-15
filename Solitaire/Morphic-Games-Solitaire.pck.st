@@ -1,6 +1,6 @@
 'From Cuis 5.0 [latest update: #4218] on 8 September 2020 at 1:09:24 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 102!
+!provides: 'Morphic-Games-Solitaire' 1 103!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4209 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -18,7 +18,7 @@ EnableDisableButton class
 	instanceVariableNames: ''!
 
 !classDefinition: #CardContainerMorph category: #'Morphic-Games-Solitaire'!
-BorderedRectMorph subclass: #CardContainerMorph
+WidgetMorph subclass: #CardContainerMorph
 	instanceVariableNames: 'targetTable'
 	classVariableNames: 'ContainerOffset'
 	poolDictionaries: ''
@@ -266,8 +266,8 @@ Structure:
   inCardMove	Boolean -- true when animating card moves to Piles.
   moveStart		CardContainer -- Set to start container with hand grab [for undo].
   inUndo			Boolean -- true while undoing.
-  winnerText	StringMorph -- random winner text
-  lableMorph	StringMorph -- e.g. 'Klondike' or 'FreeCell'
+  winnerText	LabelMorph -- random winner text
+  lableMorph	LabelMorph -- e.g. 'Klondike' or 'FreeCell'
   labelLayout	Container of current label: lableMorph or winnerText
   undoButton  	Button is sometimes disabled
   saveGameButton is sometimes disabled
@@ -431,7 +431,7 @@ enable
 !EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 11/6/2004 19:07'!
 labelStringMorph
 
-	self allMorphsDo: [:m | (m isKindOf: StringMorph) ifTrue: [^m]].
+	self allMorphsDo: [:m | (m isKindOf: LabelMorph) ifTrue: [^m]].
 	^ nil! !
 
 !EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:39'!
@@ -4675,7 +4675,7 @@ showWinnerText
 			and: [aFont lineSpacing <= (labelMorph morphExtent y)]]
 		ifNone: [FontFamily defaultFamilyAndPointSize].
  	Semaphore new waitTimeoutMSecs: 500. "smoother appearance after last card move"
-	winnerText := (StringMorph contents: newText )
+	winnerText := (LabelMorph contents: newText )
 					emphasis: 1; "bold"
 					font:  (FontFamily defaultFamilyPointSize: pointSizeToUse).
 	winnerText color: Color blue; 
@@ -5068,7 +5068,7 @@ makeLabelArea: lableString
 	| labelHeight |
 	labelLayout := LayoutMorph newRow.
 	labelMorph
-	 	:= (StringMorph contents: lableString) 
+	 	:= (LabelMorph contents: lableString) 
 			emphasis: 1;  "emphasis: bold=1"
 			font: (FontFamily defaultFamilyPointSize: 22). 
 	labelHeight := labelMorph font pointSize * 2.		
@@ -6475,7 +6475,7 @@ makePilesArea
 	pilesArea color: noColor.
 	
 	"spacer"
-	pilesArea addMorph: (BorderedRectMorph 
+	pilesArea addMorph: (WidgetMorph 
 								new color: noColor; 
 								borderColor: noColor; 
 								morphWidth: 40 * self scale)
@@ -6499,7 +6499,7 @@ makePilesArea
 	pilesArea addMorph: discards.
 	
 	"spacer"
-	pilesArea addMorph: (BorderedRectMorph new color: noColor; borderColor: noColor; morphWidth: 20)
+	pilesArea addMorph: (WidgetMorph new color: noColor; borderColor: noColor; morphWidth: 20)
 			  layoutSpec: (LayoutSpec  
 									proportionalWidth: 0.2
 									fixedHeight: (CardMorph morphHeight * self scale + 4)).
