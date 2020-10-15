@@ -1,7 +1,8 @@
 'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:47:25 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 69!
+!provides: 'Game' 1 70!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
+!requires: 'Morphic-Deprecated' 1 0 nil!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
 
