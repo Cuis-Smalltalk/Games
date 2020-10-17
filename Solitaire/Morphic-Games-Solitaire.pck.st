@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4414] on 16 October 2020 at 5:03:48 pm'!
+'From Cuis 5.0 [latest update: #4414] on 17 October 2020 at 2:57:03 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 103!
+!provides: 'Morphic-Games-Solitaire' 1 104!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4414 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -5869,10 +5869,10 @@ enable
 	self redrawNeeded.
 	^self! !
 
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 11/6/2004 19:07'!
+!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 10/17/2020 14:55:00'!
 labelStringMorph
 
-	self allMorphsDo: [:m | (m isKindOf: StringMorph) ifTrue: [^m]].
+	self allMorphsDo: [:m | (m isKindOf: LabelMorph) ifTrue: [^m]].
 	^ nil! !
 
 !EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:39'!
