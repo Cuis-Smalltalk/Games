@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4414] on 17 October 2020 at 2:57:03 pm'!
+'From Cuis 5.0 [latest update: #4501] on 27 December 2020 at 4:12:18 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 104!
+!provides: 'Morphic-Games-Solitaire' 1 107!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4414 nil!
+!requires: 'Cuis-Base' 50 4501 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: 'Morphic-Games-Solitaire'!
 
@@ -810,13 +810,13 @@ textScale
 	"Answer a point size based on current settings"
 	^ Preferences windowTitleFont pointSize! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 3/14/2020 17:07:36'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 12/27/2020 15:12:18'!
 buildButton: aButton
 	"wrap a button or switch in an alignmentMorph to provide some space around the button"
 
 	| |
 	aButton 
-		morphHeight: (Preferences standardButtonFont pointSize) * 3 ;
+		morphHeight: (Preferences standardButtonFont pointSize) * 8 ;
 		borderWidth: 2;
 		color: Color gray.
 	 	^aButton
@@ -852,7 +852,7 @@ initializeWithScale: aScale
 		 yourself
 	"subclasses setup the layout"! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:03:34'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 12/27/2020 16:11:18'!
 makeButtonArea
 	"Make a new Button Area as a submorph"
 
@@ -861,7 +861,7 @@ makeButtonArea
 	buttonColor := Theme current buttonColorFrom: 
 					(Theme current defaultWindowColor).
 
-	buttonArea := LayoutMorph newRow separation: 5.
+	buttonArea := LayoutMorph newRow separation: 8.
 	buttonArea
 			color: Color transparent;
 			"borderColor: Color transparent;"
@@ -1052,10 +1052,10 @@ undoMove
 
 ! !
 
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 3/14/2020 14:25:15'!
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 12/27/2020 15:14:30'!
 buttonAreaHeight
 
-	^ (Preferences standardButtonFont pointSize) * 4! !
+	^ (Preferences standardButtonFont pointSize) * 8! !
 
 !CardTableMorph methodsFor: 'private' stamp: 'KenD 3/14/2020 14:25:54'!
 labelAreaHeight
@@ -1511,10 +1511,10 @@ spare: spareMorph wantsDropOf: aCardOrColumnMorph
 		ifTrue: [^ (card isNil not) and: [card submorphs size = 0]] "only holds 1 card"
 		ifFalse: [^ false]! !
 
-!FreeCell methodsFor: 'private' stamp: 'KenD 4/6/2016 19:18'!
+!FreeCell methodsFor: 'private' stamp: 'KenD 12/27/2020 14:58:22'!
 columnSeparation
 	"Pixel space between columns"
-	^10! !
+	^4! !
 
 !FreeCell methodsFor: 'accessing' stamp: 'KenD 10/22/2004 18:51'!
 columns
@@ -1579,14 +1579,14 @@ dealCards
 				addCard: (deck dealACard makeFaceUp) ]
 			! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/7/2016 12:53'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 12/27/2020 14:59:50'!
 defaultExtent
 
 	| cardWidth cardHeight tableExtent |
 	cardWidth  := CardMorph morphWidth * scale.
 	cardHeight := CardMorph morphHeight * scale.
 	"buttonArea height 50; labelArea height 40; pilesArea CardHeight+30" 
-	tableExtent := (cardWidth + self columnSeparation * 10)@(cardHeight * 6 + 120).
+	tableExtent := (cardWidth + self columnSeparation * 8)@(cardHeight * 6 + 120).
 
 	^ tableExtent.! !
 
@@ -1606,7 +1606,7 @@ initializeWithScale: aScale
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:03:10'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 12/27/2020 15:33:28'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -1620,9 +1620,9 @@ makeColumnArea
 				morphHeight: columnHeight;
 				morphWidth: (self morphWidth).
 	columnLayout := LayoutSpec  
-							proportionalWidth: 0.20
+							proportionalWidth: 0.08
 							fixedHeight: columnHeight
-							offAxisEdgeWeight: #columnLeft.
+							offAxisEdgeWeight: #center.
 
 	1 to: NumColumns 
 		do: [ :n |
@@ -1640,7 +1640,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 ! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:01:30'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 12/27/2020 15:39:14'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -1648,7 +1648,7 @@ makePilesArea
 	
 	noColor := Color transparent.
 	
-	pilesArea :=  LayoutMorph newRow separation: 10.
+	pilesArea :=  LayoutMorph newRow separation: 4.
 	pilesArea axisEdgeWeight: #center;
 			  color: noColor.
 
@@ -1673,8 +1673,8 @@ makePilesArea
 	
 	self addMorph: pilesArea 
 		layoutSpec: (LayoutSpec  proportionalWidth: 1.0
-									fixedHeight: CardMorph morphHeight * self scale+ 30 
-									offAxisEdgeWeight: #center)
+								fixedHeight: CardMorph morphHeight * self scale+ 30 
+								offAxisEdgeWeight: #center)
 	! !
 
 !FreeCell methodsFor: 'initialization' stamp: 'KenD 1/10/2013 14:34'!
@@ -1829,7 +1829,7 @@ saveGameToDataStream: aDataStream
 	aDataStream nextPut: someData.
 ! !
 
-!FreeCell methodsFor: 'scaling' stamp: 'KenD 6/5/2020 07:56:15'!
+!FreeCell methodsFor: 'scaling' stamp: 'KenD 12/27/2020 15:01:31'!
 setScale: aScale
 	"Resize me based on new card size"
 	
@@ -1840,12 +1840,12 @@ setScale: aScale
 	cardWidth := cardExtent x.
 	cardHeight := cardExtent y.
 	"resize table"
-	self morphExtent: (cardWidth * 10) @ (cardHeight * 6 + 120).
+	self morphExtent: (cardWidth * 9) @ (cardHeight * 6 + 120).
 	"label area and button area unchanged"
 	columnLayout := LayoutSpec  
-									fixedWidth: cardWidth + 4 
-									fixedHeight: cardHeight * 5
-									offAxisEdgeWeight: #center.
+							fixedWidth: cardWidth + 4 
+							fixedHeight: cardHeight * 5
+							offAxisEdgeWeight: #center.
 	
 	"@@FIXME -- unfinished"
 	
@@ -2238,14 +2238,14 @@ dealCards
 	self reDealCards
 ! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 4/6/2016 20:02'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 12/27/2020 15:04:52'!
 defaultExtent
 
 	| cardWidth cardHeight tableExtent |
 	cardWidth  := CardMorph morphWidth * scale.
 	cardHeight := CardMorph morphHeight * scale.
 	"buttonArea height 50; labelArea height 40; pilesArea CardHeight+30" 
-	tableExtent := (cardWidth * 9 )@(cardHeight * 6 + 120).
+	tableExtent := (cardWidth * 8 )@(cardHeight * 6 + 120).
 
 	^ tableExtent.! !
 
@@ -3056,11 +3056,12 @@ makeFaceUp
 
 	self isFaceUp ifFalse: [ self flip ]! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'jmv 8/23/2020 20:10:26'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 12/27/2020 14:55:35'!
 displayFullBounds
 	"Answer enough room for our shadow, even if not present."
 	| r |
 	r _ super displayFullBounds.
+	r ifNil: [ r := 0@0 extent: self morphExtent ].
 	^r quickMerge: (r translatedBy: self dropShadowOffset)! !
 
 !CardMorph methodsFor: 'geometry' stamp: 'KenD 8/12/2015 09:07'!
@@ -5923,14 +5924,14 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 9/6/2020 17:03:48'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 12/27/2020 15:21:03'!
 minimumExtent
 
 	"Assure some space for text."
 	"Note that button area defined width of table, so really be minimal.."
 	| unit |
 	unit :=  Preferences windowTitleFont pointSize.
-	^ (4 * unit) @ (6 + unit)! !
+	^ (6 * unit) @ (3 * unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
