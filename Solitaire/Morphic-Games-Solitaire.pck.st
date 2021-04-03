@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4501] on 27 December 2020 at 4:12:18 pm'!
+'From Cuis 5.0 [latest update: #4552] on 3 April 2021 at 4:34:58 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 107!
+!provides: 'Morphic-Games-Solitaire' 1 108!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4501 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -1579,18 +1579,18 @@ dealCards
 				addCard: (deck dealACard makeFaceUp) ]
 			! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 12/27/2020 14:59:50'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/3/2021 16:09:28'!
 defaultExtent
 
 	| cardWidth cardHeight tableExtent |
 	cardWidth  := CardMorph morphWidth * scale.
 	cardHeight := CardMorph morphHeight * scale.
 	"buttonArea height 50; labelArea height 40; pilesArea CardHeight+30" 
-	tableExtent := (cardWidth + self columnSeparation * 8)@(cardHeight * 6 + 120).
+	tableExtent := (cardWidth + self columnSeparation * 4)@(cardHeight * 6 + 120).
 
 	^ tableExtent.! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 9/6/2020 16:39:20'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/3/2021 15:57:13'!
 initializeWithScale: aScale
 	"Setup my layout.  Across the top are 4 Spares and 4 Piles,
 	then a block of 8 Columns, then a Button area."
@@ -1602,11 +1602,11 @@ initializeWithScale: aScale
 		 makeColumnArea;
 		 makeButtonArea;
 		 dealCards;
-		 reScale;
+		 "reScale;"
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 12/27/2020 15:33:28'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/3/2021 15:59:37'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -1620,7 +1620,7 @@ makeColumnArea
 				morphHeight: columnHeight;
 				morphWidth: (self morphWidth).
 	columnLayout := LayoutSpec  
-							proportionalWidth: 0.08
+							proportionalWidth: 0.8
 							fixedHeight: columnHeight
 							offAxisEdgeWeight: #center.
 
@@ -5924,14 +5924,14 @@ isEnabled
 isLocked
      ^self isDisabled! !
 
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 12/27/2020 15:21:03'!
+!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 4/3/2021 16:33:08'!
 minimumExtent
 
 	"Assure some space for text."
-	"Note that button area defined width of table, so really be minimal.."
+	"Note that button area defines minimum width of table, so really be minimal.."
 	| unit |
 	unit :=  Preferences windowTitleFont pointSize.
-	^ (6 * unit) @ (3 * unit)! !
+	^ (4 * unit) @ (3 * unit)! !
 
 !EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
 includeInNewMorphMenu
