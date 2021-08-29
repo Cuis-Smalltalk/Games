@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4552] on 3 April 2021 at 4:34:58 pm'!
+'From Cuis 5.0 [latest update: #4815] on 29 August 2021 at 12:28:46 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 108!
+!provides: 'Morphic-Games-Solitaire' 1 110!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4501 nil!
+!requires: 'Cuis-Base' 50 4815 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: 'Morphic-Games-Solitaire'!
 
@@ -3105,13 +3105,14 @@ isFaceUp
 isRed
 	^(self suitColor) == #Red! !
 
-!CardMorph methodsFor: 'initialization' stamp: 'KenD 6/2/2020 13:28:25'!
+!CardMorph methodsFor: 'initialization' stamp: 'KenD 8/29/2021 12:03:55'!
 withCardNumber: cardNum
 	"Private"
 	
-	super initialize.
 	isFaceDown := false.
-	cardNumber := cardNum.
+	"NB: Must set cardNumber before #initialize"
+	cardNumber := cardNum. 
+	super initialize.
 	grabPreowner := nil.
 	self image: (self faceForm);
 		color: Color transparent;
@@ -5767,7 +5768,7 @@ initializeFromPNGfixShadow
 		at: 53 
 		put: ((Form fromFileNamed: (imageDirNamePrefix , 'back.png')) asFormOfDepth: 32)! !
 
-!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 6/2/2020 13:26:33'!
+!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 8/29/2021 12:05:24'!
 the: face of: suit
 	"Return an Card instance"
 	
@@ -5794,7 +5795,7 @@ the: face of: suit
 		ifTrue: [Error signal: ('bad face: ', face asString)].
 	
 	"Translate between zero based cardNumber and 1 based arrays"
-	newInst := (super new) withCardNumber: (suitNum - 1 + (4 * (faceNum - 1))).
+	newInst := (super basicNew) withCardNumber: (suitNum - 1 + (4 * (faceNum - 1))).
 	newInst color: Color transparent.
 	^newInst! !
 
