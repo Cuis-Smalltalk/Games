@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4815] on 29 August 2021 at 12:28:46 pm'!
+'From Cuis 5.0 [latest update: #4815] on 30 August 2021 at 2:43:53 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 110!
+!provides: 'Morphic-Games-Solitaire' 1 112!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4815 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -2664,12 +2664,13 @@ face
 
 	^FaceNames at: (self faceNumber).! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 8/30/2021 14:31:22'!
 faceForm
 	"Answer form for this card's face"
 	
 	"Zero based card numbers -> 1 based array => add 1".
-	^FormsArray at: (cardNumber + 1)! !
+	"Sometimes invoked _before_ initialize .. 8^(" 
+	^FormsArray at: (cardNumber ifNil: [1] ifNotNil: [:cn | cn + 1])! !
 
 !CardMorph methodsFor: 'access' stamp: 'KenD 1/15/2013 15:02'!
 forgetPreowner
@@ -3173,6 +3174,10 @@ width
 
 	"Answer the image width"
 	^(FormsArray at: 53) width! !
+
+!CardMorph class methodsFor: 'private' stamp: 'KenD 8/30/2021 14:28:45'!
+defaultImage
+	^FormsArray at: 1! !
 
 !CardMorph class methodsFor: 'private' stamp: 'KenD 10/5/2006 09:39'!
 encodedStringFromFile: aFileName
