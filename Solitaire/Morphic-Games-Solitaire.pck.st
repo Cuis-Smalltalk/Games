@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4815] on 30 August 2021 at 2:43:53 pm'!
+'From Cuis 5.0 [latest update: #4856] on 12 September 2021 at 10:25:44 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 112!
+!provides: 'Morphic-Games-Solitaire' 1 113!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4815 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -69,7 +69,7 @@ EnableDisableButton class
 
 !classDefinition: #CardContainerMorph category: 'Morphic-Games-Solitaire'!
 WidgetMorph subclass: #CardContainerMorph
-	instanceVariableNames: 'targetTable'
+	instanceVariableNames: 'targetTable cardClass'
 	classVariableNames: 'ContainerOffset'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
@@ -281,15 +281,14 @@ Structure:
 
 !
 
-!CardContainerMorph commentStamp: 'KenD 10/22/2004 11:54' prior: 0!
+!CardContainerMorph commentStamp: '<historical>' prior: 0!
 I am the parent of CardContainer classes.
 
 
 Structure:
  targetTable		CardTable -- My owning (ancestor) table which implements the card game.
 
-Cards are CardMorphs and are contained in me as submorphs.  My subclasses
-describe any layout required.
+Cards are CardMorphs or SVFCardMorphs and are contained in me as submorphs.  My subclasses describe any layout required.
 
 See subclasses: CardDeckMorph, CardSpareMorph, CardColumnMorph and CardPileMorph.!
 
@@ -3134,6 +3133,12 @@ withCardNumber: cardNum image: form
 !CardMorph methodsFor: 'geometry testing' stamp: 'jmv 8/23/2020 20:15:51'!
 submorphsMightProtrude
 	^true! !
+
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 9/12/2021 08:39:08'!
+cardExtent
+
+	"Answer the image extent"
+	^(FormsArray at: 53) extent! !
 
 !CardMorph class methodsFor: 'accessing' stamp: 'KenD 8/12/2015 06:46'!
 dropShadowMorph
@@ -6017,6 +6022,16 @@ addCard: aCard
 
 ! !
 
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 9/12/2021 08:32:38'!
+cardClass
+
+	^ cardClass! !
+
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 9/12/2021 08:32:57'!
+cardClass: aCardClass
+
+	cardClass := aCardClass! !
+
 !CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 3/1/2015 17:08'!
 containerOffset
 	"Offset from my morphPosition to that of contained card"
@@ -6063,19 +6078,25 @@ topCard
 	ifTrue: [ ^nil ]
 	ifFalse: [ ^cards at: 1 ]! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 07:54:18'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:30:53'!
+defaultCardClass
+	^ CardMorph ! !
+
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:36:44'!
 defaultLayout
-	^LayoutSpec  fixedWidth: (CardMorph width + 4)
-					 fixedHeight: (CardMorph height + 4) 
+	^LayoutSpec  fixedWidth: (cardClass morphWidth + 4)
+					 fixedHeight: (cardClass morphHeight + 4) 
 					 offAxisEdgeWeight: #center! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:05:22'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:37:27'!
 defaultLayoutWithScale: scale
-	^LayoutSpec  fixedWidth:   (CardMorph width * scale + (2 * self borderWidth))
-					 fixedHeight: (CardMorph height * scale + (2 * self borderWidth)) 
+	^LayoutSpec  fixedWidth:   (cardClass morphWidth * scale 
+							+ (2 * self borderWidth))
+					 fixedHeight: (cardClass morphHeight * scale 
+							+ (2 * self borderWidth)) 
 					 offAxisEdgeWeight: #leftOrTop! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:13'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:33:31'!
 initialize
 	"Set my typical properties; Assume displayed on a Green table."
 
@@ -6083,12 +6104,13 @@ initialize
 	self color: Color transparent;
 		borderColor: Color yellow;
 		borderWidth: 2; "pixels"
-		morphWidth:  CardMorph morphWidth + 4;
-		morphHeight: CardMorph morphHeight + 4;
+		cardClass: self defaultCardClass;
+		morphWidth:  cardClass morphWidth + 4;
+		morphHeight: cardClass morphHeight + 4;
 		layoutSpec: self defaultLayout; "subclasses may mutate or replace"
 		yourself! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 4/6/2016 15:13'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:33:55'!
 initializeWithScale: scale
 	"Set my typical properties; Assume displayed on a Green table."
 
@@ -6096,8 +6118,9 @@ initializeWithScale: scale
 	self color: Color transparent;
 		borderColor: Color yellow;
 		borderWidth: 2; "pixels"
-		morphWidth:  CardMorph morphWidth * scale + 4;
-		morphHeight: CardMorph morphHeight * scale + 4;
+		cardClass: self defaultCardClass;
+		morphWidth:  cardClass morphWidth * scale + 4;
+		morphHeight: cardClass morphHeight * scale + 4;
 		layoutSpec: (self defaultLayoutWithScale: scale); "subclasses may mutate or replace"
 		yourself! !
 
@@ -6139,12 +6162,12 @@ setTargetTable
 	(myOwner isKindOf: CardTableMorph)
 		ifTrue: [self targetTable: myOwner]! !
 
-!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 3/17/2020 19:57:36'!
+!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 9/12/2021 08:38:46'!
 minimumExtent
 
 	| myTable |
 	myTable := self targetTable.
-	^ (myTable ifNil: [CardMorph extent] ifNotNil: [myTable cardSize]) + (2 * self borderWidth)! !
+	^ (myTable ifNil: [cardClass cardExtent] ifNotNil: [myTable cardSize]) + (2 * self borderWidth)! !
 
 !CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 3/14/2020 15:43:26'!
 rescaleTo: newScale
@@ -6301,10 +6324,10 @@ saveStateToArray
 			aCard cardNumber ].
 	^ { numFaceUp. cardNumArray. }! !
 
-!CardColumnMorph methodsFor: 'geometry' stamp: 'KenD 3/15/2020 14:59:49'!
+!CardColumnMorph methodsFor: 'geometry' stamp: 'KenD 9/12/2021 08:41:03'!
 pixelsPerOverlap
 
-	^ CardMorph morphHeight * displayScale // 4! !
+	^ cardClass morphHeight * displayScale // 4! !
 
 !CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 1/24/2011 02:08'!
 acceptDroppingMorph: aCardMorph event: evt 
