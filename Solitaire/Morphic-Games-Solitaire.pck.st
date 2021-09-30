@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4895] on 30 September 2021 at 8:38:55 am'!
+'From Cuis 5.0 [latest update: #4895] on 30 September 2021 at 8:52:58 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 114!
+!provides: 'Morphic-Games-Solitaire' 1 115!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4815 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -6011,13 +6011,13 @@ wantsDroppedMorph: aMorph event: evt
 		ifTrue: [^ false]
 		ifFalse: [^ table container: self wantsDropOf: aMorph]! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:27:20'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:46:07'!
 addCard: aCard
 	"Add a Card to me"
 
 	"I assume checking for legality of drop has already been done"
 	self addMorph: aCard.
-	aCard morphPosition: self defaultBorderWidth @ 0.
+	aCard morphPosition: ContainerOffset. .
 	self
 
 ! !
@@ -6191,12 +6191,12 @@ initialize
 	ContainerOffset _ 2 @ 2.
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:27:56'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:45:41'!
 addCard: aCard
 
 	| newPos |
 	(self isEmpty)
-		ifTrue:  [newPos := self defaultBorderWidth @ 0]
+		ifTrue:  [newPos := ContainerOffset ]
 		ifFalse: [newPos := (self defaultBorderWidth @ (self pixelsPerOverlap * self numberOfCards))].
 	self addMorph: aCard.
 	aCard morphPosition: newPos.
