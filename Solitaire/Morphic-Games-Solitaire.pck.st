@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4856] on 12 September 2021 at 10:25:44 am'!
+'From Cuis 5.0 [latest update: #4895] on 30 September 2021 at 8:38:55 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 113!
+!provides: 'Morphic-Games-Solitaire' 1 114!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4815 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -6011,13 +6011,13 @@ wantsDroppedMorph: aMorph event: evt
 		ifTrue: [^ false]
 		ifFalse: [^ table container: self wantsDropOf: aMorph]! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 1/13/2013 15:53'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:27:20'!
 addCard: aCard
 	"Add a Card to me"
 
 	"I assume checking for legality of drop has already been done"
 	self addMorph: aCard.
-	aCard morphPosition: 0 @ 0.
+	aCard morphPosition: self defaultBorderWidth @ 0.
 	self
 
 ! !
@@ -6078,6 +6078,11 @@ topCard
 	ifTrue: [ ^nil ]
 	ifFalse: [ ^cards at: 1 ]! !
 
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/30/2021 08:25:13'!
+defaultBorderWidth
+
+	^ 2 "pixels"! !
+
 !CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:30:53'!
 defaultCardClass
 	^ CardMorph ! !
@@ -6096,17 +6101,17 @@ defaultLayoutWithScale: scale
 							+ (2 * self borderWidth)) 
 					 offAxisEdgeWeight: #leftOrTop! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/12/2021 08:33:31'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 9/30/2021 08:26:10'!
 initialize
 	"Set my typical properties; Assume displayed on a Green table."
 
 	super initialize.
 	self color: Color transparent;
 		borderColor: Color yellow;
-		borderWidth: 2; "pixels"
+		borderWidth: self defaultBorderWidth; 
 		cardClass: self defaultCardClass;
-		morphWidth:  cardClass morphWidth + 4;
-		morphHeight: cardClass morphHeight + 4;
+		morphWidth:  cardClass morphWidth + (2 * self defaultBorderWidth);
+		morphHeight: cardClass morphHeight + (2 * self defaultBorderWidth);
 		layoutSpec: self defaultLayout; "subclasses may mutate or replace"
 		yourself! !
 
@@ -6186,13 +6191,13 @@ initialize
 	ContainerOffset _ 2 @ 2.
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 3/15/2020 15:00:20'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:27:56'!
 addCard: aCard
 
 	| newPos |
 	(self isEmpty)
-	      ifTrue: [newPos := 0 @ 0]
-		ifFalse: [newPos := (0 @ (self pixelsPerOverlap * self numberOfCards))].
+		ifTrue:  [newPos := self defaultBorderWidth @ 0]
+		ifFalse: [newPos := (self defaultBorderWidth @ (self pixelsPerOverlap * self numberOfCards))].
 	self addMorph: aCard.
 	aCard morphPosition: newPos.
 	self! !
