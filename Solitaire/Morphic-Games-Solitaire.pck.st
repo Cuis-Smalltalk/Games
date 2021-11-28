@@ -1,8 +1,8 @@
-'From Cuis 5.0 [latest update: #4895] on 1 October 2021 at 3:48:38 pm'!
+'From Cuis 5.0 [latest update: #4984] on 28 November 2021 at 2:14:27 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 118!
+!provides: 'Morphic-Games-Solitaire' 1 121!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4815 nil!
+!requires: 'Cuis-Base' 50 4984 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: 'Morphic-Games-Solitaire'!
 
@@ -55,16 +55,6 @@ CardMorph subclass: #ScaledCardMorph
 	category: 'Morphic-Games-Solitaire'!
 !classDefinition: 'ScaledCardMorph class' category: 'Morphic-Games-Solitaire'!
 ScaledCardMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #EnableDisableButton category: 'Morphic-Games-Solitaire'!
-PluggableButtonMorph subclass: #EnableDisableButton
-	instanceVariableNames: 'disabled origColor'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'EnableDisableButton class' category: 'Morphic-Games-Solitaire'!
-EnableDisableButton class
 	instanceVariableNames: ''!
 
 !classDefinition: #CardContainerMorph category: 'Morphic-Games-Solitaire'!
@@ -272,14 +262,6 @@ This is a 52 card deck (no jokers).
 
 !ScaledCardMorph commentStamp: '<historical>' prior: 0!
 A ScaledCardMorph is a resized/scaled CardMorph.!
-
-!EnableDisableButton commentStamp: '<historical>' prior: 0!
-An EnableDisableButtonMorph is a PluggableButtonMorph but can be disabled.
-
-Structure:
- disabled		Boolean -- true if not active.
-
-!
 
 !CardContainerMorph commentStamp: '<historical>' prior: 0!
 I am the parent of CardContainer classes.
@@ -894,11 +876,11 @@ makeButtonArea
 										proportionalHeight: 0.1
 										offAxisEdgeWeight: #center)! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:06'!
 makeHelpButton
 	^ self
 		buildButton:
-		 (EnableDisableButton 
+		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
 !CardTableMorph methodsFor: 'initialization' stamp: 'KenD 10/16/2020 16:47:05'!
@@ -925,42 +907,42 @@ makeLabelArea: lableString
 
 	self addMorph: labelLayout! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:11'!
 makeNewGameButton
 	^ self
 		buildButton:
-		 (EnableDisableButton 
+		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #newGame label: 'New game')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:16'!
 makeQuitButton
 	^ self buildButton:
-		 (EnableDisableButton 
+		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #quit label: 'Quit')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:20'!
 makeRestoreGameButton
 	^self buildButton:
-		 (EnableDisableButton 
+		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #restoreGame label: 'Restore game')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:35'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:24'!
 makeSameGameButton
 	^ self buildButton:
-		 (EnableDisableButton 
+		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #sameGame label: 'Start Over')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:37'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:27'!
 makeSaveGameButton
 
-	saveGameButton := (EnableDisableButton 
+	saveGameButton := (PluggableButtonMorph 
 			model: self stateGetter: nil action: #saveGame label: 'Save game').
 	^ self buildButton: saveGameButton! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 6/26/2011 16:36'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:25:31'!
 makeUndoButton
 
-	undoButton := (EnableDisableButton 
+	undoButton := (PluggableButtonMorph 
 			model: self stateGetter: nil action: #undoMove label: 'Undo').
 	^ self buildButton: undoButton! !
 
@@ -1606,19 +1588,19 @@ initializeWithScale: aScale
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 4/3/2021 15:59:37'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:52:54'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
 	| columnArea columnHeight columnLayout  noColor|
-	noColor := Color transparent.
+	noColor := `Color transparent`.
 	columnHeight := CardMorph morphHeight * self scale * 5. "pixels"
 	columnArea := LayoutMorph newRow.  "a row of columns"
-	columnArea 
-				axisEdgeWeight: #center;
-				color: noColor;
-				morphHeight: columnHeight;
-				morphWidth: (self morphWidth).
+	columnArea
+		axisEdgeWeight: #center;
+		color: noColor;
+		morphHeight: columnHeight;
+		morphWidth: (self morphWidth).
 	columnLayout := LayoutSpec  
 							proportionalWidth: 0.8
 							fixedHeight: columnHeight
@@ -1627,7 +1609,8 @@ makeColumnArea
 	1 to: NumColumns 
 		do: [ :n |
 				| colMorph |
-				colMorph := CardColumnMorph new initializeWithScale: self scale. 
+				colMorph := CardColumnMorph new
+							initializeWithScale: self scale. 
 				colMorph 
 					morphHeight: columnHeight;
 					borderColor: noColor;
@@ -1635,7 +1618,9 @@ makeColumnArea
 				columnArea addMorph: colMorph 
 			].
 	columns := (columnArea submorphs 
-					select: [ :whatever | whatever isKindOf: CardContainerMorph ]) reversed..
+					select: [ :whatever | 
+						whatever isKindOf: CardContainerMorph ]
+			   ) reversed.
 
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 ! !
@@ -2270,7 +2255,7 @@ initializeWithScale: aScale
 		morphExtent: self minimumExtent;
 		yourself! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 6/5/2020 08:02:10'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 11/28/2021 13:52:57'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -2278,28 +2263,35 @@ makeColumnArea
 	columnHeight := CardMorph morphHeight * self scale * 5. "pixels"
 
 	columnArea := LayoutMorph newRow.  "a row of columns"
-	columnArea color: Color transparent;
-				  morphHeight: columnHeight;
-				  morphWidth: (self morphWidth);
-				  axisEdgeWeight: #center.
+	columnArea 
+		color: `Color transparent`;
+		morphHeight: columnHeight;
+		morphWidth: (self morphWidth);
+		axisEdgeWeight: #center.
 
 	columnLayout := LayoutSpec  
 							proportionalWidth: 0.20
 							fixedHeight: columnHeight
-							offAxisEdgeWeight: #columnLeft.
-	columnLayout proportionalWidth: 0.20 minimum: CardMorph morphWidth * self scale + 4.
+							offAxisEdgeWeight: #center.
+	columnLayout 
+		proportionalWidth: 0.20 
+		minimum: CardMorph morphWidth * self scale + 4.
 			
 	1 to: NumColumns do: 
 		[ :n |
 			| colMorph |
-			colMorph := CardColumnMorph new initializeWithScale: self scale. 
-			colMorph morphHeight: columnHeight;
-					    borderColor: Color transparent;
-					    layoutSpec: columnLayout.
+			colMorph := CardColumnMorph new 
+						initializeWithScale: self scale. 
+			colMorph 
+				morphHeight: columnHeight;
+				borderColor: `Color transparent`;
+				layoutSpec: columnLayout.
 			columnArea addMorph: colMorph.
 		].
 	columns := (columnArea submorphs 
-				select: [ :whatever | whatever isKindOf: CardContainerMorph ]) reversed.
+				select: [ :whatever | 
+					whatever isKindOf: CardContainerMorph ]
+			    ) reversed.
 
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 	! !
@@ -5863,96 +5855,7 @@ the: num of: suit scale: scale
 "
 	^ self fromCard: (CardMorph the: num of: suit) scale: scale! !
 
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:51'!
-disable
-	"setter for disabled"
-	
-	disabled := true.
-	self color: (self origColor darker darker darker).
-	self redrawNeeded.
-	^self! !
-
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 11/6/2004 18:29'!
-disabled
-	^disabled! !
-
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/9/2013 20:29'!
-enable
-	"setter for disabled"
-
-	disabled := false.
-	self color: origColor.
-	self redrawNeeded.
-	^self! !
-
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 10/17/2020 14:55:00'!
-labelStringMorph
-
-	self allMorphsDo: [:m | (m isKindOf: LabelMorph) ifTrue: [^m]].
-	^ nil! !
-
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:39'!
-origColor
-	
-	^origColor! !
-
-!EnableDisableButton methodsFor: 'accessing' stamp: 'KenD 1/23/2013 10:39'!
-origColor: aColor
-	
-	origColor := aColor! !
-
-!EnableDisableButton methodsFor: 'event handling' stamp: 'KenD 3/22/2015 14:06'!
-handlesMouseDown: evt
-	"False if not enabled"
-	
-	self isDisabled
-	ifTrue: [ ^false ]
-	ifFalse: [ ^super handlesMouseDown: evt ]! !
-
-!EnableDisableButton methodsFor: 'event handling' stamp: 'KenD 3/22/2015 13:47'!
-mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition
-
-	self isEnabled "guard condition"
-	ifTrue: [ super mouseButton1Down: aMouseButtonEvent localPosition: localEventPosition ]
-! !
-
-!EnableDisableButton methodsFor: 'initialization' stamp: 'KenD 6/2/2020 13:32:54'!
-initialize
-	"Start out enabled"
-
-	super initialize.
-	disabled := false.
-	self color: (Theme current buttonColorFrom: 
-					(Theme current defaultWindowColor)).
-	self origColor: self color.
-	^self! !
-
-!EnableDisableButton methodsFor: 'testing' stamp: 'KenD 11/6/2004 18:15'!
-isDisabled
-	^self disabled! !
-
-!EnableDisableButton methodsFor: 'testing' stamp: 'KenD 11/6/2004 18:15'!
-isEnabled
-	^self disabled not! !
-
-!EnableDisableButton methodsFor: 'testing' stamp: 'KenD 4/17/2013 20:58'!
-isLocked
-     ^self isDisabled! !
-
-!EnableDisableButton methodsFor: 'geometry' stamp: 'KenD 4/3/2021 16:33:08'!
-minimumExtent
-
-	"Assure some space for text."
-	"Note that button area defines minimum width of table, so really be minimal.."
-	| unit |
-	unit :=  Preferences windowTitleFont pointSize.
-	^ (4 * unit) @ (3 * unit)! !
-
-!EnableDisableButton class methodsFor: 'as yet unclassified' stamp: 'KenD 6/23/2011 22:03'!
-includeInNewMorphMenu
-	^ false! !
-
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 10/1/2021 13:16:24'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/28/2021 13:59:34'!
 acceptDroppingMorph: aMorph event: evt 
 	"aMorph is a Card which may contain submorphs which 
 	are also Cards.  Add to me."
@@ -5963,7 +5866,10 @@ acceptDroppingMorph: aMorph event: evt
 "Transcript show: table asString; show: ' Drop of ',  (aMorph face asString), ' of ', (aMorph suit asString); newLine."
 	aMorph hideDropShadow.
 	self addCard: aMorph.
-	aMorph submorphs reverseDo: [:aCard | (aCard isKindOf:  self cardClass) ifTrue: [self addCard: aCard]].
+	aMorph submorphs reverseDo: [ :aCard | 
+		(aCard isKindOf:  self cardClass)
+			ifTrue: [self addCard: aCard]
+	].
 	table isNil ifFalse: [ table addingCardOrCards: aMorph toContainer: self ]
 ! !
 
@@ -6185,11 +6091,11 @@ rescaleTo: newScale
 includeInNewMorphMenu
 	^ false! !
 
-!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 1/10/2013 14:28'!
+!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 11/28/2021 14:06:21'!
 initialize
 	"self initialize"
 	
-	ContainerOffset _ 2 @ 2.
+	ContainerOffset _ `2 @ 2`.
 ! !
 
 !CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 9/30/2021 08:45:41'!
@@ -6283,7 +6189,7 @@ isEmpty
 
 	^(self submorphs size = 0)! !
 
-!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 3/15/2020 14:55:48'!
+!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 11/28/2021 14:10:49'!
 layoutSubmorphsVerticallyIn: layoutBounds
 	"Compute a new layout of submorphs based on the given layout bounds." 
 		"The Cards are overlapped by PixelsPerOverlap"
@@ -6292,7 +6198,7 @@ layoutSubmorphsVerticallyIn: layoutBounds
 	
 	cardOffset := 0.
 	(self submorphs reversed) do:
-		[ :m | m morphPosition: (0 @ cardOffset ).
+		[ :m | m morphPosition: (self borderWidth @ cardOffset ).
 			  cardOffset := cardOffset + self pixelsPerOverlap ].
 ! !
 
