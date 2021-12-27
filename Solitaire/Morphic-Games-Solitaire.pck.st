@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #5004] on 26 December 2021 at 12:26:15 pm'!
+'From Cuis 5.0 [latest update: #5004] on 27 December 2021 at 1:12:52 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 127!
+!provides: 'Morphic-Games-Solitaire' 1 128!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4984 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -1849,9 +1849,10 @@ currentScreenExtent
 	^ DisplayScreen actualScreenSize
 	! !
 
-!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 12/26/2021 08:08:27'!
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 12/27/2021 13:12:40'!
 fontPreferenceChanged
-
+	"Note: May change from StrikeFont to TrueType font"
+	labelMorph font: (FontFamily defaultFamilyPointSize: 22).
 	self morphExtent: self minimumExtent
 	! !
 
