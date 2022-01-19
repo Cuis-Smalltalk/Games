@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #5004] on 27 December 2021 at 3:53:39 pm'!
+'From Cuis 6.0 [latest update: #5045] on 19 January 2022 at 1:29:06 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 130!
+!provides: 'Morphic-Games-Solitaire' 1 131!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 50 4984 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -5855,20 +5855,20 @@ minimumExtent
 includeInNewMorphMenu
 	^ false! !
 
-!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 11/28/2021 14:06:21'!
+!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 1/19/2022 13:16:39'!
 initialize
 	"self initialize"
 	
-	ContainerOffset _ `2 @ 2`.
+	ContainerOffset _ `3 @ 2`.
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 12/26/2021 12:20:36'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 1/19/2022 13:15:53'!
 addCard: aCard
 
 	| newPos |
 	(self isEmpty)
 		ifTrue:  [newPos := ContainerOffset ]
-		ifFalse: [newPos := (self defaultBorderWidth 
+		ifFalse: [newPos := (self defaultBorderWidth + 1
 				@ (self pixelsPerOverlap * self numberOfCards))
 		].
 	aCard scale: 1.0.
@@ -5932,7 +5932,6 @@ singletonCard
 	self submorphs size = 1
 		ifTrue: [^ self submorphs at: 1]
 		ifFalse: [^ nil]! !
-
 
 !CardColumnMorph methodsFor: 'testing' stamp: 'KenD 1/9/2013 21:05'!
 isEmpty
