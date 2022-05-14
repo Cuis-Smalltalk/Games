@@ -1,6 +1,6 @@
 'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:47:25 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 70!
+!provides: 'Game' 1 71!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 !requires: 'Morphic-Deprecated' 1 0 nil!
 SystemOrganization addCategory: #'Game-Model'!
@@ -789,7 +789,7 @@ arrow
 arrowPosition
 	"Answer the position for the arrow"
 
-	^ (self morphWidth / 3)@-60! !
+	^ (self morphWidth / 3) @ -60! !
 
 !Token methodsFor: 'accessing' stamp: 'dhn 10/9/2011 20:04'!
 count
@@ -1402,7 +1402,7 @@ openOn: aModel
 viewPosition
 	"Answer the basic position for instances of this class"
 	
-	^ 200@-50! !
+	^ 200 @ -50! !
 
 !AuctionView methodsFor: 'operation' stamp: 'dhn 10/29/2016 19:56:18'!
 beat: aSymbol
