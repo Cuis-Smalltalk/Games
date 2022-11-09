@@ -1,8 +1,8 @@
-'From Cuis 6.0 [latest update: #5045] on 19 January 2022 at 1:29:06 pm'!
+'From Cuis 6.0 [latest update: #5552] on 9 November 2022 at 3:15:14 pm'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 131!
+!provides: 'Morphic-Games-Solitaire' 1 133!
 !requires: 'Goodies' 1 3 nil!
-!requires: 'Cuis-Base' 50 4984 nil!
+!requires: 'Cuis-Base' 60 5552 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
 SystemOrganization addCategory: 'Morphic-Games-Solitaire'!
 
@@ -337,40 +337,6 @@ Structure:
 
 valuesArray grows by doubling; no shrinkage at present.
 Initial purpose in life is to support SmallScheme dynamic variables.!
-
-!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
-initializedInstance
-	^self newColumn! !
-
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 12/24/2021 15:30:51'!
-initializedInstance
-	"Answer a new instance"
-	"
-	FreeCell newGame.
-	"
-	^ self newColumn! !
-
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 12/23/2021 14:39:02'!
-initializedInstance
-	"Answer a new instance"
-	"
-	Klondike initializedImage.
-	"
-	
-	^ self newColumn ! !
-
-!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
-name
-	"e.g. Jack of Hearts"
-	^((self face) asString), ' of ', ((self suit) asString)! !
-
-!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
-printOn: aStream
-	aStream nextPut: $(.
-	1 to: top do: [ :index | 
-				 aStream print: (valuesArray at: index); space].
-	self isEmpty ifFalse: [aStream skip: -1].
-	aStream nextPut: $)! !
 
 !CardTableMorph methodsFor: 'accessing' stamp: 'KenD 3/9/2015 10:39'!
 goAgain
@@ -1006,6 +972,10 @@ undoAll
 	]
 
 	! !
+
+!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 6/27/2011 08:21'!
+initializedInstance
+	^self newColumn! !
 
 !CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 3/11/2015 16:32'!
 cpsOverColl: orderedColletion do: aBlock next: nextAction
@@ -1755,6 +1725,14 @@ saveGameToDataStream: aDataStream
 	aDataStream nextPut: someData.
 ! !
 
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 12/24/2021 15:30:51'!
+initializedInstance
+	"Answer a new instance"
+	"
+	FreeCell newGame.
+	"
+	^ self newColumn! !
+
 !FreeCell class methodsFor: 'instance creation' stamp: 'KenD 12/24/2021 15:30:38'!
 newGame
 	"Answer a new instance"
@@ -2408,6 +2386,15 @@ initializedImage
 	
 	^ self initializedInstance openInHand! !
 
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 12/23/2021 14:39:02'!
+initializedInstance
+	"Answer a new instance"
+	"
+	Klondike initializedImage.
+	"
+	
+	^ self newColumn ! !
+
 !Klondike class methodsFor: 'instance creation' stamp: 'KenD 12/24/2021 16:27:52'!
 newGame
 	"Answer a new instance"
@@ -2489,6 +2476,11 @@ face
 	"Answer a symbol denoting the face value of this card"
 
 	^FaceNames at: (self faceNumber).! !
+
+!CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:44'!
+name
+	"e.g. Jack of Hearts"
+	^((self face) asString), ' of ', ((self suit) asString)! !
 
 !CardMorph methodsFor: 'access' stamp: 'KenD 10/20/2004 08:37'!
 suit
@@ -3021,14 +3013,14 @@ width
 defaultImage
 	^FormsArray at: 1! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 10/5/2006 09:39'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 11/9/2022 15:12:34'!
 encodedStringFromFile: aFileName
 	"Read binary file and return a Base64MimeConverter'ed ascii string"
 
 	| aFileStream aMimeStream |
-	aFileStream := (FileStream readOnlyFileNamed: aFileName) binary.
+	aFileStream := UniFileStream new open: aFileName forWrite: false;  useBytes.
 	aMimeStream := Base64MimeConverter mimeEncode: aFileStream.
-	^(Clipboard clipboardText: (aMimeStream contents)) clipboardText asString.! !
+	^(Clipboard storeObject: (aMimeStream contents)) retrieveStringOrText asString.! !
 
 !CardMorph class methodsFor: 'private' stamp: 'KenD 10/5/2006 09:40'!
 formFromEncodedString: aBase64MimeString
@@ -3061,7 +3053,7 @@ savePNGimagesToDir: dirName
 		].
 	(FormsArray at: 53) writePNGfileNamed: (imageDirNamePrefix , 'back.png')! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 2/1/2011 03:32'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 11/9/2022 15:00:46'!
 showFormEncodingsFromPNGtoFile: outFileName
 
 	"Show Base64MimeConverter strings"
@@ -3069,7 +3061,7 @@ showFormEncodingsFromPNGtoFile: outFileName
 	| imageDirNamePrefix outStream |
 	
 	imageDirNamePrefix := 'PNG-deck/'. 
-	outStream := StandardFileStream forceNewFileNamed: outFileName. "NB erases file w/o question"
+	outStream := UniFileStream open: outFileName forWrite: true; useBytes.
 	1 to: 13 do: [ :faceNum |
 		#( $c $d $h $s) do: [ :char |	 |aFileName|
 			aFileName := imageDirNamePrefix, faceNum asString, char asString, '.png'.
@@ -6713,6 +6705,14 @@ shuffle
 				[:idx | cards swap: idx with: ((1 to: idx) atRandom: newRand)]
 		]
 ! !
+
+!Stack methodsFor: 'printing' stamp: 'KenD 5/14/2002 11:10'!
+printOn: aStream
+	aStream nextPut: $(.
+	1 to: top do: [ :index | 
+				 aStream print: (valuesArray at: index); space].
+	self isEmpty ifFalse: [aStream skip: -1].
+	aStream nextPut: $)! !
 
 !Stack methodsFor: 'converting' stamp: 'KenD 11/24/2004 08:33'!
 asArray
