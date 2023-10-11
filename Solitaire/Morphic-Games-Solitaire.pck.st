@@ -1,139 +1,139 @@
-'From Cuis 6.0 [latest update: #5552] on 9 November 2022 at 3:15:14 pm'!
+'From Cuis 6.0 [latest update: #6037] on 11 October 2023 at 7:49:50 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 133!
+!provides: 'Morphic-Games-Solitaire' 1 134!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 60 5552 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
-SystemOrganization addCategory: 'Morphic-Games-Solitaire'!
+SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
 
-!classDefinition: #CardTableMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardTableMorph category: #'Morphic-Games-Solitaire'!
 LayoutMorph subclass: #CardTableMorph
 	instanceVariableNames: 'undoStack inCardMove goAgain inUndo undoButton saveGameButton winnerText labelLayout labelMorph mutex sizeUnit'
 	classVariableNames: 'WinnerText'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardTableMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardTableMorph class' category: #'Morphic-Games-Solitaire'!
 CardTableMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #FreeCell category: 'Morphic-Games-Solitaire'!
+!classDefinition: #FreeCell category: #'Morphic-Games-Solitaire'!
 CardTableMorph subclass: #FreeCell
 	instanceVariableNames: 'deck spares piles columns'
 	classVariableNames: 'ContaineOffset NumColumns NumPiles NumSpares'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'FreeCell class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'FreeCell class' category: #'Morphic-Games-Solitaire'!
 FreeCell class
 	instanceVariableNames: ''!
 
-!classDefinition: #Klondike category: 'Morphic-Games-Solitaire'!
+!classDefinition: #Klondike category: #'Morphic-Games-Solitaire'!
 CardTableMorph subclass: #Klondike
 	instanceVariableNames: 'cardDeck deck discards piles columns'
 	classVariableNames: 'NumColumns NumPiles'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'Klondike class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'Klondike class' category: #'Morphic-Games-Solitaire'!
 Klondike class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardMorph category: #'Morphic-Games-Solitaire'!
 ImageMorph subclass: #CardMorph
 	instanceVariableNames: 'cardNumber grabPreowner isFaceDown'
 	classVariableNames: 'ColorNames DropShadowMorph FaceNames FormsArray SuitNames'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardMorph class' category: #'Morphic-Games-Solitaire'!
 CardMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardContainerMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardContainerMorph category: #'Morphic-Games-Solitaire'!
 BoxedMorph subclass: #CardContainerMorph
 	instanceVariableNames: 'targetTable cardClass'
 	classVariableNames: 'ContainerOffset'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardContainerMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardContainerMorph class' category: #'Morphic-Games-Solitaire'!
 CardContainerMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardColumnMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardColumnMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardColumnMorph
 	instanceVariableNames: 'cardsStack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardColumnMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardColumnMorph class' category: #'Morphic-Games-Solitaire'!
 CardColumnMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardDeckMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardDeckMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardDeckMorph
 	instanceVariableNames: 'cardStack topIsFaceDown'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardDeckMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardDeckMorph class' category: #'Morphic-Games-Solitaire'!
 CardDeckMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardDiscardMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardDiscardMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardDiscardMorph
 	instanceVariableNames: 'cardStack numCardsToShow'
 	classVariableNames: 'PixelOverlap'
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardDiscardMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardDiscardMorph class' category: #'Morphic-Games-Solitaire'!
 CardDiscardMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardPileMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardPileMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardPileMorph
 	instanceVariableNames: 'cardStack'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardPileMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardPileMorph class' category: #'Morphic-Games-Solitaire'!
 CardPileMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardSpareMorph category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardSpareMorph category: #'Morphic-Games-Solitaire'!
 CardContainerMorph subclass: #CardSpareMorph
 	instanceVariableNames: ''
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardSpareMorph class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardSpareMorph class' category: #'Morphic-Games-Solitaire'!
 CardSpareMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardTests category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardTests category: #'Morphic-Games-Solitaire'!
 TestCase subclass: #CardTests
 	instanceVariableNames: 'jackOfClubs aceOfSpades twoOfDiamonds threeOfHearts fiveOfHearts'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardTests class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardTests class' category: #'Morphic-Games-Solitaire'!
 CardTests class
 	instanceVariableNames: ''!
 
-!classDefinition: #CardDeck category: 'Morphic-Games-Solitaire'!
+!classDefinition: #CardDeck category: #'Morphic-Games-Solitaire'!
 Object subclass: #CardDeck
 	instanceVariableNames: 'cards index seed'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'CardDeck class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'CardDeck class' category: #'Morphic-Games-Solitaire'!
 CardDeck class
 	instanceVariableNames: ''!
 
-!classDefinition: #Stack category: 'Morphic-Games-Solitaire'!
+!classDefinition: #Stack category: #'Morphic-Games-Solitaire'!
 Object subclass: #Stack
 	instanceVariableNames: 'top valuesArray'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Morphic-Games-Solitaire'!
-!classDefinition: 'Stack class' category: 'Morphic-Games-Solitaire'!
+!classDefinition: 'Stack class' category: #'Morphic-Games-Solitaire'!
 Stack class
 	instanceVariableNames: ''!
 
@@ -2079,12 +2079,17 @@ pile: pileMorph wantsDropOf: aCardOrColumnMorph
 			topCard := pileMorph topCard.
 			^ (topCard hasFaceOneLessThan: card)  & (topCard hasSameSuitAs: card)]]! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 1/19/2011 21:54'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 10/11/2023 07:11:38'!
 dealCards
 	"Shuffle cards and deal onto the table."
-
+	
 	self cardDeck shuffle.
-	self reDealCards
+	self reDealCards.
+	[ self kenWantsReshuffle ] whileTrue: [ 
+		self cardDeck shuffle.
+		self reDealCards.
+		].
+
 ! !
 
 !Klondike methodsFor: 'initialization' stamp: 'KenD 12/24/2021 16:26:29'!
@@ -2240,6 +2245,25 @@ isMyCard: aCard
 	"Answer true if card is asssociated with this instance of the game"
 
 	^self cardDeck contains: aCard! !
+
+!Klondike methodsFor: 'testing' stamp: 'KenD 10/11/2023 07:48:14'!
+kenWantsReshuffle
+
+	"This is a hard game, make less hard by redealing 
+	  when multiple faceUp cards have same value and color"
+	| topCards  |
+	topCards := (self columns collect: [ :cardColum | 
+				cardColum submorphs at: 1 ] ) asOrderedCollection.
+	1 to: (topCards size - 1) do: [ :aCardIndex | | aCard | 
+			aCard := topCards at: aCardIndex.
+			(aCardIndex + 1) to: (topCards size) do: [ :otherIndex | | otherCard |
+				otherCard := topCards at: otherIndex.
+				((otherCard suitColor = aCard suitColor) 
+					and: [otherCard faceNumber = aCard faceNumber])
+				 ifTrue: [ ^true ].
+			]
+	].
+	^ false! !
 
 !Klondike methodsFor: 'testing' stamp: 'KenD 6/23/2015 21:25'!
 runStartsFrom: aCard in: aColumn
