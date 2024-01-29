@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 9 June 2020 at 1:18:59 pm'!
+'From Cuis6.3 [latest update: #6200] on 29 January 2024 at 4:16:00 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 33!
+!provides: 'AnagramAid' 1 34!
 SystemOrganization addCategory: #AnagramAid!
 
 
@@ -36,12 +36,6 @@ AnagramMorph open.
 With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.
 
 The setting which determines whether clues are random or permuted is in Anagram class>>permuteLimit.!
-
-!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
-initializedInstance
-	"Enable instantiation from the new morph menu"
-
-	^ self open! !
 
 !Anagram methodsFor: 'operating' stamp: 'dhn 6/6/2020 19:42:02'!
 atRandom
@@ -87,21 +81,21 @@ entry
 		self more].
 	self triggerEvent: #update! !
 
-!Anagram methodsFor: 'operating' stamp: 'dhn 1/31/2016 17:31'!
+!Anagram methodsFor: 'operating' stamp: 'jmv 1/29/2024 16:15:41'!
 letterCount: aString
 	"Answer a print string showing the number of times letters appear in aString"
 	| col dix sorted str |
 
-	col _ OrderedCollection new.
-	aString asByteArray sort do: [:byte | col addLast: byte asCharacter].
-	dix _ Dictionary new.
+	col := OrderedCollection new.
+	aString asByteArray sort do: [:byte | col addLast: (Character codePoint: byte)].
+	dix := Dictionary new.
 	col do: [ :ea | | sym |
-		sym _ ea asSymbol.
+		sym := ea asSymbol.
 		(dix includesKey: sym)
 			ifTrue: [dix at: sym put: (dix at: sym) + 1]
 			ifFalse: [dix at: sym	put: 1]].
-	str _ String new writeStream newLine.
-	sorted _ dix keys asSortedCollection.
+	str := String new writeStream newLine.
+	sorted := dix keys asSortedCollection.
 	sorted do: [ :char |
 		str nextPutAll: char printString;
 			nextPutAll: '->';
@@ -381,6 +375,12 @@ how
 includeInNewMorphMenu
 	"Return true for all classes that can be instantiated from the menu"
 	^ true! !
+
+!AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 11/6/2015 13:36'!
+initializedInstance
+	"Enable instantiation from the new morph menu"
+
+	^ self open! !
 
 !AnagramMorph class methodsFor: 'initialization' stamp: 'dhn 6/7/2020 21:11:22'!
 open
