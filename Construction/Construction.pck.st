@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:48:03 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:29:35 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 234!
+!provides: 'Construction' 1 235!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -14,16 +14,6 @@ Game subclass: #Contract
 	category: 'Construction-Model'!
 !classDefinition: 'Contract class' category: #'Construction-Model'!
 Contract class
-	instanceVariableNames: ''!
-
-!classDefinition: #ContractToken category: #'Construction-Graphics'!
-Token subclass: #ContractToken
-	instanceVariableNames: 'doubled'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Construction-Graphics'!
-!classDefinition: 'ContractToken class' category: #'Construction-Graphics'!
-ContractToken class
 	instanceVariableNames: ''!
 
 !classDefinition: #Construction category: #'Construction-Graphics'!
@@ -94,6 +84,16 @@ GameView subclass: #StatsView
 	category: 'Construction-Graphics'!
 !classDefinition: 'StatsView class' category: #'Construction-Graphics'!
 StatsView class
+	instanceVariableNames: ''!
+
+!classDefinition: #ContractToken category: #'Construction-Graphics'!
+Token subclass: #ContractToken
+	instanceVariableNames: 'doubled'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Construction-Graphics'!
+!classDefinition: 'ContractToken class' category: #'Construction-Graphics'!
+ContractToken class
 	instanceVariableNames: ''!
 
 !classDefinition: #ConAsset category: #'Construction-Model'!
@@ -360,9 +360,6 @@ Announcement class
 !Contract commentStamp: 'dhn 8/22/2016 15:31:27' prior: 0!
 The model for the board of Construction Game.!
 
-!ContractToken commentStamp: 'dhn 8/22/2016 17:58:41' prior: 0!
-The game piece for a contractor - a player in Construction Game.!
-
 !Construction commentStamp: 'dhn 8/25/2018 14:02:59' prior: 0!
 Manage the visual effects of the Construction Game. To start the game, do the following:
 
@@ -386,6 +383,9 @@ A Construction Game window which shows the job invoice, an itemized list of the 
 
 !StatsView commentStamp: '<historical>' prior: 0!
 A Construction Game window which shows statistics about the player's assets, the player, and others.!
+
+!ContractToken commentStamp: 'dhn 8/22/2016 17:58:41' prior: 0!
+The game piece for a contractor - a player in Construction Game.!
 
 !ConAsset commentStamp: 'dhn 8/22/2016 15:38:32' prior: 0!
 An asset in the Construction Game.!
@@ -465,21 +465,6 @@ A contingency in Construction Game. Contingencies can be positive or negative fo
 
 !Announcement commentStamp: '<historical>' prior: 0!
 An Announcement is a class which is detected by name, resulting in the early display of its description in the drawContingency method.!
-
-!Construction class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 18:58:07'!
-initializedInstance
-
-	^ self start! !
-
-!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 13:48'!
-shutDown
-	"Answer the value of shutDown"
-	shutDown ifNil: [shutDown := false].
-	^ shutDown! !
-
-!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 11:03'!
-shutDown: aBoolean
-	shutDown := aBoolean.! !
 
 !Contract methodsFor: 'auction' stamp: 'dhn 9/15/2016 18:18:14'!
 assetAuctionItem
@@ -2554,203 +2539,6 @@ cellsForGame
 	"Answer the number of board spaces game"
 	^7! !
 
-!ContractToken methodsFor: 'accessing' stamp: 'dhn 9/24/2016 16:20:38'!
-doubled
-	"Answer the value of doubled"
-
-	^ doubled! !
-
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:51'!
-initialize
-
-	super initialize.
-	
-	labelArea _ LayoutMorph newColumn 
-		layoutSpec: LayoutSpec useAll;
-		color: Color transparent;
-		name: 'label area';
-		separation: 1;
-		axisEdgeWeight: #center.
-	labelArea
-		addMorph: self makeIdArea;
-		addMorph: self makeDoubledArea.
-
-	self addMorphFront: labelArea! !
-
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 11/13/2016 16:29:42'!
-layoutSubmorphs
-
-	labelArea morphExtent: self morphExtent! !
-
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:26'!
-makeDoubledArea
-	"Lay out the area for the arrow"
-	| area |
-	
-	area _ LayoutMorph newRow
-		color: Color transparent;
-		name: #doubled;
-		axisEdgeWeight: #center.
-	
-	doubled _ (StringMorph contents: '') 
-		emphasis: 1;
-		font: GameBoard gameFont.
-		
-	area addMorph: doubled.
-	^ area layoutSpec: (LayoutSpec  
-		proportionalWidth: 1.0)	! !
-
-!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:23:17'!
-makeIdArea
-	"Lay out the area for the arrow"
-	| area |
-	
-	area _ LayoutMorph newRow
-		color: Color transparent;
-		name: #id;
-		axisEdgeWeight: #center.
-	
-	tokenId _ (StringMorph contents: 'Player') 
-		emphasis: 1;
-		font: GameBoard gameFont.
-		
-	area addMorph: tokenId.
-	^ area layoutSpec: (LayoutSpec  
-		proportionalWidth: 1.0)	! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/6/2019 11:48:30'!
-leftFrom: from to: to
-	"Animate relocation of self when player must go BACK to 'to' from 'from' "
-	| oldPos newPos index n posns limit i final |
-	
-	final _ to.
-	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
-	oldPos _ index atWrap: from - 6.
-	model positionBoardTo: oldPos.
-	self position: 7.
-	newPos _ index atWrap: final - 7.
-	posns _ OrderedCollection new.
-	n _ oldPos.
-	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
-	posns _ posns asArray.
-	model positionBoardTo: posns first.
-	
-	self arrowLeft.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: final.
-				model triggerEvent: #endOfMove.
-				self doubled contents: model currentPlayer doubledString]].
-	self startSteppingStepTime: 500! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/12/2019 19:28:16'!
-moveFrom: positionA to: positionB
-	"Determine best direction and move"
-	
-	(Direction shortest: positionA to: positionB in: model spaces size) > 0
-		ifTrue: [self rightFrom: positionA to: positionB]
-		ifFalse: [self leftFrom: positionA to: positionB]! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/28/2019 15:33:51'!
-moved
-	"Perform the results of the move"
-	| pl mr |
-	
-	pl _ model currentPlayer.
-	mr _ model.
-	pl split: false.
-	doubled contents: pl doubledString.
-	(Contract taxDue: pl position) ifTrue: [mr debtTax].
-	(Contract interestDue: pl position) ifTrue: [mr debtInterest].
-	(Contract alwaysDo: pl position) 	ifTrue: [mr doSpace].
-	pl rollAdjustment: 0.
-	pl canDoJob ifTrue: [mr enableAll: {'Do Job'}].
-	(Contract bidSpaces includes: pl position) 
-		ifTrue: [
-			mr decideCompetitive.
-			mr disableAll: {'Do Job'}]
-		ifFalse: [
-			mr updateHistory.
-			mr enableAll: {'End Turn'}]! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 17:27:50'!
-position: aCell
-	"Position the receiver over the board cell numbered by aCell"
-	| horiz |
-	
-	self morphPosition: self posAdjust.
-	horiz _ (model cells at: aCell) morphPosition x.
-	self morphPosition: (self morphPosition translatedBy: (horiz@0))! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 4/6/2019 11:48:07'!
-rightFrom: from to: to
-	"Animate relocation of self when player moves ahead to 'to' from 'from' "
-	| oldPos newPos index n posns limit i final |
-	
-	final _ to.
-	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
-	oldPos _ index atWrap: from.
-	model positionBoardTo: oldPos.
-	self position: 1.
-	newPos _ final + 1.
-	posns _ OrderedCollection new.
-	n _ oldPos.
-	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
-	posns _ posns asArray.
-	model positionBoardTo: posns first.
-	
-	self arrowRight.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: final.
-				model triggerEvent: #endOfMove.
-				self doubled contents: model currentPlayer doubledString]].
-	self startSteppingStepTime: 500! !
-
-!ContractToken methodsFor: 'operations' stamp: 'dhn 8/14/2017 11:53:01'!
-sickMove
-	"Animate relocation of self when player lands on space 9"
-	| oldPos posns limit i|
-	
-	oldPos _ model currentPlayer oldPosition.
-	self arrowRight.
-	posns _ (Interval from: oldPos to: oldPos + 12 by: 1) asArray.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: 21.
-				self doubled contents: model currentPlayer doubledString.
-				model currentPlayer canDoJob ifTrue: [model enableAll: {'Do Job'}]]].
-	self startSteppingStepTime: 500! !
-
-!ContractToken class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:57:32'!
-includeInNewMorphMenu
-	"Not to be instantiated from the menu"
-	^ false! !
-
 !Construction methodsFor: 'initialization' stamp: 'dhn 4/6/2019 12:01:24'!
 buildMorphicWindow
 
@@ -3365,6 +3153,11 @@ includeInNewMorphMenu
 	
 	^ true! !
 
+!Construction class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 18:58:07'!
+initializedInstance
+
+	^ self start! !
+
 !Construction class methodsFor: 'instance creation' stamp: 'dhn 9/1/2016 21:30:46'!
 labelAreaHeight
 
@@ -3906,22 +3699,19 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!StatsView methodsFor: 'initialization' stamp: 'dhn 6/12/2019 13:05:59'!
+!StatsView methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:04:22'!
 buildMorphicWindow
 	"Lay out the window for statistics"
 	| list |
 	
 	self layoutMorph beRow.
-	list _ (PluggableListMorph
-		model: model
+	list := (PluggableListMorph
+		withModel: model
 		listGetter: #statsList
 		indexGetter: #statsItem
-		indexSetter: #statsItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
+		indexSetter: #statsItem:)
 			name: 'stats list'.
-	textPane _ (TextModelMorph
+	textPane := (TextModelMorph
 		withModel: (TextModel withText: '')) 	"note the different model specification"
 			askBeforeDiscardingEdits: false;	"discard changes to the text"
 			name: 'stat description'. 	"give the TextModelMorph a name which will appear in the halos"
@@ -3950,6 +3740,203 @@ endIt
 details
 
 	textPane model actualContents: model statsReport 	"note that the textPane model differs from the model for this view"! !
+
+!ContractToken methodsFor: 'accessing' stamp: 'dhn 9/24/2016 16:20:38'!
+doubled
+	"Answer the value of doubled"
+
+	^ doubled! !
+
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:51'!
+initialize
+
+	super initialize.
+	
+	labelArea _ LayoutMorph newColumn 
+		layoutSpec: LayoutSpec useAll;
+		color: Color transparent;
+		name: 'label area';
+		separation: 1;
+		axisEdgeWeight: #center.
+	labelArea
+		addMorph: self makeIdArea;
+		addMorph: self makeDoubledArea.
+
+	self addMorphFront: labelArea! !
+
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 11/13/2016 16:29:42'!
+layoutSubmorphs
+
+	labelArea morphExtent: self morphExtent! !
+
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:22:26'!
+makeDoubledArea
+	"Lay out the area for the arrow"
+	| area |
+	
+	area _ LayoutMorph newRow
+		color: Color transparent;
+		name: #doubled;
+		axisEdgeWeight: #center.
+	
+	doubled _ (StringMorph contents: '') 
+		emphasis: 1;
+		font: GameBoard gameFont.
+		
+	area addMorph: doubled.
+	^ area layoutSpec: (LayoutSpec  
+		proportionalWidth: 1.0)	! !
+
+!ContractToken methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:23:17'!
+makeIdArea
+	"Lay out the area for the arrow"
+	| area |
+	
+	area _ LayoutMorph newRow
+		color: Color transparent;
+		name: #id;
+		axisEdgeWeight: #center.
+	
+	tokenId _ (StringMorph contents: 'Player') 
+		emphasis: 1;
+		font: GameBoard gameFont.
+		
+	area addMorph: tokenId.
+	^ area layoutSpec: (LayoutSpec  
+		proportionalWidth: 1.0)	! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/6/2019 11:48:30'!
+leftFrom: from to: to
+	"Animate relocation of self when player must go BACK to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from - 6.
+	model positionBoardTo: oldPos.
+	self position: 7.
+	newPos _ index atWrap: final - 7.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowLeft.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/12/2019 19:28:16'!
+moveFrom: positionA to: positionB
+	"Determine best direction and move"
+	
+	(Direction shortest: positionA to: positionB in: model spaces size) > 0
+		ifTrue: [self rightFrom: positionA to: positionB]
+		ifFalse: [self leftFrom: positionA to: positionB]! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/28/2019 15:33:51'!
+moved
+	"Perform the results of the move"
+	| pl mr |
+	
+	pl _ model currentPlayer.
+	mr _ model.
+	pl split: false.
+	doubled contents: pl doubledString.
+	(Contract taxDue: pl position) ifTrue: [mr debtTax].
+	(Contract interestDue: pl position) ifTrue: [mr debtInterest].
+	(Contract alwaysDo: pl position) 	ifTrue: [mr doSpace].
+	pl rollAdjustment: 0.
+	pl canDoJob ifTrue: [mr enableAll: {'Do Job'}].
+	(Contract bidSpaces includes: pl position) 
+		ifTrue: [
+			mr decideCompetitive.
+			mr disableAll: {'Do Job'}]
+		ifFalse: [
+			mr updateHistory.
+			mr enableAll: {'End Turn'}]! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 3/28/2019 17:27:50'!
+position: aCell
+	"Position the receiver over the board cell numbered by aCell"
+	| horiz |
+	
+	self morphPosition: self posAdjust.
+	horiz _ (model cells at: aCell) morphPosition x.
+	self morphPosition: (self morphPosition translatedBy: (horiz@0))! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 4/6/2019 11:48:07'!
+rightFrom: from to: to
+	"Animate relocation of self when player moves ahead to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from.
+	model positionBoardTo: oldPos.
+	self position: 1.
+	newPos _ final + 1.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowRight.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
+
+!ContractToken methodsFor: 'operations' stamp: 'dhn 8/14/2017 11:53:01'!
+sickMove
+	"Animate relocation of self when player lands on space 9"
+	| oldPos posns limit i|
+	
+	oldPos _ model currentPlayer oldPosition.
+	self arrowRight.
+	posns _ (Interval from: oldPos to: oldPos + 12 by: 1) asArray.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: 21.
+				self doubled contents: model currentPlayer doubledString.
+				model currentPlayer canDoJob ifTrue: [model enableAll: {'Do Job'}]]].
+	self startSteppingStepTime: 500! !
+
+!ContractToken class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:57:32'!
+includeInNewMorphMenu
+	"Not to be instantiated from the menu"
+	^ false! !
 
 !ConAsset methodsFor: 'operating' stamp: 'dhn 4/15/2012 13:21'!
 assetValue
@@ -4688,6 +4675,16 @@ priceFactor: aFactor
 	priceFactor := aFactor.
 	^ 0
 ! !
+
+!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 13:48'!
+shutDown
+	"Answer the value of shutDown"
+	shutDown ifNil: [shutDown := false].
+	^ shutDown! !
+
+!Contractor methodsFor: 'accessing' stamp: 'dhn 4/16/2012 11:03'!
+shutDown: aBoolean
+	shutDown := aBoolean.! !
 
 !Contractor methodsFor: 'accessing' stamp: 'dhn 5/2/2012 11:12'!
 split: anObject

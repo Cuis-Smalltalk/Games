@@ -1,6 +1,6 @@
-'From Cuis 5.0 [latest update: #4208] on 14 June 2020 at 5:47:25 pm'!
+'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:31:26 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 71!
+!provides: 'Game' 1 72!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 !requires: 'Morphic-Deprecated' 1 0 nil!
 SystemOrganization addCategory: #'Game-Model'!
@@ -27,14 +27,14 @@ PasteUpMorph subclass: #GamePasteUp
 GamePasteUp class
 	instanceVariableNames: ''!
 
-!classDefinition: #Token category: #'Game-Graphics'!
-EllipseMorph subclass: #Token
-	instanceVariableNames: 'labelArea model count die arrow hop tokenId'
+!classDefinition: #CellView category: #'Game-Graphics'!
+LayoutMorph subclass: #CellView
+	instanceVariableNames: 'textPane marksPane'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
-!classDefinition: 'Token class' category: #'Game-Graphics'!
-Token class
+!classDefinition: 'CellView class' category: #'Game-Graphics'!
+CellView class
 	instanceVariableNames: ''!
 
 !classDefinition: #GameButtonMorph category: #'Game-Graphics'!
@@ -157,24 +157,14 @@ PluggableMorph subclass: #DieMorph
 DieMorph class
 	instanceVariableNames: ''!
 
-!classDefinition: #ArrowMorph category: #'Game-Graphics'!
-BorderedRectMorph subclass: #ArrowMorph
-	instanceVariableNames: 'form'
+!classDefinition: #Token category: #'Game-Graphics'!
+EllipseMorph subclass: #Token
+	instanceVariableNames: 'labelArea model count die arrow hop tokenId'
 	classVariableNames: ''
 	poolDictionaries: ''
 	category: 'Game-Graphics'!
-!classDefinition: 'ArrowMorph class' category: #'Game-Graphics'!
-ArrowMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #CellView category: #'Game-Graphics'!
-LayoutMorph subclass: #CellView
-	instanceVariableNames: 'textPane marksPane'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Game-Graphics'!
-!classDefinition: 'CellView class' category: #'Game-Graphics'!
-CellView class
+!classDefinition: 'Token class' category: #'Game-Graphics'!
+Token class
 	instanceVariableNames: ''!
 
 !classDefinition: #PlotGraphMorph category: #'Game-Graphics'!
@@ -257,6 +247,16 @@ Object subclass: #Season
 Season class
 	instanceVariableNames: ''!
 
+!classDefinition: #ArrowMorph category: #'Game-Graphics'!
+ProtoObject subclass: #ArrowMorph
+	instanceVariableNames: 'form'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Game-Graphics'!
+!classDefinition: 'ArrowMorph class' category: #'Game-Graphics'!
+ArrowMorph class
+	instanceVariableNames: ''!
+
 
 !Game commentStamp: 'dhn 7/10/2016 12:01' prior: 0!
 Abstract class for a board game model.!
@@ -264,8 +264,8 @@ Abstract class for a board game model.!
 !GamePasteUp commentStamp: '<historical>' prior: 0!
 Provide a way to make the pasteup immobile.!
 
-!Token commentStamp: 'dhn 7/10/2016 11:44' prior: 0!
-A player's piece on the game board.!
+!CellView commentStamp: 'dhn 8/14/2017 11:23:23' prior: 0!
+Define the layout for a cell on the game board. A cell is the lower portion of a space on the board.!
 
 !GameButtonMorph commentStamp: '<historical>' prior: 0!
 A button morph which can be disabled and enabled.!
@@ -303,11 +303,8 @@ An abstract class for game windows.!
 !DieMorph commentStamp: '<historical>' prior: 0!
 A die (one half of a pair of dice). Multiple instances can cache values in #results.!
 
-!ArrowMorph commentStamp: '<historical>' prior: 0!
-Enable a form to be opened on a world.!
-
-!CellView commentStamp: 'dhn 8/14/2017 11:23:23' prior: 0!
-Define the layout for a cell on the game board. A cell is the lower portion of a space on the board.!
+!Token commentStamp: 'dhn 7/10/2016 11:44' prior: 0!
+A player's piece on the game board.!
 
 !PlotGraphMorph commentStamp: 'dhn 9/28/2016 20:24:06' prior: 0!
 Plot players' progress.!
@@ -344,6 +341,9 @@ A Season is the collection of attributes associated with, for example:
 	a season (Farming Game, Construction Game)
 	a property set (Monopoly)
 !
+
+!ArrowMorph commentStamp: '<historical>' prior: 0!
+Enable a form to be opened on a world.!
 
 !Game methodsFor: 'operating' stamp: 'dhn 8/23/2016 21:33:37'!
 addMarkerIDInMarks
@@ -779,278 +779,34 @@ isSticky
 
 	^ true! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
-arrow
-	"Answer the value of arrow"
+!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
+marksPane
+	"Answer the value of marksPane"
 
-	^ arrow! !
+	^ marksPane! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 2/18/2017 18:16:13'!
-arrowPosition
-	"Answer the position for the arrow"
+!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
+marksPane: anObject
+	"Set the value of marksPane"
 
-	^ (self morphWidth / 3) @ -60! !
+	marksPane _ anObject! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 10/9/2011 20:04'!
-count
-	"Answer the value of count"
+!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
+textPane
+	"Answer the value of textPane"
 
-	count ifNil: [count := 0].
-	^ count! !
+	^ textPane! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 10/9/2011 19:54'!
-count: anObject
-	"Set the value of count"
+!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
+textPane: anObject
+	"Set the value of textPane"
 
-	count := anObject! !
+	textPane _ anObject! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
-die
-	"Answer the value of die"
-
-	^ die! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
-die: anObject
-	"Set the value of die"
-
-	die _ anObject! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:23:29'!
-labelArea
-	"Answer the value of labelArea"
-
-	^ labelArea! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:24:01'!
-labelArea: anObject
-	"Set the value of labelArea"
-
-	labelArea _ anObject! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 15:22:58'!
-tokenId
-	"Answer the value of tokenId"
-
-	^ tokenId! !
-
-!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 20:08:29'!
-tokenId: anObject
-	"Set the value of tokenId"
-
-	tokenId _ anObject! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:47'!
-arrowLeft
-	"Associate an arrow with the sender, pointing to the left"
-
-	arrow _ ArrowMorph new
-		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm.
-	self addMorph: arrow.
-	arrow openInWorld: self.
-	arrow morphPosition: self arrowPosition
-
-! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:24'!
-arrowRight
-	"Associate an arrow with the sender, pointing to the right"
-
-	arrow _ ArrowMorph new
-		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm.
-	self addMorph: arrow.
-	arrow openInWorld: self.
-	arrow morphPosition: self arrowPosition
-! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:47:39'!
-identity: aString
-	"Set the layout for the player's name"
-
-	^ (StringMorph 
-		contents: aString 
-		font: GameBoard gameFont
-		emphasis: AbstractFont boldCode)
-			morphPosition: 50@18! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 3/22/2017 11:27:16'!
-initialize
-
-	super initialize.
-	
-	hop _ OrderedCollection new.
-	180 to: 360 by: 18 do: [:a | hop add: 6 * (a degreesToRadians cos * 2)].
-	
-	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
-a die is "rolled" and the token moves that number of spaces.'! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:21:49'!
-makeIdArea
-	"Lay out the area for the player's name"
-	| area |
-	
-	area _ LayoutMorph newRow
-		color: Color transparent;
-		name: #tokenId;
-		axisEdgeWeight: #center.
-	
-	tokenId _ (StringMorph contents: 'Player') 
-		emphasis: 1;
-		font: GameBoard gameFont.
-		
-	area addMorph: tokenId.
-	^ area layoutSpec: (LayoutSpec  
-		proportionalWidth: 1.0)! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:47:12'!
-model
-	"Answer the value of model"
-
-	^ model! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:46:25'!
-model: anObject
-	"Set the value of model"
-
-	model _ anObject! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 8/17/2017 13:22:03'!
-posAdjust
-	"Answer the position"
-	| ver hor |
-	
-	ver _ model world morphExtent y * 8 / 10.
-	hor _ model world morphExtent x * 0.025.
-	^ hor@ver! !
-
-!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 14:17:20'!
-setSize
-	"Set the extent of the receiver"
-	| w h |
-	
-	w _ owner morphExtent x * 0.13.
-	h _ w * 0.5.
-	self morphExtent: w@h! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 4/2/2020 16:34:53'!
-jump: aCount
-	"Move the receiver in aCount hops"
-	| step limit i horiz |
-	
-	step _ 30.	"time of each increment of the hop"
-	limit _ hop size * aCount.
-	horiz _ (model cells first morphWidth +2)/ (hop size).
-	i _ 0.
-	self when: #morphicStep evaluate: [ :delta |
-		i _ i + 1.
-		i < limit 
-			ifTrue: [self morphPosition: (self morphPosition translatedBy: horiz@(hop atWrap: i))]
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				self moved]].
-	self startSteppingStepTime: step. 	
-! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:49:16'!
-moveFrom: positionA to: positionB
-	"Slide self in the shorter direction"
-	
-	(Direction shortest: positionA to: positionB in: model spaces size) > 0
-		ifTrue: [self slideLeft: positionA to: positionB]
-		ifFalse: [self slideRight: positionA to: positionB]! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:29:23'!
-slideLeft: from to: to
-	"Slide self when player must go BACK to 'to' from 'from' "
-	| oldPos newPos index n posns limit i final |
-	
-	final _ to.
-	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
-	oldPos _ index atWrap: from - 6.
-	model positionBoardTo: oldPos.
-	self position: 7.
-	newPos _ index atWrap: final - 7.
-	posns _ OrderedCollection new.
-	n _ oldPos.
-	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
-	posns _ posns asArray.
-	model positionBoardTo: posns first.
-	
-	self arrowLeft.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: final.
-				model triggerEvent: #endOfMove.
-				self doubled contents: model currentPlayer doubledString]].
-	self startSteppingStepTime: 500! !
-
-!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:36:11'!
-slideRight: from to: to
-	"Slide self when player moves ahead from 'from' to 'to' other than by the Move button"
-	| oldPos newPos index n posns limit i final |
-	
-	final _ to.
-	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
-	oldPos _ index atWrap: from.
-	model positionBoardTo: oldPos.
-	self position: 1.
-	newPos _ final + 1.
-	posns _ OrderedCollection new.
-	n _ oldPos.
-	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
-	posns _ posns asArray.
-	model positionBoardTo: posns first.
-	
-	self arrowRight.
-	limit _ posns size.
-	i _ 0.
-	self when: #morphicStep evaluate: [ :unused |
-		i _ i + 1.
-		model positionBoardTo: (posns at: i).
-		i < limit 
-			ifFalse: [
-				self stopStepping.
-				self removeActionsForEvent: #morphicStep.
-				arrow delete.
-				model currentPlayer position: final.
-				model triggerEvent: #endOfMove.
-				self doubled contents: model currentPlayer doubledString]].
-	self startSteppingStepTime: 500! !
-
-!Token class methodsFor: 'instance creation' stamp: 'dhn 7/11/2013 14:42'!
-colors
-	"Answer the colors that players can have."
-	^ {Color r: 0.0 g: 0.634 b: 1. 
-		Color r: 0.729 g: 0.455 b: 0.819. 
-		Color r: 0.544 g: 0.729 b: 0.544. 
-		Color r: 0.909 g: 0.27 b: 0.729. 
-		Color r: 0.634 g: 0.729 b: 1. 
-		Color cyan. Color green. Color red. Color orange. Color magenta}! !
-
-!Token class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:58:56'!
+!CellView class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:57:03'!
 includeInNewMorphMenu
 	"Not to be instantiated from the menu"
 	^ false! !
-
-!Token class methodsFor: 'instance creation' stamp: 'dhn 4/8/2017 20:24:59'!
-newFor: aModel
-	"Establish an instance with model aModel"
-	
-	^ self initializedInstance model: aModel! !
-
-!Token class methodsFor: 'operation' stamp: 'dhn 12/2/2011 22:32'!
-rollCount
-	"Answer the number of iterations for a roll"
-	^ 1! !
 
 !GameButtonMorph methodsFor: 'state' stamp: 'dhn 7/23/2016 15:33'!
 disableButton
@@ -1707,29 +1463,26 @@ buildMorphicWindow
 		addMorph: self setUpMidRow;
 		addMorph: (buyers _ self setUpBuyers)! !
 
-!AuctionAsset methodsFor: 'initialization' stamp: 'jmv 6/11/2020 16:29:55'!
+!AuctionAsset methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:04:04'!
 setUpMidRow
 	"Answer the layout for the middle row of the Asset Auction window"
 	| listMorph row leftPane headingArea |
 	
-	listMorph _ (PluggableListMorph
-		model: model
+	listMorph := (PluggableListMorph
+		withModel: model
 		listGetter: #assetAuctionList
 		indexGetter: #assetAuctionItem
-		indexSetter: #assetAuctionItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
+		indexSetter: #assetAuctionItem:)
 			name: #catalog;
 			layoutSpec: (LayoutSpec 
 				proportionalWidth: 1.0
 				proportionalHeight: 0.9
 				offAxisEdgeWeight: #center).
 
-	heading _ ((StringMorph contents: 'Assets') 
+	heading := ((StringMorph contents: 'Assets') 
 		emphasis: 1;
 		font: (FontFamily defaultFamilyPointSize: 10)).
-	headingArea _ (LayoutMorph newRow)
+	headingArea := (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.1
@@ -1739,12 +1492,12 @@ setUpMidRow
 	headingArea addMorph: heading.
 
 	
-	leftPane _ (LayoutMorph newColumn)
+	leftPane := (LayoutMorph newColumn)
 		name: 'left pane';
 		addMorph: headingArea;
 		addMorph: listMorph.
 
-	textPane _ (TextModelMorph
+	textPane := (TextModelMorph
 		withModel: (TextModel withText: '')) 	"note the different model specification"
 			askBeforeDiscardingEdits: false;	"discard changes to the text"
 			name: 'chant'. 	"give the TextModelMorph a name which will appear in the halos"
@@ -1754,7 +1507,7 @@ setUpMidRow
 			proportionalHeight: 1.0
 			offAxisEdgeWeight: #center).
 
-	row _ (LayoutMorph newRow)
+	row := (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.7
@@ -1901,23 +1654,20 @@ openOn: aModel title: atitle
 	^ win
 ! !
 
-!LoanView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:24:19'!
+!LoanView methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:04:13'!
 buildMorphicWindow
 	"Lay out the window for paying down debt"
 	| list1 rightPane |
 	
 	self layoutMorph beRow.
-	list1 _ (PluggableListMorph
-		model: self
+	list1 := (PluggableListMorph
+		withModel: self
 		listGetter: #loanList
 		indexGetter: #loanItem
-		indexSetter: #loanItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
+		indexSetter: #loanItem:)
 			name: #'payment size'.
 			
-	buttonArea _ (LayoutMorph newRow)
+	buttonArea := (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
@@ -1927,7 +1677,7 @@ buildMorphicWindow
 		axisEdgeWeight: #center.
 	model when: #payButton: send: #payButton: to: self with: #state.
 
-	textPane _ (TextModelMorph
+	textPane := (TextModelMorph
 		withModel: (TextModel withText: '')) 	"note the different model specification"
 			askBeforeDiscardingEdits: false;	"discard changes to the text"
 			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
@@ -1937,7 +1687,7 @@ buildMorphicWindow
 			proportionalHeight: 0.85
 			offAxisEdgeWeight: #center).
 
-	rightPane _ LayoutMorph newColumn.
+	rightPane := LayoutMorph newColumn.
 	rightPane
 		name: 'right pane';
 		addMorph: buttonArea;
@@ -2104,23 +1854,20 @@ paymentIncrement
 	
 	^ 1000! !
 
-!OptionsView methodsFor: 'initialization' stamp: 'dhn 6/6/2020 11:24:43'!
+!OptionsView methodsFor: 'initialization' stamp: 'jmv 5/17/2024 18:04:18'!
 buildMorphicWindow
 	"Lay out the window for purchases"
 	| rightPane |
 	
 	self layoutMorph beRow.
-	list _ (PluggableListMorph
-		model: model
+	list := (PluggableListMorph
+		withModel: model
 		listGetter: #optionsList
 		indexGetter: #optionsItem
-		indexSetter: #optionsItem:
-		mainView: self
-		menuGetter: nil
-		keystrokeAction: nil)
+		indexSetter: #optionsItem:)
 			name: #catalog.
 			
-	buttonArea _ (LayoutMorph newRow)
+	buttonArea := (LayoutMorph newRow)
 		layoutSpec: (LayoutSpec 
 			proportionalWidth: 1.0
 			proportionalHeight: 0.15
@@ -2130,7 +1877,7 @@ buildMorphicWindow
 		axisEdgeWeight: #center.
 	model when: #buyButton: send: #buyButton: to: self with: #state.
 
-	textPane _ (TextModelMorph
+	textPane := (TextModelMorph
 		withModel: (TextModel withText: '')) 	"note the different model specification"
 			askBeforeDiscardingEdits: false;	"discard changes to the text"
 			name: 'item description'. 	"give the TextModelMorph a name which will appear in the halos"
@@ -2140,7 +1887,7 @@ buildMorphicWindow
 			proportionalHeight: 0.85
 			offAxisEdgeWeight: #center).
 
-	rightPane _ LayoutMorph newColumn.
+	rightPane := LayoutMorph newColumn.
 	rightPane
 		name: 'right pane';
 		addMorph: buttonArea;
@@ -2641,70 +2388,278 @@ new: aSize
 	
 	^ self new morphExtent: aSize@aSize! !
 
-!ArrowMorph methodsFor: 'drawing' stamp: 'dhn 11/12/2016 19:13:00'!
-drawOn: aCanvas
+!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
+arrow
+	"Answer the value of arrow"
 
-	aCanvas image: form at: 0@0! !
+	^ arrow! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 11/12/2016 19:23:27'!
-form
-	"Answer the value of form"
+!Token methodsFor: 'accessing' stamp: 'dhn 2/18/2017 18:16:13'!
+arrowPosition
+	"Answer the position for the arrow"
 
-	^ form! !
+	^ (self morphWidth / 3) @ -60! !
 
-!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 11/12/2016 19:23:27'!
-form: anObject
-	"Set the value of form"
+!Token methodsFor: 'accessing' stamp: 'dhn 10/9/2011 20:04'!
+count
+	"Answer the value of count"
 
-	form _ anObject! !
+	count ifNil: [count := 0].
+	^ count! !
 
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:56:31'!
-includeInNewMorphMenu
-	"Not to be instantiated from the menu"
-	^ false! !
+!Token methodsFor: 'accessing' stamp: 'dhn 10/9/2011 19:54'!
+count: anObject
+	"Set the value of count"
 
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 5/14/2017 12:52:40'!
-leftOn: aWorld
-	"Open a right-pointing arrow in aWorld"
+	count := anObject! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
+die
+	"Answer the value of die"
+
+	^ die! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 9/24/2016 15:44:32'!
+die: anObject
+	"Set the value of die"
+
+	die _ anObject! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:23:29'!
+labelArea
+	"Answer the value of labelArea"
+
+	^ labelArea! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 8/25/2016 17:24:01'!
+labelArea: anObject
+	"Set the value of labelArea"
+
+	labelArea _ anObject! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 15:22:58'!
+tokenId
+	"Answer the value of tokenId"
+
+	^ tokenId! !
+
+!Token methodsFor: 'accessing' stamp: 'dhn 5/7/2020 20:08:29'!
+tokenId: anObject
+	"Set the value of tokenId"
+
+	tokenId _ anObject! !
+
+!Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:47'!
+arrowLeft
+	"Associate an arrow with the sender, pointing to the left"
+
+	arrow _ ArrowMorph new
+		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm.
+	self addMorph: arrow.
+	arrow openInWorld: self.
+	arrow morphPosition: self arrowPosition
+
+! !
+
+!Token methodsFor: 'initialization' stamp: 'dhn 8/8/2017 11:31:24'!
+arrowRight
+	"Associate an arrow with the sender, pointing to the right"
+
+	arrow _ ArrowMorph new
+		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm.
+	self addMorph: arrow.
+	arrow openInWorld: self.
+	arrow morphPosition: self arrowPosition
+! !
+
+!Token methodsFor: 'initialization' stamp: 'dhn 4/26/2019 10:47:39'!
+identity: aString
+	"Set the layout for the player's name"
+
+	^ (StringMorph 
+		contents: aString 
+		font: GameBoard gameFont
+		emphasis: AbstractFont boldCode)
+			morphPosition: 50@18! !
+
+!Token methodsFor: 'initialization' stamp: 'dhn 3/22/2017 11:27:16'!
+initialize
+
+	super initialize.
 	
-	^ self new
-		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm! !
+	hop _ OrderedCollection new.
+	180 to: 360 by: 18 do: [:a | hop add: 6 * (a degreesToRadians cos * 2)].
+	
+	self setBalloonText: 'A token representing the player. When the Move button is clicked, 
+a die is "rolled" and the token moves that number of spaces.'! !
 
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 5/14/2017 12:46:15'!
-rightOn: aWorld
-	"Open a right-pointing arrow in aWorld"
+!Token methodsFor: 'initialization' stamp: 'dhn 6/5/2020 21:21:49'!
+makeIdArea
+	"Lay out the area for the player's name"
+	| area |
+	
+	area _ LayoutMorph newRow
+		color: Color transparent;
+		name: #tokenId;
+		axisEdgeWeight: #center.
+	
+	tokenId _ (StringMorph contents: 'Player') 
+		emphasis: 1;
+		font: GameBoard gameFont.
+		
+	area addMorph: tokenId.
+	^ area layoutSpec: (LayoutSpec  
+		proportionalWidth: 1.0)! !
 
-	^ self new
-		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm! !
+!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:47:12'!
+model
+	"Answer the value of model"
 
-!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
-marksPane
-	"Answer the value of marksPane"
+	^ model! !
 
-	^ marksPane! !
+!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 18:46:25'!
+model: anObject
+	"Set the value of model"
 
-!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
-marksPane: anObject
-	"Set the value of marksPane"
+	model _ anObject! !
 
-	marksPane _ anObject! !
+!Token methodsFor: 'initialization' stamp: 'dhn 8/17/2017 13:22:03'!
+posAdjust
+	"Answer the position"
+	| ver hor |
+	
+	ver _ model world morphExtent y * 8 / 10.
+	hor _ model world morphExtent x * 0.025.
+	^ hor@ver! !
 
-!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
-textPane
-	"Answer the value of textPane"
+!Token methodsFor: 'initialization' stamp: 'dhn 3/21/2017 14:17:20'!
+setSize
+	"Set the extent of the receiver"
+	| w h |
+	
+	w _ owner morphExtent x * 0.13.
+	h _ w * 0.5.
+	self morphExtent: w@h! !
 
-	^ textPane! !
+!Token methodsFor: 'stepping' stamp: 'dhn 4/2/2020 16:34:53'!
+jump: aCount
+	"Move the receiver in aCount hops"
+	| step limit i horiz |
+	
+	step _ 30.	"time of each increment of the hop"
+	limit _ hop size * aCount.
+	horiz _ (model cells first morphWidth +2)/ (hop size).
+	i _ 0.
+	self when: #morphicStep evaluate: [ :delta |
+		i _ i + 1.
+		i < limit 
+			ifTrue: [self morphPosition: (self morphPosition translatedBy: horiz@(hop atWrap: i))]
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				self moved]].
+	self startSteppingStepTime: step. 	
+! !
 
-!CellView methodsFor: 'accessing' stamp: 'dhn 1/14/2017 13:17:39'!
-textPane: anObject
-	"Set the value of textPane"
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:49:16'!
+moveFrom: positionA to: positionB
+	"Slide self in the shorter direction"
+	
+	(Direction shortest: positionA to: positionB in: model spaces size) > 0
+		ifTrue: [self slideLeft: positionA to: positionB]
+		ifFalse: [self slideRight: positionA to: positionB]! !
 
-	textPane _ anObject! !
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:29:23'!
+slideLeft: from to: to
+	"Slide self when player must go BACK to 'to' from 'from' "
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from - 6.
+	model positionBoardTo: oldPos.
+	self position: 7.
+	newPos _ index atWrap: final - 7.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n - 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowLeft.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
 
-!CellView class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:57:03'!
+!Token methodsFor: 'stepping' stamp: 'dhn 4/15/2019 11:36:11'!
+slideRight: from to: to
+	"Slide self when player moves ahead from 'from' to 'to' other than by the Move button"
+	| oldPos newPos index n posns limit i final |
+	
+	final _ to.
+	index _ (Interval from: 1 to: model spaces size by: 1) asArray.
+	oldPos _ index atWrap: from.
+	model positionBoardTo: oldPos.
+	self position: 1.
+	newPos _ final + 1.
+	posns _ OrderedCollection new.
+	n _ oldPos.
+	[(index atWrap: n) ~= newPos] whileTrue: [posns add: (index atWrap: n). n _ n + 1].
+	posns _ posns asArray.
+	model positionBoardTo: posns first.
+	
+	self arrowRight.
+	limit _ posns size.
+	i _ 0.
+	self when: #morphicStep evaluate: [ :unused |
+		i _ i + 1.
+		model positionBoardTo: (posns at: i).
+		i < limit 
+			ifFalse: [
+				self stopStepping.
+				self removeActionsForEvent: #morphicStep.
+				arrow delete.
+				model currentPlayer position: final.
+				model triggerEvent: #endOfMove.
+				self doubled contents: model currentPlayer doubledString]].
+	self startSteppingStepTime: 500! !
+
+!Token class methodsFor: 'instance creation' stamp: 'dhn 7/11/2013 14:42'!
+colors
+	"Answer the colors that players can have."
+	^ {Color r: 0.0 g: 0.634 b: 1. 
+		Color r: 0.729 g: 0.455 b: 0.819. 
+		Color r: 0.544 g: 0.729 b: 0.544. 
+		Color r: 0.909 g: 0.27 b: 0.729. 
+		Color r: 0.634 g: 0.729 b: 1. 
+		Color cyan. Color green. Color red. Color orange. Color magenta}! !
+
+!Token class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:58:56'!
 includeInNewMorphMenu
 	"Not to be instantiated from the menu"
 	^ false! !
+
+!Token class methodsFor: 'instance creation' stamp: 'dhn 4/8/2017 20:24:59'!
+newFor: aModel
+	"Establish an instance with model aModel"
+	
+	^ self initializedInstance model: aModel! !
+
+!Token class methodsFor: 'operation' stamp: 'dhn 12/2/2011 22:32'!
+rollCount
+	"Answer the number of iterations for a roll"
+	^ 1! !
 
 !PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 1/18/2017 18:21:02'!
 asNormalizedPoints: aCollection
@@ -3520,3 +3475,39 @@ textColor: aBool
 !Season methodsFor: 'initialize-release' stamp: 'dhn 2/24/2012 21:51'!
 initialize
 	super initialize! !
+
+!ArrowMorph methodsFor: 'drawing' stamp: 'dhn 11/12/2016 19:13:00'!
+drawOn: aCanvas
+
+	aCanvas image: form at: 0@0! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 11/12/2016 19:23:27'!
+form
+	"Answer the value of form"
+
+	^ form! !
+
+!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 11/12/2016 19:23:27'!
+form: anObject
+	"Set the value of form"
+
+	form _ anObject! !
+
+!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 1/20/2017 11:56:31'!
+includeInNewMorphMenu
+	"Not to be instantiated from the menu"
+	^ false! !
+
+!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 5/14/2017 12:52:40'!
+leftOn: aWorld
+	"Open a right-pointing arrow in aWorld"
+	
+	^ self new
+		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm! !
+
+!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 5/14/2017 12:46:15'!
+rightOn: aWorld
+	"Open a right-pointing arrow in aWorld"
+
+	^ self new
+		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm! !
