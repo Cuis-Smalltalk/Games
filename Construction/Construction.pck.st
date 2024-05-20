@@ -1,6 +1,6 @@
-'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:29:35 pm'!
+'From Cuis7.1 [latest update: #6387] on 20 May 2024 at 5:19:09 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 235!
+!provides: 'Construction' 1 236!
 !requires: 'Game' 1 24 nil!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
@@ -3163,12 +3163,12 @@ labelAreaHeight
 
 	^ 50! !
 
-!Construction class methodsFor: 'instance creation' stamp: 'dhn 8/14/2017 11:49:36'!
+!Construction class methodsFor: 'instance creation' stamp: 'tsl 5/20/2024 16:29:59'!
 start
 	"Start the Construction Game"
 	| win world |
 	
-	win _ self new.
+	win := self new.
 	win 
 		widgetsColor: win windowColor; "standard color for the window frame"
 		color:  (Color r: 0.986 g: 0.986 b: 0.986); "background color"
@@ -3193,7 +3193,7 @@ start
 	win showSeasons: (win model parseSeasonsAt: 1).
 	
 	"Now do open it"
-	world _ Processor activeProcess animatedUI.
+	world := UISupervisor animatedUIOf: Processor activeProcess.
 	win morphExtent: (world morphExtent * (0.99@0.8)).
 	world addMorph: win position: 0@60.
 	win someSubmorphPositionOrExtentChanged.
