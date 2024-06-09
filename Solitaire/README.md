@@ -11,8 +11,8 @@ Solitaire:  Klondike & FreeCell Solitaire Games
 Then execute
 
 ````Smalltalk
-    Klondike newGame openInHand.
-    FreeCell newGame openInHand.
+    Klondike newGame.
+    FreeCell newGame.
 ````
 
 Or use the World Menu to invoke:  New Morph.. --> Layouts --> FreeCell
