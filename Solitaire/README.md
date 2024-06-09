@@ -1,6 +1,6 @@
 Cuis-Solitaire
 ==========
-Tested with Cuis 4.2 rev 3319
+Tested with Cuis 7.0
 
 Solitaire:  Klondike & FreeCell Solitaire Games
 
@@ -11,19 +11,14 @@ Solitaire:  Klondike & FreeCell Solitaire Games
 Then execute
 
 ````Smalltalk
-    Klondike newGame.
-    FreeCell newGame.
+    Klondike newGame openInHand.
+    FreeCell newGame openInHand.
 ````
 
-Or use the World Menu to invoke:  New Morph > Games-Solitaire > FreeCell
+Or use the World Menu to invoke:  New Morph.. --> Layouts --> FreeCell
 
-You can also scale the card table to fit on your screen.
-````Smalltalk
-	FreeCell  newGameWithScale: 0.8.
-	Klondike newGameWithScale: 0.8.
-
-	FreeCell  newGameWithScale: 1.2.
-	Klondike newGameWithScale: 1.2.
-````
+You can also scale the card table to fit on your screen via the Morph's edit handles.
+  - Cmd-Click on FreeCell
+  - Use the blue Change Scale handle on right
 
 ![Solitaire](Solitaire.png)
