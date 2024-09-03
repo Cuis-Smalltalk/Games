@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #6037] on 11 October 2023 at 7:49:50 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 134!
+!provides: 'Morphic-Games-Solitaire' 1 135!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 60 5552 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -461,7 +461,7 @@ animateMoveFrom: aContainer to: otherContainer moving: someCard next: nextAction
 	someCard isNil 
 	ifTrue: [ nextAction value ]
 	ifFalse: [
-		worldPos := someCard morphPositionInWorld. 
+		worldPos := someCard positionInWorld. 
 		someCard setProperty: #moveStart toValue: aContainer .
 
 		"Gather and remove card run from aContainer"
@@ -474,9 +474,9 @@ animateMoveFrom: aContainer to: otherContainer moving: someCard next: nextAction
 
 		topDestCard := otherContainer topCard.
 		topDestCard isNil
-			ifTrue: [ destPos := otherContainer morphPositionInWorld
+			ifTrue: [ destPos := otherContainer positionInWorld
 								  + otherContainer containerOffset ]
-			ifFalse: [ destPos := topDestCard morphPositionInWorld ].
+			ifFalse: [ destPos := topDestCard positionInWorld ].
 		
 		"Animate the image move -- in World coordinates"
 		self slide: someCard
@@ -498,7 +498,7 @@ animateMoveFrom: aContainer to: aPile next: nextAction
 	| topCard worldPos |
 	topCard := aContainer topCard.
 	topCard setProperty: #moveStart toValue: aContainer .
-	worldPos := topCard morphPositionInWorld.
+	worldPos := topCard positionInWorld.
 	
 	"Transfer card to World"
 	aContainer removeMorph: topCard.
@@ -508,7 +508,7 @@ animateMoveFrom: aContainer to: aPile next: nextAction
 	
 	"Animate the image move -- in World coordinates"
 	self slide: topCard 
-		  to: aPile morphPositionInWorld + aPile containerOffset
+		  to: aPile positionInWorld + aPile containerOffset
 		  nSteps: self numberOfMoveSteps 
 		  delay: self moveDelay
 		  next: [
@@ -740,7 +740,7 @@ initialize
 		 goAgain: false;
 		 inUndo: false;
 		 color: (Color r: 0.304 g: 0.833 b: 0.075);  "green felt"
-		 morphPositionInWorld: (30 @ 26); 
+		 positionInWorld: (30 @ 26); 
 		 yourself! !
 
 !CardTableMorph methodsFor: 'initialization' stamp: 'KenD 12/24/2021 16:34:05'!
