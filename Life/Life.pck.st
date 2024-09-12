@@ -1,23 +1,13 @@
-'From Cuis 5.0 of 7 November 2016 [latest update: #3383] on 29 July 2018 at 12:51:41 pm'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:26:08 pm'!
 'Description The game of Life, an example of a cellular automaton, developed by Prof. John H. Conway at the University of Cambridge.
 
 References:
 ConwayLife.com
 Gardner, Martin, "Mathematical Games", Scientific American, October 1970, February 1971
 "Some Facts of Life", Byte Magazine, December 1978'!
-!provides: 'Life' 1 6!
+!provides: 'Life' 1 7!
 SystemOrganization addCategory: #Life!
 
-
-!classDefinition: #LifeModel category: #Life!
-TextModel subclass: #LifeModel
-	instanceVariableNames: 'shape cells cellIndex'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Life'!
-!classDefinition: 'LifeModel class' category: #Life!
-LifeModel class
-	instanceVariableNames: ''!
 
 !classDefinition: #LifeArray category: #Life!
 Array2D subclass: #LifeArray
@@ -27,6 +17,16 @@ Array2D subclass: #LifeArray
 	category: 'Life'!
 !classDefinition: 'LifeArray class' category: #Life!
 LifeArray class
+	instanceVariableNames: ''!
+
+!classDefinition: #LifeModel category: #Life!
+TextModel subclass: #LifeModel
+	instanceVariableNames: 'shape cells cellIndex'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Life'!
+!classDefinition: 'LifeModel class' category: #Life!
+LifeModel class
 	instanceVariableNames: ''!
 
 !classDefinition: #GridCell category: #Life!
@@ -50,13 +50,13 @@ LifeView class
 	instanceVariableNames: 'lines'!
 
 
-!LifeModel commentStamp: 'dhn 6/25/2016 13:43' prior: 0!
-A model for the game of Life, a two-dimensional cellular automaton.!
-
 !LifeArray commentStamp: 'dhn 7/6/2016 15:24' prior: 0!
 Avoid mental gymnastics while using Array2D, which uses backward coordinates.
 
 Give access to #elements iVar.!
+
+!LifeModel commentStamp: 'dhn 6/25/2016 13:43' prior: 0!
+A model for the game of Life, a two-dimensional cellular automaton.!
 
 !GridCell commentStamp: 'dhn 6/25/2016 14:53' prior: 0!
 A cell in the game of Life.!
@@ -68,6 +68,38 @@ LifeView example1
 
 Gardner, Martin, "Mathematical Games", Scientific American, October 1970, February 1971
 "Some Facts of Life", Byte Magazine, December 1978!
+
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:41'!
+at: aPoint
+	"
+	Answer the element at aPoint, where:
+		row := aPoint x
+		col := aPoint y
+	"
+	
+	^ self i: aPoint x j: aPoint y! !
+
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:42'!
+at: aPoint put: anObject
+	"
+	Set the element at aPoint to anObject, where:
+		row := aPoint x
+		col := aPoint y
+	"
+	
+	^ self i: aPoint x j: aPoint y put: anObject! !
+
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:25'!
+elements
+	"Answer the value of elements"
+	
+	^ elements! !
+
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:26'!
+elements: anObject
+	"Set the value of elements"
+	
+	elements _ anObject! !
 
 !LifeModel methodsFor: 'accessing' stamp: 'dhn 6/26/2016 16:07'!
 cellIndex
@@ -1124,38 +1156,6 @@ patternNames
 		('Switch Engine' 			#engine)
 	)! !
 
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:41'!
-at: aPoint
-	"
-	Answer the element at aPoint, where:
-		row := aPoint x
-		col := aPoint y
-	"
-	
-	^ self i: aPoint x j: aPoint y! !
-
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:42'!
-at: aPoint put: anObject
-	"
-	Set the element at aPoint to anObject, where:
-		row := aPoint x
-		col := aPoint y
-	"
-	
-	^ self i: aPoint x j: aPoint y put: anObject! !
-
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:25'!
-elements
-	"Answer the value of elements"
-	
-	^ elements! !
-
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:26'!
-elements: anObject
-	"Set the value of elements"
-	
-	elements _ anObject! !
-
 !GridCell methodsFor: 'accessing' stamp: 'dhn 6/26/2016 08:48'!
 index
 	"Answer the value of index"
@@ -1262,18 +1262,18 @@ row: aRow length: aNumber
 				col addFirst: morph].
 	^ col! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 7/7/2016 12:01'!
+!LifeView methodsFor: 'menu' stamp: 'jmv 9/12/2024 12:25:29'!
 experiment
 	"Open a clean sheet at a scale and extent"
 	 | xy grid jk |
 	
-	xy _ FillInTheBlankMorph request: 'Grid dimensions (h@w)?' initialAnswer: '30@40'.
+	xy := StringRequestMorph request: 'Grid dimensions (h@w)?' initialAnswer: '30@40'.
 	xy ifNotEmpty: [ 
-		grid _ {xy} evalStrings.
-		jk _ FillInTheBlankMorph request: 'Window extent (w@h)?' initialAnswer: '600@500'.
+		grid := {xy} evalStrings.
+		jk := StringRequestMorph request: 'Window extent (w@h)?' initialAnswer: '600@500'.
 		jk 
 			ifNotEmpty: [ | win |
-				win _ self class rows: grid first x cols: grid first y.
+				win := self class rows: grid first x cols: grid first y.
 				win extentAndPosition: {jk} evalStrings first.
 				win setLabel: 'Experiment'.
 				win label: 'Experiment'.

@@ -1,11 +1,11 @@
-'From Cuis7.1 [latest update: #6456] on 9 June 2024 at 12:35:59 pm'!
+'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:37:51 pm'!
 'Description A program to draw names before Christmas. Names are listed in a text file:
 
 name1				"Single"
 name2 & name3	"Couples"
 
 See class comment for rules.'!
-!provides: 'SecretSanta' 1 9!
+!provides: 'SecretSanta' 1 11!
 SystemOrganization addCategory: #'SecretSanta-Model'!
 
 
@@ -227,17 +227,14 @@ yearsFrom: begin to: end
 	^ old
 ! !
 
-!SecretSanta methodsFor: 'initialization' stamp: 'KenD 6/9/2024 12:34:28'!
+!SecretSanta methodsFor: 'initialization' stamp: 'jmv 9/12/2024 12:36:28'!
 initialize
 	| str lines yr |
 	super initialize.
 	
-	path := (FillInTheBlankMorph
+	path := (StringRequestMorph
 		request: 'Directory?'
-		initialAnswer: (self class package fullFileName) asFileEntry parent asString
-		centerAt: Display center
-		onCancelReturn: ''
-		acceptOnCR: true).
+		initialAnswer: (self class package fullFileName) asFileEntry parent asString).
 		
 	str := String with: Character lf with: Character cr.
 	lines := (path asDirectoryEntry at: self class in, '.txt') findTokens: str asString keep: ''.
@@ -246,12 +243,9 @@ initialize
 	counts := {0. 0. 0. 0. 0. 0.}.
 	(names := self namesList)
 		ifNotEmpty: [
-			yr := (FillInTheBlankMorph
+			yr := (StringRequestMorph
 				request: 'Up to 3 years beginning with...'
-				initialAnswer: 'yyyy'
-				centerAt: Display center
-				onCancelReturn: ''
-				acceptOnCR: true) asNumber.
+				initialAnswer: 'yyyy') asNumber.
 			pastYears := self yearsFrom: yr  to: yr +2.
 			self drawNames]
 		ifEmpty: [PopUpMenu inform: 'There can be no drawing
