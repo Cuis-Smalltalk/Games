@@ -1,6 +1,6 @@
 'From Cuis 6.0 [latest update: #6037] on 11 October 2023 at 7:49:50 am'!
 'Description Solitaire Card Games'!
-!provides: 'Morphic-Games-Solitaire' 1 135!
+!provides: 'Morphic-Games-Solitaire' 1 136!
 !requires: 'Goodies' 1 3 nil!
 !requires: 'Cuis-Base' 60 5552 nil!
 !requires: 'Graphics-Files-Additional' 1 nil nil!
@@ -48,7 +48,7 @@ CardMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #CardContainerMorph category: #'Morphic-Games-Solitaire'!
-BoxedMorph subclass: #CardContainerMorph
+BorderedBoxMorph subclass: #CardContainerMorph
 	instanceVariableNames: 'targetTable cardClass'
 	classVariableNames: 'ContainerOffset'
 	poolDictionaries: ''
@@ -2169,7 +2169,7 @@ makePilesArea
 	pilesArea color: noColor.
 	
 	"spacer"
-	pilesArea addMorph: (BoxedMorph  new ::
+	pilesArea addMorph: (BorderedBoxMorph  new ::
 						color: noColor; 
 						borderColor: noColor; 
 						morphWidth: 40)
@@ -2191,7 +2191,7 @@ makePilesArea
 	pilesArea addMorph: discards.
 	
 	"spacer"
-	pilesArea addMorph: (BoxedMorph new :: 
+	pilesArea addMorph: (BorderedBoxMorph new :: 
 				color: noColor; 
 				borderColor: noColor; 
 				morphWidth: 20)
