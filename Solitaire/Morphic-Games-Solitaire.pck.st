@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 1:49:38 pm'!
+'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 2:03:17 pm'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 137!
+!provides: 'Morphic-Games-Solitaire' 1 138!
 !requires: 'Cuis-Base' 73 7044 nil!
 !requires: 'Goodies' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -1197,7 +1197,7 @@ showTopCard
 	].
 	^self! !
 
-!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2025 13:34:07'!
+!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2025 14:02:31'!
 acceptDroppingMorph: aCardMorph event: evt 
 	"aMorph is a Card which may contain submorphs which 
 	are also Cards.  Add to me."
@@ -1209,7 +1209,8 @@ acceptDroppingMorph: aCardMorph event: evt
 			table inUndo
 			ifFalse: [ 
 				self addCard: aCardMorph.
-				table addingCardOrCards: aCardMorph toContainer: self
+				table addingCardOrCards: aCardMorph toContainer: self.
+				self dropComplete
 			]
 			ifTrue: [ "take all cards from deck into self if Card is nil"
 				aCardMorph isNil
@@ -1221,7 +1222,6 @@ acceptDroppingMorph: aCardMorph event: evt
 							[ self addCard: deck takeTopCard ]
 				]
 			].
-		self dropComplete
 	]! !
 
 !CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 11/22/2004 08:07'!
