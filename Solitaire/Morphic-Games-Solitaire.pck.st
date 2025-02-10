@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 9 February 2025 at 2:03:17 pm'!
+'From Cuis7.3 [latest update: #7044] on 10 February 2025 at 9:54:46 am'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 138!
+!provides: 'Morphic-Games-Solitaire' 1 139!
 !requires: 'Cuis-Base' 73 7044 nil!
 !requires: 'Goodies' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -682,12 +682,15 @@ allowsSubmorphDrag
 
 	^ true! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/9/2025 13:20:14'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 2/10/2025 09:52:26'!
 dropComplete
 	"Someone dropped one or more cards into me.  Tell the Card Table about it."
 
 	^self targetTable 
-		ifNotNil: [ :table | table dropComplete ]
+		ifNotNil: [ :table | 
+			table inUndo 
+				ifTrue: [false] 
+				ifFalse: [table dropComplete] ]
 		ifNil: [false]
 ! !
 
