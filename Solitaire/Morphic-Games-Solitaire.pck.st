@@ -1,6 +1,6 @@
-'From Cuis7.3 [latest update: #7044] on 10 February 2025 at 9:54:46 am'!
+'From Cuis7.3 [latest update: #7183] on 27 May 2025 at 12:50:30 pm'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 139!
+!provides: 'Morphic-Games-Solitaire' 1 140!
 !requires: 'Cuis-Base' 73 7044 nil!
 !requires: 'Goodies' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -6753,14 +6753,16 @@ initializeFromPNGfixShadow
 		at: 53 
 		put: ((Form fromFileNamed: (imageDirNamePrefix , 'back.png')) asFormOfDepth: 32)! !
 
-!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 8/29/2021 12:05:24'!
+!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 5/27/2025 12:50:06'!
 the: face of: suit
 	"Return an Card instance"
-	
-	"CardMorph the: #Jack of: #Hearts."
-	"CardMorph the: 11 of: #spades"
-	"CardMorph the: 11 of: 3."
-
+"	
+	(CardMorph the: #Jack of: #Hearts) openInWorld.
+	(CardMorph the: 11 of: #spades) openInWorld.
+	(CardMorph the: 11 of: 3) openInWorld.
+Note: expect these Morphs to act oddly outside of a card game.
+  E.g. #openInhand will not work; Drag 'n 'Drop not standard.
+"
 	| faceNum suitNum newInst |
 	
 	(suit isSymbol)
