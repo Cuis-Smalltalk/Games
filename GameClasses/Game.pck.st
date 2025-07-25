@@ -1,6 +1,6 @@
 'From Cuis7.1 [latest update: #6378] on 18 May 2024 at 4:31:26 pm'!
 'Description Classes which support board games.'!
-!provides: 'Game' 1 72!
+!provides: 'Game' 1 73!
 !requires: 'Morphic-Widgets-Extras' 1 12 nil!
 !requires: 'Morphic-Deprecated' 1 0 nil!
 SystemOrganization addCategory: #'Game-Model'!
@@ -28,7 +28,7 @@ GamePasteUp class
 	instanceVariableNames: ''!
 
 !classDefinition: #CellView category: #'Game-Graphics'!
-LayoutMorph subclass: #CellView
+LinearLayoutMorph subclass: #CellView
 	instanceVariableNames: 'textPane marksPane'
 	classVariableNames: ''
 	poolDictionaries: ''

@@ -1,6 +1,6 @@
 'From Cuis7.3 [latest update: #7183] on 27 May 2025 at 12:50:30 pm'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 140!
+!provides: 'Morphic-Games-Solitaire' 1 141!
 !requires: 'Cuis-Base' 73 7044 nil!
 !requires: 'Goodies' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -88,7 +88,7 @@ CardSpareMorph class
 	instanceVariableNames: ''!
 
 !classDefinition: #CardTableMorph category: #'Morphic-Games-Solitaire'!
-LayoutMorph subclass: #CardTableMorph
+LinearLayoutMorph subclass: #CardTableMorph
 	instanceVariableNames: 'undoStack inCardMove goAgain inUndo undoButton saveGameButton winnerText labelLayout labelMorph mutex sizeUnit'
 	classVariableNames: 'WinnerText'
 	poolDictionaries: ''
