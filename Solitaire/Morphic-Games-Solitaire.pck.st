@@ -1,6 +1,6 @@
-'From Cuis7.7 [latest update: #7791] on 18 January 2026 at 2:36:49 pm'!
+'From Cuis7.9 [latest update: #8266] on 12 October 2026 at 1:34:24 pm'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 142!
+!provides: 'Morphic-Games-Solitaire' 1 143!
 !requires: 'Cuis-Base' 73 7044 nil!
 !requires: 'Goodies' 1 11 nil!
 !requires: 'Graphics-Files-Additional' 1 29 nil!
@@ -338,7 +338,7 @@ This is a 52 card deck (no jokers).
 !CardTests commentStamp: 'KenD 10/20/2004 09:45' prior: 0!
 "Unit tests for CardMorph and related classes"!
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 4/Nov/2004 09:15:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 4/Nov/2004, 4:15:00 pm (UTC)'!
 cardFromNumber: anInteger
 	"Given card number 1..52 answer the corresponding CardMorph from this deck."
 
@@ -348,19 +348,19 @@ cardFromNumber: anInteger
 	
 	^ self cards detect: [ :card | card cardNumber = anInteger ]! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 8/Nov/2004 11:16:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 8/Nov/2004, 6:16:00 pm (UTC)'!
 cards
 	"Private"
 
 	^cards! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004 14:46:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004, 9:46:00 pm (UTC)'!
 cardsLeft
 	"Answer the number of undealt Cards"
 
 	^(52 - index)! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004 14:45:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004, 9:45:00 pm (UTC)'!
 dealACard
 	"Answer the next Card or nil"
 
@@ -368,13 +368,13 @@ dealACard
 	ifTrue: [ ^nil ]
 	ifFalse: [ index := index + 1. ^cards at: index ]! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004 14:52:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004, 9:52:00 pm (UTC)'!
 seed
 	"Answer my random number seed"
 
 	^seed! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004 14:57:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 22/Oct/2004, 9:57:00 pm (UTC)'!
 seed: anInteger
 	"Set my random number seed"
 
@@ -383,31 +383,31 @@ seed: anInteger
 	ifTrue: [ seed := anInteger ].
 	^anInteger! !
 
-!CardDeck methodsFor: 'access' stamp: 'KenD 28/Oct/2004 15:25:00'!
+!CardDeck methodsFor: 'access' stamp: 'KenD 28/Oct/2004, 10:25:00 pm (UTC)'!
 startOver
 	"Re-deal the same cards."
 
 	index := 0! !
 
-!CardDeck methodsFor: 'testing' stamp: 'KenD 2/Jul/2011 11:04:00'!
+!CardDeck methodsFor: 'testing' stamp: 'KenD 2/Jul/2011, 6:04:00 pm (UTC)'!
 contains: aCard
 	"Answer true if this deck instance owns this card instance"
 
 	^self cards anySatisfy: [:each | each == aCard] ! !
 
-!CardDeck methodsFor: 'testing' stamp: 'KenD 22/Oct/2004 14:43:00'!
+!CardDeck methodsFor: 'testing' stamp: 'KenD 22/Oct/2004, 9:43:00 pm (UTC)'!
 isEmpty
 	"I am 'empty' when I have dealt all my cards"
 
 	^(index = 52)! !
 
-!CardDeck methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004 13:47:00'!
+!CardDeck methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004, 8:47:00 pm (UTC)'!
 dropEnabled
 	"I do NOT accept drops"
 
 	^false! !
 
-!CardDeck methodsFor: 'save/restore' stamp: 'KenD 6/Apr/2016 15:52:00'!
+!CardDeck methodsFor: 'save/restore' stamp: 'KenD 6/Apr/2016, 10:52:00 pm (UTC)'!
 initializeFromArray: stateArray
 	"Reconstiture a Card Deck."
 	"stateArray contains 52 card numbers, an index, a seed, and #CardDeck, which abstracts a deck's state"
@@ -427,7 +427,7 @@ initializeFromArray: stateArray
 	^self
 ! !
 
-!CardDeck methodsFor: 'save/restore' stamp: 'KenD 8/Nov/2004 11:03:00'!
+!CardDeck methodsFor: 'save/restore' stamp: 'KenD 8/Nov/2004, 6:03:00 pm (UTC)'!
 saveStateToArray
 	"Answer a n Array of size 55 which contains card numbers for this deck,
 	the index, the seed and symbol #CardDeck."
@@ -442,7 +442,7 @@ saveStateToArray
 
 	^stateArray! !
 
-!CardDeck methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004 10:58:00'!
+!CardDeck methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004, 5:58:00 pm (UTC)'!
 initialize
 	"Create an unshuffled deck of Cards."
 
@@ -458,7 +458,7 @@ initialize
 	^self
 	! !
 
-!CardDeck methodsFor: 'shuffle' stamp: 'KenD 24/Jan/2011 18:03:00'!
+!CardDeck methodsFor: 'shuffle' stamp: 'KenD 25/Jan/2011, 1:03:00 am (UTC)'!
 shuffle
 	"Shuffle the cards & deal from 0"
 	| newRand numCards |
@@ -477,7 +477,7 @@ shuffle
 		]
 ! !
 
-!Stack methodsFor: 'printing' stamp: 'KenD 14/May/2002 11:10:00'!
+!Stack methodsFor: 'printing' stamp: 'KenD 14/May/2002, 6:10:00 pm (UTC)'!
 printOn: aStream
 	aStream nextPut: $(.
 	1 to: top do: [ :index | 
@@ -485,7 +485,7 @@ printOn: aStream
 	self isEmpty ifFalse: [aStream skip: -1].
 	aStream nextPut: $)! !
 
-!Stack methodsFor: 'converting' stamp: 'KenD 24/Nov/2004 08:33:00'!
+!Stack methodsFor: 'converting' stamp: 'KenD 24/Nov/2004, 3:33:00 pm (UTC)'!
 asArray
 	"Answer my elements as an Array, top element at 1."
 
@@ -497,11 +497,11 @@ asArray
 	^anArray
 	! !
 
-!Stack methodsFor: 'private' stamp: 'dc 25/Jul/2005 10:05:00'!
+!Stack methodsFor: 'private' stamp: 'dc 25/Jul/2005, 5:05:00 pm (UTC)'!
 errorEmptyStack
 	self error: 'this stack is empty'! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 16/Dec/2014 19:16:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 17/Dec/2014, 2:16:00 am (UTC)'!
 grow
 	"PRIVATE -- Expand self"
 	
@@ -512,25 +512,25 @@ grow
 	^self
 ! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 16/Dec/2014 19:15:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 17/Dec/2014, 2:15:00 am (UTC)'!
 initialize
 	self top: 0.
 	self valuesArray: (Array new:6).
 	^self! !
 
-!Stack methodsFor: 'private' stamp: 'dc 25/Jul/2005 10:05:00'!
+!Stack methodsFor: 'private' stamp: 'dc 25/Jul/2005, 5:05:00 pm (UTC)'!
 notEmptyCheck
 	"Ensure the stack is not empty."
 	self isEmpty
 		ifTrue: [self errorEmptyStack]! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004 12:10:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004, 7:10:00 pm (UTC)'!
 top
 	"PRIVATE" 
 	
 	^top! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004 12:10:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004, 7:10:00 pm (UTC)'!
 top: newVal
 	"PRIVATE"
 
@@ -539,12 +539,12 @@ top: newVal
 	top := newVal.
 	^oldVal! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004 12:10:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004, 7:10:00 pm (UTC)'!
 valuesArray
 	"PRIVATE"
 	^valuesArray! !
 
-!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004 12:10:00'!
+!Stack methodsFor: 'private' stamp: 'KenD 19/Nov/2004, 7:10:00 pm (UTC)'!
 valuesArray: newArray
 	"PRIVATE"
 	
@@ -553,7 +553,7 @@ valuesArray: newArray
 	valuesArray := newArray.
 	^oldArray! !
 
-!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 5/Dec/2008 18:14:00'!
+!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 6/Dec/2008, 1:14:00 am (UTC)'!
 ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 	"Evaluate emptyBlock if I'm empty, notEmptyBlock otherwise"
 	" If the notEmptyBlock has an argument, eval with the receiver as its argument"
@@ -561,7 +561,7 @@ ifEmpty: emptyBlock ifNotEmpty: notEmptyBlock
 
 	^ self isEmpty ifTrue: emptyBlock ifFalse: [notEmptyBlock valueWithPossibleArgument: self]! !
 
-!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 5/Dec/2008 18:21:00'!
+!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 6/Dec/2008, 1:21:00 am (UTC)'!
 ifEmpty: emptyBlock ifNotEmptyDo: notEmptyBlock
 	"Evaluate emptyBlock if I'm empty, notEmptyBlock otherwise"
 	"Evaluate the notEmptyBlock with the receiver as its argument"
@@ -569,7 +569,7 @@ ifEmpty: emptyBlock ifNotEmptyDo: notEmptyBlock
 	
 	^ self isEmpty ifTrue: emptyBlock ifFalse: [notEmptyBlock value: self]! !
 
-!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 5/Dec/2008 18:15:00'!
+!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 6/Dec/2008, 1:15:00 am (UTC)'!
 ifNotEmpty: aBlock
 	"Evaluate the given block unless the receiver is empty.
 
@@ -580,14 +580,14 @@ ifNotEmpty: aBlock
 	^self isEmpty ifFalse: [aBlock valueWithPossibleArgument: self].
 ! !
 
-!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 5/Dec/2008 18:16:00'!
+!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 6/Dec/2008, 1:16:00 am (UTC)'!
 ifNotEmptyDo: aBlock
 	"Evaluate the given block with the receiver as its argument."
 	"copied from Collection"
 	^self isEmpty ifFalse: [aBlock value: self].
 ! !
 
-!Stack methodsFor: 'testing' stamp: 'KenD 2/Apr/2015 20:36:00'!
+!Stack methodsFor: 'testing' stamp: 'KenD 3/Apr/2015, 3:36:00 am (UTC)'!
 ifNotEmptyDo: notEmptyBlock ifEmpty: emptyBlock
 	"Evaluate emptyBlock if I'm empty, notEmptyBlock otherwise
 	Evaluate the notEmptyBlock with the receiver as its argument"
@@ -595,18 +595,18 @@ ifNotEmptyDo: notEmptyBlock ifEmpty: emptyBlock
 
 	^ self isEmpty ifFalse: [notEmptyBlock value: self] ifTrue: emptyBlock value! !
 
-!Stack methodsFor: 'testing' stamp: 'KenD 14/May/2002 10:52:00'!
+!Stack methodsFor: 'testing' stamp: 'KenD 14/May/2002, 5:52:00 pm (UTC)'!
 isEmpty
 	^(top = 0)! !
 
-!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 5/Dec/2008 18:16:00'!
+!Stack methodsFor: 'testing' stamp: 'stephane.ducasse 6/Dec/2008, 1:16:00 am (UTC)'!
 isEmptyOrNil
 	"Answer whether the receiver contains any elements, or is nil.  Useful in numerous situations where one wishes the same reaction to an empty collection or to nil"
 	"copied from Collection"
 	
 	^ self isEmpty! !
 
-!Stack methodsFor: 'access' stamp: 'KenD 15/May/2002 12:31:00'!
+!Stack methodsFor: 'access' stamp: 'KenD 15/May/2002, 7:31:00 pm (UTC)'!
 pop
 	| value |
 	top > 0
@@ -616,7 +616,7 @@ pop
 			^ value]
 		ifFalse: [Exception signal: 'Attempt to pop from empty Stack']! !
 
-!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002 11:23:00'!
+!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002, 6:23:00 pm (UTC)'!
 push: aVal
 	(top = valuesArray size)
 		ifTrue: [self grow].
@@ -624,11 +624,11 @@ push: aVal
 	valuesArray at: top put: aVal.
 	^self! !
 
-!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002 10:49:00'!
+!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002, 5:49:00 pm (UTC)'!
 size
 	^top! !
 
-!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002 11:23:00'!
+!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002, 6:23:00 pm (UTC)'!
 topValue
 	"return value at top of stack (NB: does NOT pop!!)"
 
@@ -636,7 +636,7 @@ topValue
 	ifTrue: [Exception signal: 'Attempt to pop from empty Stack'.]
 	ifFalse: [^valuesArray at: top].! !
 
-!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002 11:23:00'!
+!Stack methodsFor: 'access' stamp: 'KenD 14/May/2002, 6:23:00 pm (UTC)'!
 topValue: newVal
 	"set top value to newVal"
 
@@ -644,7 +644,7 @@ topValue: newVal
 	ifFalse: [valuesArray at: top put: newVal] "set!!"
 	ifTrue: [Exception signal: 'Attempt to assign to empty Stack'].! !
 
-!Stack class methodsFor: 'private' stamp: 'KenD 14/May/2002 11:10:00'!
+!Stack class methodsFor: 'private' stamp: 'KenD 14/May/2002, 6:10:00 pm (UTC)'!
 with: anObject 
 	"Returns a new Stack with anObject."
 
@@ -652,7 +652,7 @@ with: anObject
 		push: anObject;
 		yourself! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025 13:35:33'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025, 8:35:33 pm (UTC)'!
 acceptDroppingMorph: aMorph event: evt 
 	"aMorph is a Card which may contain submorphs which 
 	are also Cards.  Add to me."
@@ -670,19 +670,19 @@ acceptDroppingMorph: aMorph event: evt
 	]
 ! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Jan/2013 19:14:00'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Jan/2013, 2:14:00 am (UTC)'!
 allowsMorphDrop
 	"Answer whether we accept dropping morphs. By default answer false."
 
 	^ true! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Jan/2013 19:15:00'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Jan/2013, 2:15:00 am (UTC)'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. By default answer false."
 
 	^ true! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Feb/2025 09:52:26'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Feb/2025, 4:52:26 pm (UTC)'!
 dropComplete
 	"Someone dropped one or more cards into me.  Tell the Card Table about it."
 
@@ -694,7 +694,7 @@ dropComplete
 		ifNil: [false]
 ! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 30/Mar/2015 20:17:00'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 31/Mar/2015, 3:17:00 am (UTC)'!
 okToPickUp: aCard
 	"Answer false unless I have a table, else ask the table."
 
@@ -712,7 +712,7 @@ okToPickUp: aCard
 	].
 	^ result! !
 
-!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 25/Oct/2004 16:14:00'!
+!CardContainerMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 25/Oct/2004, 11:14:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt 
 	"Answer false unless I have a table, else ask the table."
 	| table |
@@ -721,7 +721,7 @@ wantsDroppedMorph: aMorph event: evt
 		ifTrue: [^ false]
 		ifFalse: [^ table container: self wantsDropOf: aMorph]! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021 12:20:12'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021, 7:20:12 pm (UTC)'!
 addCard: aCard
 	"Add a Card to me"
 
@@ -733,40 +733,40 @@ addCard: aCard
 
 ! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 12/Sep/2021 08:32:38'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 12/Sep/2021, 3:32:38 pm (UTC)'!
 cardClass
 
 	^ cardClass! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 12/Sep/2021 08:32:57'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 12/Sep/2021, 3:32:57 pm (UTC)'!
 cardClass: aCardClass
 
 	cardClass := aCardClass! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 1/Mar/2015 17:08:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2015, 12:08:00 am (UTC)'!
 containerOffset
 	"Offset from my morphPosition to that of contained card"
 
 	^ContainerOffset! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004 18:54:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 24/Oct/2004, 1:54:00 am (UTC)'!
 dropEnabled
 	"I assume cards are to be dropped on me -- subclasses my override"
 
 	^true! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 21/Jan/2011 22:11:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 22/Jan/2011, 5:11:00 am (UTC)'!
 makeEmpty
 
 	(self hasSubmorphs)
 		ifTrue: [ self removeAllMorphs ].! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 24/Oct/2004 15:03:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 24/Oct/2004, 10:03:00 pm (UTC)'!
 numCards
 	"Answer the number of AltCardMorphs I contain."
 	^ self submorphCount! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004 19:23:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 24/Oct/2004, 2:23:00 am (UTC)'!
 targetTable
 	"Answer my containing table or nil.
 	 Cache my containing Table as required."
@@ -774,33 +774,33 @@ targetTable
 		ifTrue: [self setTargetTable].
 	^ targetTable! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 21/Oct/2004 17:50:00'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004, 12:50:00 am (UTC)'!
 targetTable: anCardTable
 
 	targetTable := anCardTable! !
 
-!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 1/Oct/2021 13:41:36'!
+!CardContainerMorph methodsFor: 'accessing' stamp: 'KenD 1/Oct/2021, 8:41:36 pm (UTC)'!
 topCard
 	"Answer my top Card or nil."
 
 	^ self submorphs detect: [ :sm | sm isKindOf: self cardClass ] ifNone: [ ^nil ]! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021 08:25:13'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021, 3:25:13 pm (UTC)'!
 defaultBorderWidth
 
 	^ 2 "pixels"! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 12/Sep/2021 08:30:53'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 12/Sep/2021, 3:30:53 pm (UTC)'!
 defaultCardClass
 	^ CardMorph ! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 12/Sep/2021 08:36:44'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 12/Sep/2021, 3:36:44 pm (UTC)'!
 defaultLayout
 	^LayoutSpec  fixedWidth: (cardClass morphWidth + 4)
 					 fixedHeight: (cardClass morphHeight + 4) 
 					 offAxisEdgeWeight: #center! !
 
-!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021 08:26:10'!
+!CardContainerMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021, 3:26:10 pm (UTC)'!
 initialize
 	"Set my typical properties; Assume displayed on a Green table."
 
@@ -814,17 +814,17 @@ initialize
 		layoutSpec: self defaultLayout; "subclasses may mutate or replace"
 		yourself! !
 
-!CardContainerMorph methodsFor: 'testing' stamp: 'KenD 21/Oct/2004 14:24:00'!
+!CardContainerMorph methodsFor: 'testing' stamp: 'KenD 21/Oct/2004, 9:24:00 pm (UTC)'!
 isCardContainer
 	
 	^true! !
 
-!CardContainerMorph methodsFor: 'testing' stamp: 'KenD 21/Jan/2011 22:11:00'!
+!CardContainerMorph methodsFor: 'testing' stamp: 'KenD 22/Jan/2011, 5:11:00 am (UTC)'!
 isEmpty
 	"I am empty if I contain 0 Cards"
 	^ (self hasSubmorphs not)! !
 
-!CardContainerMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011 02:14:00'!
+!CardContainerMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011, 9:14:00 am (UTC)'!
 restoreFromArray: stateArray givenDeck: aDeck
 	"Reconstiture a Card Container given a aDeck and a stateArray which contains card numbers."
 
@@ -833,13 +833,13 @@ restoreFromArray: stateArray givenDeck: aDeck
 	^self
 	! !
 
-!CardContainerMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004 10:45:00'!
+!CardContainerMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004, 5:45:00 pm (UTC)'!
 saveStateToArray
 	"Answer an array containing Card Numbers of Cards I contain"
 
 	^self submorphs collect: [ :aCard | aCard cardNumber ]! !
 
-!CardContainerMorph methodsFor: 'private' stamp: 'KenD 10/Jan/2013 13:51:00'!
+!CardContainerMorph methodsFor: 'private' stamp: 'KenD 10/Jan/2013, 8:51:00 pm (UTC)'!
 setTargetTable
 	"Follow the owner chain to an CardTable and set the targetTable to it."
 	| myOwner stillLooking |
@@ -852,25 +852,25 @@ setTargetTable
 	(myOwner isKindOf: CardTableMorph)
 		ifTrue: [self targetTable: myOwner]! !
 
-!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 12/Sep/2021 08:38:46'!
+!CardContainerMorph methodsFor: 'geometry' stamp: 'KenD 12/Sep/2021, 3:38:46 pm (UTC)'!
 minimumExtent
 
 	| myTable |
 	myTable := self targetTable.
 	^ (myTable ifNil: [cardClass cardExtent] ifNotNil: [myTable cardSize]) + (2 * self borderWidth)! !
 
-!CardContainerMorph class methodsFor: 'new-morph participation' stamp: 'KenD 25/Oct/2004 08:08:00'!
+!CardContainerMorph class methodsFor: 'new-morph participation' stamp: 'KenD 25/Oct/2004, 3:08:00 pm (UTC)'!
 includeInNewMorphMenu
 	^ false! !
 
-!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 19/Jan/2022 13:16:39'!
+!CardContainerMorph class methodsFor: 'class initialization' stamp: 'KenD 19/Jan/2022, 8:16:39 pm (UTC)'!
 initialize
 	"self initialize"
 	
 	ContainerOffset _ `3 @ 2`.
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 19/Jan/2022 13:15:53'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 19/Jan/2022, 8:15:53 pm (UTC)'!
 addCard: aCard
 
 	| newPos |
@@ -883,7 +883,7 @@ addCard: aCard
 	self addMorphFront: aCard position: newPos;
 		yourself! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2015 14:56:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 2/Mar/2015, 9:56:00 pm (UTC)'!
 addCards: aCardCollectionOrContainer
 	"Add a collection of CardMorphs to the top of my Column"
 
@@ -898,55 +898,55 @@ addCards: aCardCollectionOrContainer
 	^aCardCollectionOrContainer
 ! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 10/Jan/2013 19:52:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 11/Jan/2013, 2:52:00 am (UTC)'!
 makeEmpty
 	" remove all cards"
 	self removeAllMorphs! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 9/Jan/2013 21:06:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 10/Jan/2013, 4:06:00 am (UTC)'!
 numberOfCards
 	"Answer the number of Cards above aCard in my submorphs"
 
 	^(submorphs size)! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 28/Oct/2004 10:45:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 28/Oct/2004, 5:45:00 pm (UTC)'!
 numberOfCardsAbove: aCard
 	"Answer the number of Cards above aCard in my submorphs"
 
 	^submorphs indexOf: aCard! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 20/Nov/2004 09:21:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 20/Nov/2004, 4:21:00 pm (UTC)'!
 showAllCardsFaceDown
 
 	(self submorphs isNil not) & (self submorphs size > 0)
 		ifTrue: [ self submorphs do: [ :card | card makeFaceDown ] ]! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 20/Nov/2004 09:21:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 20/Nov/2004, 4:21:00 pm (UTC)'!
 showOnlyTopFace
 	"Show top card face up and others face down."
 
 	self showAllCardsFaceDown; showTopCard! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 19/Nov/2004 14:36:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 19/Nov/2004, 9:36:00 pm (UTC)'!
 showTopCard
 	"If not empty, show face of top card."
 
 	(self submorphs isNil not) & (self submorphs size > 0)
 		ifTrue: [ (self submorphs at: 1) makeFaceUp ].! !
 
-!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004 19:59:00'!
+!CardColumnMorph methodsFor: 'accessing' stamp: 'KenD 24/Oct/2004, 2:59:00 am (UTC)'!
 singletonCard
 	"Answer singleton submorph (an CardMorph) or nil"
 	self submorphs size = 1
 		ifTrue: [^ self submorphs at: 1]
 		ifFalse: [^ nil]! !
 
-!CardColumnMorph methodsFor: 'testing' stamp: 'KenD 9/Jan/2013 21:05:00'!
+!CardColumnMorph methodsFor: 'testing' stamp: 'KenD 10/Jan/2013, 4:05:00 am (UTC)'!
 isEmpty
 
 	^(self submorphs size = 0)! !
 
-!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 28/Nov/2021 14:10:49'!
+!CardColumnMorph methodsFor: 'layout' stamp: 'KenD 28/Nov/2021, 9:10:49 pm (UTC)'!
 layoutSubmorphsVerticallyIn: layoutBounds
 	"Compute a new layout of submorphs based on the given layout bounds." 
 		"The Cards are overlapped by PixelsPerOverlap"
@@ -959,7 +959,7 @@ layoutSubmorphsVerticallyIn: layoutBounds
 			  cardOffset := cardOffset + self pixelsPerOverlap ].
 ! !
 
-!CardColumnMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011 02:08:00'!
+!CardColumnMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011, 9:08:00 am (UTC)'!
 restoreFromArray: stateArray givenDeck: aDeck
 	"Reconstiture a Card Container given a aDeck and a stateArray which
 	contains number of face up cards and an array of card numbers."
@@ -980,7 +980,7 @@ restoreFromArray: stateArray givenDeck: aDeck
 	^self
 	! !
 
-!CardColumnMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004 10:49:00'!
+!CardColumnMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004, 5:49:00 pm (UTC)'!
 saveStateToArray
 	"Answer an array of the number of cards face up and
 	an array containing Card Numbers of Cards I contain."
@@ -993,12 +993,12 @@ saveStateToArray
 			aCard cardNumber ].
 	^ { numFaceUp. cardNumArray. }! !
 
-!CardColumnMorph methodsFor: 'geometry' stamp: 'KenD 12/Sep/2021 08:41:03'!
+!CardColumnMorph methodsFor: 'geometry' stamp: 'KenD 12/Sep/2021, 3:41:03 pm (UTC)'!
 pixelsPerOverlap
 
 	^ cardClass morphHeight // 4! !
 
-!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025 13:33:01'!
+!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025, 8:33:01 pm (UTC)'!
 acceptDroppingMorph: aCardMorph event: evt 
 	"I do NOT accept dropped cards unless inUndo"
 	
@@ -1008,19 +1008,19 @@ acceptDroppingMorph: aCardMorph event: evt
 			table inUndo ifTrue:  [self addCard: aCardMorph ] 
 		]! !
 
-!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004 13:47:00'!
+!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004, 8:47:00 pm (UTC)'!
 dropEnabled
 	"I do NOT accept drops"
 
 	^false! !
 
-!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004 13:49:00'!
+!CardDeckMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004, 8:49:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt 
 	"I do NOT accept dropped cards"
 	
 	^false! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021 12:06:24'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021, 7:06:24 pm (UTC)'!
 addCard: aCard
 	"Add a Card or Cards to me"
 
@@ -1039,7 +1039,7 @@ addCard: aCard
 	self showTopCard;
 	yourself! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 11/Jan/2013 17:07:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 12/Jan/2013, 12:07:00 am (UTC)'!
 addCards: aCollectionOrDeck
 	"Add Cards from aCollectionOrDeck into me."
 
@@ -1060,7 +1060,7 @@ addCards: aCollectionOrDeck
 	self showTopCard;
 	yourself! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 21/Jan/2011 22:10:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 22/Jan/2011, 5:10:00 am (UTC)'!
 makeEmpty
 	
 	(self hasSubmorphs)
@@ -1068,12 +1068,12 @@ makeEmpty
 	cardStack := Stack new initialize.
 	^self! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004 11:17:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004, 6:17:00 pm (UTC)'!
 numCards
 
 	^cardStack size! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 11/Jan/2013 17:12:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 12/Jan/2013, 12:12:00 am (UTC)'!
 takeTopCard
 	"Answer my top card (removed from me)"
 
@@ -1085,17 +1085,17 @@ takeTopCard
 	self showTopCard.
 	^topCard! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004 11:26:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004, 6:26:00 pm (UTC)'!
 topIsFaceDown
 
 	^topIsFaceDown! !
 
-!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004 11:27:00'!
+!CardDeckMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004, 6:27:00 pm (UTC)'!
 topIsFaceDown: aBoolean
 
 	topIsFaceDown := aBoolean! !
 
-!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013 09:59:00'!
+!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013, 4:59:00 pm (UTC)'!
 click: evt localPosition: ignoredPosition
 	"Delegate to table, if available."
 	
@@ -1108,14 +1108,14 @@ click: evt localPosition: ignoredPosition
 		ifTrue: [^ false]
 		ifFalse: [^ table click: evt from: self ]! !
 
-!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013 10:00:00'!
+!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013, 5:00:00 pm (UTC)'!
 handlesMouseDown: evt 
 "
 	Transcript newLine; show: (self name , ' got #handlesMouseDown:').  
 "
 	^ true! !
 
-!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 22/Jan/2013 19:18:00'!
+!CardDeckMorph methodsFor: 'event handling' stamp: 'KenD 23/Jan/2013, 2:18:00 am (UTC)'!
 processMouseDown: evt localPosition: localEventPosition
 	"Do nothing upon mouse-down except inform the hand to watch for a 
 	click; wait until an ensuing #click: message gets dispatched"
@@ -1132,7 +1132,7 @@ processMouseDown: evt localPosition: localEventPosition
 	self click: evt localPosition: localEventPosition
 	! !
 
-!CardDeckMorph methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004 11:32:00'!
+!CardDeckMorph methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004, 6:32:00 pm (UTC)'!
 initialize
 	"Answer a new instance of me containing zero cards."
 
@@ -1142,7 +1142,7 @@ initialize
 	self showTopCard.
 	^self! !
 
-!CardDeckMorph methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004 11:36:00'!
+!CardDeckMorph methodsFor: 'initialization' stamp: 'KenD 17/Nov/2004, 6:36:00 pm (UTC)'!
 initializeFromCardCollection: aCollection
 	"Answer a new instance of me containing Cards from aCollection."
 
@@ -1150,19 +1150,19 @@ initializeFromCardCollection: aCollection
 	addCards: aCollection;
 	yourself! !
 
-!CardDeckMorph methodsFor: 'testing' stamp: 'KenD 17/Nov/2004 11:50:00'!
+!CardDeckMorph methodsFor: 'testing' stamp: 'KenD 17/Nov/2004, 6:50:00 pm (UTC)'!
 isEmpty
 	"I am empty if I contain zero Cards."
 
 	^cardStack isEmpty! !
 
-!CardDeckMorph methodsFor: 'testing' stamp: 'KenD 21/Nov/2004 13:50:00'!
+!CardDeckMorph methodsFor: 'testing' stamp: 'KenD 21/Nov/2004, 8:50:00 pm (UTC)'!
 okToPickUp: aCard
 	"Never pick up a card from me"
 	
 	^false! !
 
-!CardDeckMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011 02:08:00'!
+!CardDeckMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011, 9:08:00 am (UTC)'!
 restoreFromArray: stateArray givenDeck: aDeck
 	"Reconstiture a CardDeckMorph given a aDeck and a stateArray which contains card numbers."
 
@@ -1173,7 +1173,7 @@ restoreFromArray: stateArray givenDeck: aDeck
 	^self
 	! !
 
-!CardDeckMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Nov/2004 12:06:00'!
+!CardDeckMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Nov/2004, 7:06:00 pm (UTC)'!
 saveStateToArray
 	"Answer an array containint Card Numbers of Cards I contain"
 
@@ -1183,7 +1183,7 @@ saveStateToArray
 		anArray at: index put: ((anArray at: index) cardNumber) ].
 	^anArray! !
 
-!CardDeckMorph methodsFor: 'private' stamp: 'KenD 14/Jan/2013 09:21:00'!
+!CardDeckMorph methodsFor: 'private' stamp: 'KenD 14/Jan/2013, 4:21:00 pm (UTC)'!
 showTopCard
 	"PRIVATE -- I am invoked whenever Cards are added to or removed from me."
 
@@ -1200,7 +1200,7 @@ showTopCard
 	].
 	^self! !
 
-!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025 14:02:31'!
+!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025, 9:02:31 pm (UTC)'!
 acceptDroppingMorph: aCardMorph event: evt 
 	"aMorph is a Card which may contain submorphs which 
 	are also Cards.  Add to me."
@@ -1227,25 +1227,25 @@ acceptDroppingMorph: aCardMorph event: evt
 			].
 	]! !
 
-!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Nov/2004 08:07:00'!
+!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Nov/2004, 3:07:00 pm (UTC)'!
 dropComplete
 
 	super dropComplete.
 	self showTopCards! !
 
-!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004 13:47:00'!
+!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004, 8:47:00 pm (UTC)'!
 dropEnabled
 	"I do NOT accept drops"
 
 	^false! !
 
-!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004 13:49:00'!
+!CardDiscardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Nov/2004, 8:49:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt 
 	"I do NOT accept dropped cards"
 	
 	^false! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021 12:21:19'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021, 7:21:19 pm (UTC)'!
 addCard: aCard
 	"Add a Card to me"
 
@@ -1257,12 +1257,12 @@ addCard: aCard
 		yourself
  ! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 20/Nov/2004 17:50:00'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2004, 12:50:00 am (UTC)'!
 cardStack
 
 	^cardStack! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 21/Jan/2011 22:13:00'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 22/Jan/2011, 5:13:00 am (UTC)'!
 makeEmpty
 	
 	(self hasSubmorphs)
@@ -1270,17 +1270,17 @@ makeEmpty
 	cardStack := Stack new initialize.
 	^self! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004 12:21:00'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004, 7:21:00 pm (UTC)'!
 numCards
 
 	^cardStack size! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004 12:12:00'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 17/Nov/2004, 7:12:00 pm (UTC)'!
 numCardsToShow
 
 	^numCardsToShow! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 5/Jun/2020 08:06:32'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 5/Jun/2020, 3:06:32 pm (UTC)'!
 numCardsToShow: anInteger
 
 	| newWidth |
@@ -1294,7 +1294,7 @@ numCardsToShow: anInteger
 	self showTopCards;
 		yourself! !
 
-!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2004 14:00:00'!
+!CardDiscardMorph methodsFor: 'accessing' stamp: 'KenD 21/Nov/2004, 9:00:00 pm (UTC)'!
 takeTopCard
 	"Answer my top card (removed from me)"
 
@@ -1304,7 +1304,7 @@ takeTopCard
 	self showTopCards.
 	^topCard! !
 
-!CardDiscardMorph methodsFor: 'initialization' stamp: 'KenD 6/Apr/2016 20:30:00'!
+!CardDiscardMorph methodsFor: 'initialization' stamp: 'KenD 7/Apr/2016, 3:30:00 am (UTC)'!
 initialize
 
 	super initialize.
@@ -1313,14 +1313,14 @@ initialize
 		yourself
 ! !
 
-!CardDiscardMorph methodsFor: 'testing' stamp: 'KenD 21/Nov/2004 14:09:00'!
+!CardDiscardMorph methodsFor: 'testing' stamp: 'KenD 21/Nov/2004, 9:09:00 pm (UTC)'!
 isEmpty
 	"I am empty if I contain zero Cards."
 
 	^cardStack isEmpty & 
 	(self submorphs isNil | self submorphs size = 0)! !
 
-!CardDiscardMorph methodsFor: 'layout' stamp: 'KenD 17/Mar/2020 17:09:09'!
+!CardDiscardMorph methodsFor: 'layout' stamp: 'KenD 18/Mar/2020, 12:09:09 am (UTC)'!
 layoutSubmorphsHorizontallyIn: layoutBounds
 	"Compute a new layout of submorphs based on the given layout bounds." 
 		"The Cards are overlapped by PixelsPerOverlap"
@@ -1334,7 +1334,7 @@ layoutSubmorphsHorizontallyIn: layoutBounds
 			   cardOffset := cardOffset + PixelOverlap + 2 ].
 ! !
 
-!CardDiscardMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011 02:08:00'!
+!CardDiscardMorph methodsFor: 'fileIn/out' stamp: 'KenD 24/Jan/2011, 9:08:00 am (UTC)'!
 restoreFromArray: stateArray givenDeck: aDeck
 	"Reconstiture a CardDeckMorph given a aDeck and a stateArray which contains card numbers."
 
@@ -1345,7 +1345,7 @@ restoreFromArray: stateArray givenDeck: aDeck
 	^self
 	! !
 
-!CardDiscardMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004 11:25:00'!
+!CardDiscardMorph methodsFor: 'fileIn/out' stamp: 'KenD 3/Dec/2004, 6:25:00 pm (UTC)'!
 saveStateToArray
 	"Answer an array containint Card Numbers of Cards I contain"
 
@@ -1370,7 +1370,7 @@ saveStateToArray
 		].
 	^answerArray! !
 
-!CardDiscardMorph methodsFor: 'drawing' stamp: 'KenD 17/Mar/2020 17:05:51'!
+!CardDiscardMorph methodsFor: 'drawing' stamp: 'KenD 18/Mar/2020, 12:05:51 am (UTC)'!
 showTopCards
 	"Show numCardsToShow cards (if I contain that many)"
 
@@ -1388,12 +1388,12 @@ showTopCards
 	self layoutSubmorphsHorizontallyIn: (2@2 extent: self morphExtent).
 ! !
 
-!CardDiscardMorph class methodsFor: 'class initialization' stamp: 'KenD 22/Jan/2011 16:34:00'!
+!CardDiscardMorph class methodsFor: 'class initialization' stamp: 'KenD 22/Jan/2011, 11:34:00 pm (UTC)'!
 initialize
 
 	PixelOverlap := 10! !
 
-!CardDiscardMorph class methodsFor: 'instance creation' stamp: 'KenD 17/Nov/2004 12:13:00'!
+!CardDiscardMorph class methodsFor: 'instance creation' stamp: 'KenD 17/Nov/2004, 7:13:00 pm (UTC)'!
 newShowing: numCards
 	
 	| newDiscard |
@@ -1401,17 +1401,17 @@ newShowing: numCards
 	newDiscard numCardsToShow: numCards.
 	^newDiscard! !
 
-!CardDiscardMorph class methodsFor: 'accessing' stamp: 'KenD 15/Jan/2013 20:18:00'!
+!CardDiscardMorph class methodsFor: 'accessing' stamp: 'KenD 16/Jan/2013, 3:18:00 am (UTC)'!
 pixelOverlap
 
 	^PixelOverlap! !
 
-!CardDiscardMorph class methodsFor: 'accessing' stamp: 'KenD 15/Jan/2013 20:19:00'!
+!CardDiscardMorph class methodsFor: 'accessing' stamp: 'KenD 16/Jan/2013, 3:19:00 am (UTC)'!
 pixelsPerOverlap
 
 	^PixelOverlap! !
 
-!CardPileMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021 12:05:23'!
+!CardPileMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021, 7:05:23 pm (UTC)'!
 addCard: aCard
 	"Add a Card to me"
 
@@ -1423,7 +1423,7 @@ addCard: aCard
 	
 ! !
 
-!CardPileMorph methodsFor: 'accessing' stamp: 'KenD 24/Dec/2021 17:00:44'!
+!CardPileMorph methodsFor: 'accessing' stamp: 'KenD 25/Dec/2021, 12:00:44 am (UTC)'!
 addCards: aCardCollectionOrContainer
 	"Add a collection of CardMorphs to the top of my Pile"
 
@@ -1440,13 +1440,13 @@ addCards: aCardCollectionOrContainer
 	^aCardCollectionOrContainer
 ! !
 
-!CardPileMorph methodsFor: 'initialization' stamp: 'KenD 20/Jan/2011 18:45:00'!
+!CardPileMorph methodsFor: 'initialization' stamp: 'KenD 21/Jan/2011, 1:45:00 am (UTC)'!
 initialize
 	"Set layout so that only the top card is shown"
 
 	super initialize! !
 
-!CardSpareMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021 12:21:58'!
+!CardSpareMorph methodsFor: 'accessing' stamp: 'KenD 26/Dec/2021, 7:21:58 pm (UTC)'!
 addCard: aCard
 	"Add a Card to me if I am empty."
 
@@ -1460,34 +1460,34 @@ addCard: aCard
 	ifFalse: [Error signal: 'A Spare can hold only 1 card' ]
 ! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 9/Mar/2015 10:39:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 9/Mar/2015, 5:39:00 pm (UTC)'!
 goAgain
 	"When inCardMove, goAgain indicates another checking loop is required"
 	
 	^ goAgain! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 9/Mar/2015 10:39:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 9/Mar/2015, 5:39:00 pm (UTC)'!
 goAgain: aBool
 	"When inCardMove, goAgain indicates another checking loop is required"
 	
 	goAgain := aBool! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:57:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:57:00 pm (UTC)'!
 inCardMove
 
 	^inCardMove! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:57:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:57:00 pm (UTC)'!
 inCardMove: aBoolean
 
 	^inCardMove := aBoolean! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:58:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:58:00 pm (UTC)'!
 inUndo
 
 	^inUndo! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 22/Mar/2015 13:54:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 22/Mar/2015, 8:54:00 pm (UTC)'!
 inUndo: inUndoBool
 
 	inUndoBool 
@@ -1498,42 +1498,42 @@ inUndo: inUndoBool
 	].
 	^inUndo := inUndoBool! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 12/Oct/2011 20:40:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 13/Oct/2011, 3:40:00 am (UTC)'!
 mutex
 
 	^mutex! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:59:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:59:00 pm (UTC)'!
 undoButton
 	
 	^undoButton! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 6/Nov/2004 18:41:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 7/Nov/2004, 1:41:00 am (UTC)'!
 undoStack
 	"Private"
 	
 	^undoStack! !
 
-!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 2/Nov/2004 13:01:00'!
+!CardTableMorph methodsFor: 'accessing' stamp: 'KenD 2/Nov/2004, 8:01:00 pm (UTC)'!
 undoStackIsEmpty
 	
 	^undoStack isEmpty! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 8/Mar/2015 19:13:00'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 9/Mar/2015, 2:13:00 am (UTC)'!
 dropComplete
 	"Subclasses should overried if they want to do something when
 	Cards have been dropped."
 
 	^false! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 21/Jan/2011 16:14:00'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 21/Jan/2011, 11:14:00 pm (UTC)'!
 help
 
 	"Give the user a clue.."
 
 	PopUpMenu inform: self helpText! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 28/Oct/2004 15:10:00'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 28/Oct/2004, 10:10:00 pm (UTC)'!
 quit
 	"Subclasses should override if they need to do housekeeping"
 
@@ -1541,7 +1541,7 @@ quit
 		ifTrue: [self delete]
 		ifFalse: [self owner delete]! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 24/Jan/2011 04:53:00'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 24/Jan/2011, 11:53:00 am (UTC)'!
 removeWinnerText
 
 		saveGameButton enable.
@@ -1549,7 +1549,7 @@ removeWinnerText
 			            addMorph: labelMorph.
 		winnerText := nil! !
 
-!CardTableMorph methodsFor: 'actions' stamp: 'KenD 16/Oct/2020 16:57:26'!
+!CardTableMorph methodsFor: 'actions' stamp: 'KenD 16/Oct/2020, 11:57:26 pm (UTC)'!
 showWinnerText
 	"Display Winner Message to user"
 	| widthToFit  pointSizeToUse newText |
@@ -1574,7 +1574,7 @@ showWinnerText
 			      addMorph: winnerText.
 	winnerText lock.! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 26/Dec/2021 12:01:23'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 26/Dec/2021, 7:01:23 pm (UTC)'!
 animateMoveFrom: aContainer to: otherContainer moving: someCard next: nextAction
 	"Animate move of Card or Cards."
 
@@ -1613,7 +1613,7 @@ animateMoveFrom: aContainer to: otherContainer moving: someCard next: nextAction
 	]
 ! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 26/Dec/2021 12:00:48'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 26/Dec/2021, 7:00:48 pm (UTC)'!
 animateMoveFrom: aContainer to: aPile next: nextAction
 	"Animate move of the top Card in aPile into aContainer."
 
@@ -1642,7 +1642,7 @@ animateMoveFrom: aContainer to: aPile next: nextAction
 
 ! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 15/Mar/2015 15:52:00'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 15/Mar/2015, 10:52:00 pm (UTC)'!
 isAutoMoveLegalFrom: aContainer to: aPile
 	"Answer true when it is legal to move a Card from the top
 	of the Card Container to a Pile"
@@ -1658,17 +1658,17 @@ isAutoMoveLegalFrom: aContainer to: aPile
 			& (pileCard hasFaceOneLessThan: topCard) 
 	]! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 27/Dec/2021 15:46:46'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 27/Dec/2021, 10:46:46 pm (UTC)'!
 moveDelay
 
 	^ 1! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 7/Aug/2016 12:39:21'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 7/Aug/2016, 7:39:21 pm (UTC)'!
 numberOfMoveSteps
 
 	^ 40! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 22/Mar/2015 13:38:00'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 22/Mar/2015, 8:38:00 pm (UTC)'!
 possiblyAnimateCardsFrom: aCardContainer ifFaceLessOrEqualTo: faceNum next: nextAction
 	"See if we can move our top Card into a Pile. 
 	Set  'table goAgain: true' if we were able to move a card."
@@ -1696,7 +1696,7 @@ possiblyAnimateCardsFrom: aCardContainer ifFaceLessOrEqualTo: faceNum next: next
 			
 		pilesLoop value! !
 
-!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 10/Mar/2015 16:42:00'!
+!CardTableMorph methodsFor: 'auto-move' stamp: 'KenD 10/Mar/2015, 11:42:00 pm (UTC)'!
 slide: aMorph to: endPoint nSteps: numSteps delay: milliSecondsDelay next: nextAction
 	"Slide from current to new position -- in owner's coordinates"
 	"Nota Bene: Asynchronous.  When complete,  nextAction value"
@@ -1722,7 +1722,7 @@ slide: aMorph to: endPoint nSteps: numSteps delay: milliSecondsDelay next: nextA
 	].
 	aMorph startSteppingStepTime: milliSecondsDelay! !
 
-!CardTableMorph methodsFor: 'drawing' stamp: 'KenD 26/Aug/2013 17:36:00'!
+!CardTableMorph methodsFor: 'drawing' stamp: 'KenD 27/Aug/2013, 12:36:00 am (UTC)'!
 drawOn: aCanvas
 
 	super drawOn: aCanvas.
@@ -1732,7 +1732,7 @@ drawOn: aCanvas
 		borderWidth: 4
 		borderStyleSymbol: #raised.! !
 
-!CardTableMorph methodsFor: 'event handling' stamp: 'KenD 22/Jan/2013 19:28:00'!
+!CardTableMorph methodsFor: 'event handling' stamp: 'KenD 23/Jan/2013, 2:28:00 am (UTC)'!
 aboutToBeGrabbedBy: aHand 
 	"I'm about to be grabbed by the hand.
 	If I let this happen I get picked up instead of cards and you can't play a game..
@@ -1744,7 +1744,7 @@ aboutToBeGrabbedBy: aHand
 	^super aboutToBeGrabbedBy: aHand 
 ! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 27/Oct/2015 19:19:00'!
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 28/Oct/2015, 2:19:00 am (UTC)'!
 restoreGame: dotSuffixString userMessage: aPromptString
 	"Show a file dialog to the user to pick a game's file to restore.
 	Subclasses restore specific data from compressed Deck and CardContainer objects
@@ -1771,13 +1771,13 @@ restoreGame: dotSuffixString userMessage: aPromptString
 	]
 ! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 14/Mar/2020 15:33:02'!
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 14/Mar/2020, 10:33:02 pm (UTC)'!
 restoreGameFromDataStream: aDataStream
 	"Delegate to subclass -- the Table that implements the game."
 
 	self subclassResponsibility! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 27/Oct/2015 19:18:00'!
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 28/Oct/2015, 2:18:00 am (UTC)'!
 saveGame: dotSuffix userMessage: aPromptString
 	"Show a file dialog to the user to save a game with dotSuffix (e.g. '*.foo').
 	Subclasses save specific data as compressed Deck and CardContainer objects."
@@ -1801,18 +1801,18 @@ saveGame: dotSuffix userMessage: aPromptString
 		]
 	]! !
 
-!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 14/Mar/2020 15:32:44'!
+!CardTableMorph methodsFor: 'fileIn/out' stamp: 'KenD 14/Mar/2020, 10:32:44 pm (UTC)'!
 saveGametoDataStream: aDataStream
 	"Delegate to subclass -- the Table that implements the game."
 
 	self subclassResponsibility! !
 
-!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 24/Dec/2021 15:13:33'!
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 24/Dec/2021, 10:13:33 pm (UTC)'!
 cardSize
 
 	^CardMorph extent! !
 
-!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 18/Mar/2020 09:02:36'!
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 18/Mar/2020, 4:02:36 pm (UTC)'!
 currentScreenExtent
 
 	"Answer extent for 'current' display screen.
@@ -1820,20 +1820,20 @@ currentScreenExtent
 	^ DisplayScreen actualScreenSize
 	! !
 
-!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 27/Dec/2021 13:12:40'!
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 27/Dec/2021, 8:12:40 pm (UTC)'!
 fontPreferenceChanged
 	"Note: May change from StrikeFont to TrueType font"
 	labelMorph font: (FontFamily defaultFamilyPointSize: 22).
 	self morphExtent: self minimumExtent
 	! !
 
-!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 14/Mar/2020 15:14:19'!
+!CardTableMorph methodsFor: 'geometry' stamp: 'KenD 14/Mar/2020, 10:14:19 pm (UTC)'!
 textScale
 
 	"Answer a point size based on current settings"
 	^ Preferences windowTitleFont pointSize! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 27/Dec/2020 15:12:18'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 27/Dec/2020, 10:12:18 pm (UTC)'!
 buildButton: aButton
 	"wrap a button or switch in an alignmentMorph to provide some space around the button"
 
@@ -1845,12 +1845,12 @@ buildButton: aButton
 	 	^aButton
 ! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Jan/2016 13:43:00'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Jan/2016, 8:43:00 pm (UTC)'!
 defaultExtent
 
 	self subclassResponsibility ! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021 09:38:59'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 30/Sep/2021, 4:38:59 pm (UTC)'!
 initialize
 	super initialize.
 	undoStack := Stack new initialize.
@@ -1865,7 +1865,7 @@ initialize
 		 positionInWorld: (30 @ 26); 
 		 yourself! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:34:05'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:34:05 pm (UTC)'!
 makeButtonArea
 	"Make a new Button Area as a submorph"
 
@@ -1907,14 +1907,14 @@ makeButtonArea
 							proportionalHeight: 0.1
 							offAxisEdgeWeight: #center)! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:06'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:06 pm (UTC)'!
 makeHelpButton
 	^ self
 		buildButton:
 		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #help label: 'Help')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 16/Oct/2020 16:47:05'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 16/Oct/2020, 11:47:05 pm (UTC)'!
 makeLabelArea: lableString
 	"Make a new Lable Area as a submorph"
 	
@@ -1938,46 +1938,46 @@ makeLabelArea: lableString
 
 	self addMorph: labelLayout! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:11'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:11 pm (UTC)'!
 makeNewGameButton
 	^ self
 		buildButton:
 		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #newGame label: 'New game')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:16'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:16 pm (UTC)'!
 makeQuitButton
 	^ self buildButton:
 		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #quit label: 'Quit')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:20'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:20 pm (UTC)'!
 makeRestoreGameButton
 	^self buildButton:
 		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #restoreGame label: 'Restore game')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:24'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:24 pm (UTC)'!
 makeSameGameButton
 	^ self buildButton:
 		 (PluggableButtonMorph 
 			model: self stateGetter: nil action: #sameGame label: 'Start Over')! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:27'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:27 pm (UTC)'!
 makeSaveGameButton
 
 	saveGameButton := (PluggableButtonMorph 
 			model: self stateGetter: nil action: #saveGame label: 'Save game').
 	^ self buildButton: saveGameButton! !
 
-!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021 13:25:31'!
+!CardTableMorph methodsFor: 'initialization' stamp: 'KenD 28/Nov/2021, 8:25:31 pm (UTC)'!
 makeUndoButton
 
 	undoButton := (PluggableButtonMorph 
 			model: self stateGetter: nil action: #undoMove label: 'Undo').
 	^ self buildButton: undoButton! !
 
-!CardTableMorph methodsFor: 'testing' stamp: 'KenD 9/Nov/2004 13:06:00'!
+!CardTableMorph methodsFor: 'testing' stamp: 'KenD 9/Nov/2004, 8:06:00 pm (UTC)'!
 ensureFileName: fileNameString hasSuffix: suffixString
 	"Answer a string which is the file name guarenteed to have suffix suffixString."
 
@@ -1990,11 +1990,11 @@ ensureFileName: fileNameString hasSuffix: suffixString
 	ifTrue: [ ^fileNameString ]
 	ifFalse: [ ^fileNameString , cleanSuffix ]! !
 
-!CardTableMorph methodsFor: 'testing' stamp: 'KenD 21/Oct/2004 18:14:00'!
+!CardTableMorph methodsFor: 'testing' stamp: 'KenD 22/Oct/2004, 1:14:00 am (UTC)'!
 isCardTable
 	^true! !
 
-!CardTableMorph methodsFor: 'testing' stamp: 'KenD 20/Nov/2004 08:33:00'!
+!CardTableMorph methodsFor: 'testing' stamp: 'KenD 20/Nov/2004, 3:33:00 pm (UTC)'!
 runStartsFrom: aCard in: aColumn
 	"A Card starts a run if all cards above it are in ascending face and
 	alternating color."
@@ -2017,7 +2017,7 @@ runStartsFrom: aCard in: aColumn
 	"cardIndex = 1"
 	^true! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 28/Mar/2015 18:47:00'!
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 29/Mar/2015, 1:47:00 am (UTC)'!
 addingCardOrCards: cardMorph toContainer: cardContainer
 	"Container is about to add a Card or Cards.  Remember undo action."
 
@@ -2036,24 +2036,24 @@ addingCardOrCards: cardMorph toContainer: cardContainer
 	]
  ! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 18/Nov/2004 18:12:00'!
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 19/Nov/2004, 1:12:00 am (UTC)'!
 makeUndoStackEmpty
 
 	self undoButton disable.
 	undoStack := Stack new initialize.! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015 13:55:00'!
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015, 8:55:00 pm (UTC)'!
 popUndoObject
 	
 	^self undoStack pop! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015 13:58:00'!
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015, 8:58:00 pm (UTC)'!
 pushUndoObject: anUndoObject
 
 	self undoButton enable.
 	self undoStack push: anUndoObject! !
 
-!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015 13:50:00'!
+!CardTableMorph methodsFor: 'undo' stamp: 'KenD 22/Mar/2015, 8:50:00 pm (UTC)'!
 undoMove
 
 	| table |
@@ -2065,17 +2065,17 @@ undoMove
 
 ! !
 
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 27/Dec/2020 15:14:30'!
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 27/Dec/2020, 10:14:30 pm (UTC)'!
 buttonAreaHeight
 
 	^ (Preferences standardButtonFont pointSize) * 8! !
 
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 14/Mar/2020 14:25:54'!
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 14/Mar/2020, 9:25:54 pm (UTC)'!
 labelAreaHeight
 
 	^ (Preferences windowTitleFont pointSize) * 4! !
 
-!CardTableMorph methodsFor: 'private' stamp: 'KenD 5/Apr/2015 18:50:00'!
+!CardTableMorph methodsFor: 'private' stamp: 'KenD 6/Apr/2015, 1:50:00 am (UTC)'!
 undoAll
 	"Test Method -- plays game backward to beginning"
 	
@@ -2095,11 +2095,11 @@ undoAll
 
 	! !
 
-!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 27/Jun/2011 08:21:00'!
+!CardTableMorph class methodsFor: 'instance creation' stamp: 'jmv 27/Jun/2011, 3:21:00 pm (UTC)'!
 initializedInstance
 	^self newColumn! !
 
-!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015 16:32:00'!
+!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015, 11:32:00 pm (UTC)'!
 cpsOverColl: orderedColletion do: aBlock next: nextAction
 	"Answers a closure which involes aBlock over one element of orderedCollection.
 	nextAction is a thunk (closure of zero arguments).
@@ -2118,7 +2118,7 @@ cpsOverColl: orderedColletion do: aBlock next: nextAction
 	^ actionProc
 ! !
 
-!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015 16:16:00'!
+!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015, 11:16:00 pm (UTC)'!
 cpsOverCollExample
 	"This method should answer true"
 "
@@ -2136,7 +2136,7 @@ cpsOverCollExample
 											  
 	next: [ sum ]) value = 10.! !
 
-!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015 16:16:00'!
+!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015, 11:16:00 pm (UTC)'!
 cpsOverCollExample2
 	"This method should answer true"
 "
@@ -2158,7 +2158,7 @@ cpsOverCollExample2
 		] 
 		 next: [ sum ]) value = 60! !
 
-!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015 16:22:00'!
+!CardTableMorph class methodsFor: 'closurePassingStyle' stamp: 'KenD 11/Mar/2015, 11:22:00 pm (UTC)'!
 cpsOverCollExample3
 	"This method should answer true"
 "
@@ -2182,11 +2182,11 @@ cpsOverCollExample3
 					next: [sum]) value
 		]) value = 16! !
 
-!CardTableMorph class methodsFor: 'class initialization' stamp: 'KenD 25/Oct/2004 08:16:00'!
+!CardTableMorph class methodsFor: 'class initialization' stamp: 'KenD 25/Oct/2004, 3:16:00 pm (UTC)'!
 includeInNewMorphMenu
 	^ false! !
 
-!CardTableMorph class methodsFor: 'accessing' stamp: 'KenD 28/Feb/2016 07:15:00'!
+!CardTableMorph class methodsFor: 'accessing' stamp: 'KenD 28/Feb/2016, 2:15:00 pm (UTC)'!
 randomWinnerText
 	"Return some random winner text message"
 
@@ -2281,7 +2281,7 @@ randomWinnerText
 
 	^textArray at: ((Random new seed: seed) nextInteger: (textArray size))! !
 
-!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015 08:36:00'!
+!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015, 3:36:00 pm (UTC)'!
 slide: aMorph to: endPoint nSteps: numSteps delay: milliSecondsDelay next: nextAction
 	"Slide from current to new position -- in owner's coordinates"
 	"Nota Bene: Asynchronous.  When complete,  nextAction value"
@@ -2317,7 +2317,7 @@ slide: aMorph to: endPoint nSteps: numSteps delay: milliSecondsDelay next: nextA
 	aMorph startSteppingStepTime: milliSecondsDelay
 ! !
 
-!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015 13:09:00'!
+!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015, 8:09:00 pm (UTC)'!
 testCardMove
 "
 	CardTableMorph testCardMove inspect.
@@ -2340,7 +2340,7 @@ testCardMove
 	Transcript show: 'After Start Move'; show: (Time now); newLine.
 	^aCard! !
 
-!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015 16:02:00'!
+!CardTableMorph class methodsFor: 'testing' stamp: 'KenD 11/Mar/2015, 11:02:00 pm (UTC)'!
 testCardMove2
 "
 	CardTableMorph testCardMove2 inspect.
@@ -2382,7 +2382,7 @@ testCardMove2
 	
 	^aCard! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013 13:46:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013, 8:46:00 pm (UTC)'!
 column: columnMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if Column is empty or if (lowest)
 	card is opposit color and one higher in face value."
@@ -2401,7 +2401,7 @@ column: columnMorph wantsDropOf: aCardOrColumnMorph
 			Error signal: '@@FIXME: implement for column drops!!'.
 			^ false]! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011 16:50:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011, 11:50:00 pm (UTC)'!
 container: aContainerMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if legal drop by FreeCell game rules"
 	| dropObjectClass |
@@ -2420,7 +2420,7 @@ container: aContainerMorph wantsDropOf: aCardOrColumnMorph
 						ifTrue: [^ self column: aContainerMorph wantsDropOf: aCardOrColumnMorph]
 						ifFalse: [^ false]]]]! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025 13:17:41'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025, 8:17:41 pm (UTC)'!
 dropComplete
 	"Check to see if any cards can be auto-moved to piles.
 	Keep moving cards up if legal unless the lowest face value
@@ -2465,7 +2465,7 @@ dropComplete
 	
 	mainLoop value! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 20/Mar/2015 19:10:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Mar/2015, 2:10:00 am (UTC)'!
 pickLegalFor: aCard 
 	"Answer true if picking up a card from its container is a legal move."
 	| cardContainer |
@@ -2483,7 +2483,7 @@ cardContainer ifNil: [self error: 'Bad logic'].
 	"else is a Column"
 	^ self pickLegalFor: aCard fromColumn: cardContainer! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013 19:46:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 11/Jan/2013, 2:46:00 am (UTC)'!
 pickLegalFor: aCard fromColumn: aColumn
 	"Answer true if card is on top or is part of a 'run' and the size of
 	the run is less than the number of free cells."
@@ -2491,7 +2491,7 @@ pickLegalFor: aCard fromColumn: aColumn
 	(self runStartsFrom: aCard in: aColumn) ifFalse: [ ^false ].
 	^(self numberOfFreeCells + 1) >= (aColumn numberOfCardsAbove: aCard)! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011 16:50:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011, 11:50:00 pm (UTC)'!
 pile: pileMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if Pile is empty and Card is Ace or if  
 	card is same suit and one higher in face value."
@@ -2512,7 +2512,7 @@ pile: pileMorph wantsDropOf: aCardOrColumnMorph
 			topCard := pileMorph topCard.
 			^ (topCard hasFaceOneLessThan: card)  & (topCard hasSameSuitAs: card)]]! !
 
-!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 12/Aug/2015 07:11:00'!
+!FreeCell methodsFor: 'dropping/grabbing' stamp: 'KenD 12/Aug/2015, 2:11:00 pm (UTC)'!
 spare: spareMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if Spare is empty and Card is singleton."
 	| card |
@@ -2528,24 +2528,24 @@ spare: spareMorph wantsDropOf: aCardOrColumnMorph
 		ifTrue: [^ (card isNil not) and: [card submorphs size = 0]] "only holds 1 card"
 		ifFalse: [^ false]! !
 
-!FreeCell methodsFor: 'private' stamp: 'KenD 27/Dec/2020 14:58:22'!
+!FreeCell methodsFor: 'private' stamp: 'KenD 27/Dec/2020, 9:58:22 pm (UTC)'!
 columnSeparation
 	"Pixel space between columns"
 	^4! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004 18:51:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004, 1:51:00 am (UTC)'!
 columns
 	"Private -- Answer my columns"
 
 	^columns! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004 15:03:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004, 10:03:00 pm (UTC)'!
 deck
 	"Private -- Answer my deck"
 
 	^deck! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 18/Jan/2013 16:08:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 18/Jan/2013, 11:08:00 pm (UTC)'!
 helpText
 	^ '
 	FreeCell Rules:
@@ -2563,7 +2563,7 @@ helpText
 	The piles build up from the aces in the same suit.
 	 '! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 18/Jan/2013 16:09:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 18/Jan/2013, 11:09:00 pm (UTC)'!
 numberOfFreeCells
 	"Answer the number of empty Spares and Columns."
 
@@ -2573,19 +2573,19 @@ numberOfFreeCells
 	self columns do: [ :colm |  colm  isEmpty ifTrue: [numFree := numFree + 1]].
 	^numFree! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004 18:51:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004, 1:51:00 am (UTC)'!
 piles
 	"Private -- Answer my piles"
 
 	^piles! !
 
-!FreeCell methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004 18:50:00'!
+!FreeCell methodsFor: 'accessing' stamp: 'KenD 23/Oct/2004, 1:50:00 am (UTC)'!
 spares
 	"Private -- Answer my spares"
 
 	^spares! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 10/Jan/2013 19:58:00'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 11/Jan/2013, 2:58:00 am (UTC)'!
 dealCards
 	"Deal all cards onto the table by adding them to Card Columns."
 
@@ -2596,14 +2596,14 @@ dealCards
 				addCard: (deck dealACard makeFaceUp) ]
 			! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 15:32:11'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 10:32:11 pm (UTC)'!
 defaultExtent
 	"buttonArea height 50; labelArea height 40; pilesArea CardHeight+30" 
 	^ (CardMorph morphWidth + self columnSeparation * 4)
 		@ (CardMorph morphHeight * 6 + 120).
 ! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 15:09:23'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 10:09:23 pm (UTC)'!
 initialize
 	"Setup my layout.  Across the top are 4 Spares and 4 Piles,
 	then a block of 8 Columns, then a Button area."
@@ -2618,7 +2618,7 @@ initialize
 		 morphExtent: self minimumExtent;
 		 yourself! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:35:21'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:35:21 pm (UTC)'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -2654,7 +2654,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 ! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:36:44'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:36:44 pm (UTC)'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -2696,7 +2696,7 @@ makePilesArea
 					offAxisEdgeWeight: #center)
 	! !
 
-!FreeCell methodsFor: 'initialization' stamp: 'KenD 10/Jan/2013 14:34:00'!
+!FreeCell methodsFor: 'initialization' stamp: 'KenD 10/Jan/2013, 9:34:00 pm (UTC)'!
 reDealCards
 	"Deal all cards onto the table withot shuffling (for game replay)."
 
@@ -2707,20 +2707,20 @@ reDealCards
 				addCard: (deck dealACard makeFaceUp) ]
 			! !
 
-!FreeCell methodsFor: 'testing' stamp: 'KenD 6/Nov/2004 17:12:00'!
+!FreeCell methodsFor: 'testing' stamp: 'KenD 7/Nov/2004, 12:12:00 am (UTC)'!
 gameIsWon
 	"Answer true if all cards are in the piles"
 
 	^(self piles inject: 0
 			    into: [ :count :pile | count + (pile submorphs size) ]) == 52! !
 
-!FreeCell methodsFor: 'testing' stamp: 'KenD 2/Jul/2011 11:06:00'!
+!FreeCell methodsFor: 'testing' stamp: 'KenD 2/Jul/2011, 6:06:00 pm (UTC)'!
 isMyCard: aCard
 	"Answer true if card is asssociated with this instance of the game"
 
 	^self deck contains: aCard! !
 
-!FreeCell methodsFor: 'testing' stamp: 'KenD 31/Oct/2004 15:50:00'!
+!FreeCell methodsFor: 'testing' stamp: 'KenD 31/Oct/2004, 10:50:00 pm (UTC)'!
 maxFaceNumberToMoveToPiles
 	"Answer N plus the minimum Card faceNumber"
 
@@ -2736,7 +2736,7 @@ maxFaceNumberToMoveToPiles
 	"N is 2"
 	^min + 2! !
 
-!FreeCell methodsFor: 'actions' stamp: 'KenD 9/Mar/2020 18:15:43'!
+!FreeCell methodsFor: 'actions' stamp: 'KenD 10/Mar/2020, 1:15:43 am (UTC)'!
 newGame
 	"Empty out my Card Containers, shuffle and re-deal."
 	
@@ -2747,13 +2747,13 @@ newGame
 		dealCards;
 		redrawNeeded ! !
 
-!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Oct/2004 15:17:00'!
+!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Oct/2004, 10:17:00 pm (UTC)'!
 quit
 	"@@ToDo: popup dialog Do you REALLY want to Quit?"
 	
 	super quit! !
 
-!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Oct/2004 15:15:00'!
+!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Oct/2004, 10:15:00 pm (UTC)'!
 removeCards
 	"Empty out my Card Containers."
 	
@@ -2761,7 +2761,7 @@ removeCards
 	self spares do: [ :container | container makeEmpty ].
 	self columns do: [ :container | container makeEmpty ]! !
 
-!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Aug/2013 13:04:00'!
+!FreeCell methodsFor: 'actions' stamp: 'KenD 28/Aug/2013, 8:04:00 pm (UTC)'!
 sameGame
 	"Empty out my Card Containers and deal the original deal."
 	
@@ -2773,14 +2773,14 @@ sameGame
 		reDealCards;
 		redrawNeeded ! !
 
-!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 21/Nov/2010 13:51:00'!
+!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 21/Nov/2010, 8:51:00 pm (UTC)'!
 restoreGame
 	"Put up a dialog to reaf game state from a file.
 	See #restoreGameFromDataStream:"
 
 	self restoreGame: 'fre' userMessage: 'Select a FreeCell Game File...'! !
 
-!FreeCell methodsFor: 'fileIn/out' stamp: 'KenD 25/Dec/2021 11:59:20'!
+!FreeCell methodsFor: 'fileIn/out' stamp: 'KenD 25/Dec/2021, 6:59:20 pm (UTC)'!
 restoreGameFromDataStream: aDataStream
 	"Given an open DataStream, read and restore game state."
 	
@@ -2815,14 +2815,14 @@ restoreGameFromDataStream: aDataStream
 		ifFalse: [ Error signal: 'FIXME: Undo save/restore NYI' ].
 	]! !
 
-!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010 14:42:00'!
+!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010, 9:42:00 pm (UTC)'!
 saveGame
 	"Show a file dialog to the user to save a game.
 	See #saveGameToDataStream: for actual data save."
 	
 	self saveGame: 'fre' userMessage: 'Enter File Name to save FreeCell Game...'! !
 
-!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 21/Nov/2010 20:14:00'!
+!FreeCell methodsFor: 'fileIn/out' stamp: 'KenDickey 22/Nov/2010, 3:14:00 am (UTC)'!
 saveGameToDataStream: aDataStream
 	"Given an open DataStream, save the current game state."
 	
@@ -2847,7 +2847,7 @@ saveGameToDataStream: aDataStream
 	aDataStream nextPut: someData.
 ! !
 
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021 15:30:51'!
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021, 10:30:51 pm (UTC)'!
 initializedInstance
 	"Answer a new instance"
 	"
@@ -2855,7 +2855,7 @@ initializedInstance
 	"
 	^ self newColumn! !
 
-!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021 15:30:38'!
+!FreeCell class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021, 10:30:38 pm (UTC)'!
 newGame
 	"Answer a new instance"
 	"
@@ -2864,7 +2864,7 @@ newGame
 	
 	^ self newColumn openInWorld! !
 
-!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 17:03:00'!
+!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 4/Feb/2016, 12:03:00 am (UTC)'!
 fileReaderServicesForFile: fullName suffix: suffix
 	"FileList buttons that are serviced by us."
 
@@ -2872,7 +2872,7 @@ fileReaderServicesForFile: fullName suffix: suffix
 		ifTrue: [ {self serviceRestoreKlondike.} ]
 		ifFalse: [ #() ]! !
 
-!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 17:02:00'!
+!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 4/Feb/2016, 12:02:00 am (UTC)'!
 restoreFromSaved: fullFileName
 
 	| aGame |
@@ -2884,7 +2884,7 @@ restoreFromSaved: fullFileName
 	].
 	^ aGame! !
 
-!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 17:02:00'!
+!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 4/Feb/2016, 12:02:00 am (UTC)'!
 serviceRestoreKlondike
 
 	^ (SimpleServiceEntry 
@@ -2893,16 +2893,16 @@ serviceRestoreKlondike
 		selector: #restoreFromSaved:
 		description: 'restore FreeCell solitaire game') triggerFileListChanged! !
 
-!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 16:35:00'!
+!FreeCell class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016, 11:35:00 pm (UTC)'!
 unload
 
 	FileList unregisterFileReader: self ! !
 
-!FreeCell class methodsFor: 'class initialization' stamp: 'KenD 25/Oct/2004 08:16:00'!
+!FreeCell class methodsFor: 'class initialization' stamp: 'KenD 25/Oct/2004, 3:16:00 pm (UTC)'!
 includeInNewMorphMenu
 	^ true! !
 
-!FreeCell class methodsFor: 'class initialization' stamp: 'KenD 3/Feb/2016 17:01:00'!
+!FreeCell class methodsFor: 'class initialization' stamp: 'KenD 4/Feb/2016, 12:01:00 am (UTC)'!
 initialize
 "
 	FreeCell initialize
@@ -2913,12 +2913,12 @@ initialize
 	NumPiles       _ 4.
 	^self! !
 
-!FreeCell class methodsFor: 'environments' stamp: 'KenD 16/Jun/2020 16:16:32'!
+!FreeCell class methodsFor: 'environments' stamp: 'KenD 16/Jun/2020, 11:16:32 pm (UTC)'!
 environmentsExportMe
 	"Register me (make me visible) from Smalltalk SystemDictionary"
 	^true! !
 
-!Klondike methodsFor: 'undo' stamp: 'KenD 26/Dec/2021 11:14:24'!
+!Klondike methodsFor: 'undo' stamp: 'KenD 26/Dec/2021, 6:14:24 pm (UTC)'!
 addingCardOrCards: cardMorph toContainer: cardContainer
 	"Container is about to add a Card or Cards.  Remember undo action."
 
@@ -2974,30 +2974,30 @@ addingCardOrCards: cardMorph toContainer: cardContainer
 
  ! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 19/Nov/2004 12:18:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 19/Nov/2004, 7:18:00 pm (UTC)'!
 cardDeck
 
 	^cardDeck! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:40:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:40:00 pm (UTC)'!
 columns
 	"Private -- Answer my columns"
 
 	^columns! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:41:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:41:00 pm (UTC)'!
 deck
 	"Private -- Answer my deck"
 
 	^deck! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:41:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:41:00 pm (UTC)'!
 discard
 	"Private -- Answer my discards"
 
 	^discards! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 26/Jun/2011 16:44:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 26/Jun/2011, 11:44:00 pm (UTC)'!
 helpText
 	^ '
 	Klondike Rules:
@@ -3015,18 +3015,18 @@ helpText
 	The piles build up from the Aces in the same suit.
 	 ' ! !
 
-!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004 16:41:00'!
+!Klondike methodsFor: 'accessing' stamp: 'KenD 18/Nov/2004, 11:41:00 pm (UTC)'!
 piles
 	"Private -- Answer my piles"
 
 	^piles! !
 
-!Klondike methodsFor: 'auto-move' stamp: 'KenD 13/Mar/2015 17:55:00'!
+!Klondike methodsFor: 'auto-move' stamp: 'KenD 14/Mar/2015, 12:55:00 am (UTC)'!
 cardIndexFor: aCard within: aCardColumn
 
 	^ aCardColumn submorphs indexOf: aCard ifAbsent: [ ^ 0 ].! !
 
-!Klondike methodsFor: 'auto-move' stamp: 'KenD 14/Mar/2015 15:04:00'!
+!Klondike methodsFor: 'auto-move' stamp: 'KenD 14/Mar/2015, 10:04:00 pm (UTC)'!
 dropComplete
 	"Show top Card in Columns & Discard; check for automove or a winner."
 	
@@ -3063,7 +3063,7 @@ dropComplete
 
 	mainLoop value.! !
 
-!Klondike methodsFor: 'auto-move' stamp: 'KenD 22/Nov/2004 10:10:00'!
+!Klondike methodsFor: 'auto-move' stamp: 'KenD 22/Nov/2004, 5:10:00 pm (UTC)'!
 maxFaceNumberToMoveToPiles
 	"Answer 1 plus the minimum Card faceNumber"
 
@@ -3078,7 +3078,7 @@ maxFaceNumberToMoveToPiles
 		    ].
 	^min + 1! !
 
-!Klondike methodsFor: 'event handling' stamp: 'KenD 17/Mar/2015 19:30:00'!
+!Klondike methodsFor: 'event handling' stamp: 'KenD 18/Mar/2015, 2:30:00 am (UTC)'!
 click: evt from: deckMorph
 	"Handle click events from CardDeckMorph."
 "
@@ -3116,7 +3116,7 @@ click: evt from: deckMorph
 
 	evt wasHandled: true! !
 
-!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013 13:46:00'!
+!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013, 8:46:00 pm (UTC)'!
 column: columnMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if Column is empty and Card is a King or if (lowest)
 	card is opposit color and one higher in face value."
@@ -3135,7 +3135,7 @@ column: columnMorph wantsDropOf: aCardOrColumnMorph
 			Error signal: '@@FIXME: implement for column drops!!'.
 			^ false]! !
 
-!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011 17:17:00'!
+!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 16/Jul/2011, 12:17:00 am (UTC)'!
 container: aContainerMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if legal drop by FreeCell game rules"
 	| dropObjectClass |
@@ -3152,7 +3152,7 @@ container: aContainerMorph wantsDropOf: aCardOrColumnMorph
 					   wantsDropOf: aCardOrColumnMorph]
 		ifFalse: [^ false]! !
 
-!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 20/Mar/2015 19:10:00'!
+!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 21/Mar/2015, 2:10:00 am (UTC)'!
 pickLegalFor: aCard 
 	"Answer true if picking up a card from its container is a legal move."
 	| cardContainer |
@@ -3174,13 +3174,13 @@ cardContainer ifNil: [self error: 'Bad logic'].
 		ifTrue: [^ self pickLegalFor: aCard fromColumn: cardContainer ].
 	Error signal: 'Internal logic error'! !
 
-!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 10/Jan/2013 19:30:00'!
+!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 11/Jan/2013, 2:30:00 am (UTC)'!
 pickLegalFor: aCard fromColumn: aColumn
 	"Answer true if card is on top or is part of a 'run'."
 
 	^(self runStartsFrom: aCard in: aColumn) ! !
 
-!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jul/2011 17:18:00'!
+!Klondike methodsFor: 'dropping/grabbing' stamp: 'KenD 16/Jul/2011, 12:18:00 am (UTC)'!
 pile: pileMorph wantsDropOf: aCardOrColumnMorph 
 	"Answer true if Pile is empty and Card is Ace or if  
 	card is same suit and one higher in face value."
@@ -3201,7 +3201,7 @@ pile: pileMorph wantsDropOf: aCardOrColumnMorph
 			topCard := pileMorph topCard.
 			^ (topCard hasFaceOneLessThan: card)  & (topCard hasSameSuitAs: card)]]! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 11/Oct/2023 07:11:38'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 11/Oct/2023, 2:11:38 pm (UTC)'!
 dealCards
 	"Shuffle cards and deal onto the table."
 	
@@ -3214,14 +3214,14 @@ dealCards
 
 ! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:26:29'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:26:29 pm (UTC)'!
 defaultExtent
 	"Just a rough placeholder"
 	^ (CardMorph morphWidth * 9)
 		@ (CardMorph morphHeight * 10).
 ! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:29:17'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:29:17 pm (UTC)'!
 initialize
 	"Setup my layout.  Down the column are 
 	Label, 
@@ -3240,7 +3240,7 @@ initialize
 		morphExtent: self minimumExtent;
 		yourself! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 15:33:47'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 10:33:47 pm (UTC)'!
 makeColumnArea
 	"I make new Column Area as a submorph"
 
@@ -3280,7 +3280,7 @@ makeColumnArea
 	self addMorph: columnArea layoutSpec: LayoutSpec useAll
 	! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 16:33:10'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 11:33:10 pm (UTC)'!
 makePilesArea
 	"answer a new Piles Area as a submorph"
 
@@ -3337,7 +3337,7 @@ makePilesArea
 					offAxisEdgeWeight: #center).
 ! !
 
-!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021 15:28:47'!
+!Klondike methodsFor: 'initialization' stamp: 'KenD 24/Dec/2021, 10:28:47 pm (UTC)'!
 reDealCards
 	"Deal cards onto the table withot shuffling (for game restart)."
 
@@ -3355,20 +3355,20 @@ reDealCards
 			column addCard: deck takeTopCard makeFaceUp.
 		 ]! !
 
-!Klondike methodsFor: 'testing' stamp: 'KenD 17/Nov/2004 12:42:00'!
+!Klondike methodsFor: 'testing' stamp: 'KenD 17/Nov/2004, 7:42:00 pm (UTC)'!
 gameIsWon
 	"Answer true if all cards are in the piles"
 
 	^(self piles inject: 0
 			    into: [ :count :pile | count + (pile submorphs size) ]) == 52! !
 
-!Klondike methodsFor: 'testing' stamp: 'KenD 2/Jul/2011 13:23:00'!
+!Klondike methodsFor: 'testing' stamp: 'KenD 2/Jul/2011, 8:23:00 pm (UTC)'!
 isMyCard: aCard
 	"Answer true if card is asssociated with this instance of the game"
 
 	^self cardDeck contains: aCard! !
 
-!Klondike methodsFor: 'testing' stamp: 'KenD 11/Oct/2023 07:48:14'!
+!Klondike methodsFor: 'testing' stamp: 'KenD 11/Oct/2023, 2:48:14 pm (UTC)'!
 kenWantsReshuffle
 
 	"This is a hard game, make less hard by redealing 
@@ -3387,7 +3387,7 @@ kenWantsReshuffle
 	].
 	^ false! !
 
-!Klondike methodsFor: 'testing' stamp: 'KenD 23/Jun/2015 21:25:00'!
+!Klondike methodsFor: 'testing' stamp: 'KenD 24/Jun/2015, 4:25:00 am (UTC)'!
 runStartsFrom: aCard in: aColumn
 	"A Card starts a run if all cards above it are in ascending face and
 	alternating color."
@@ -3411,7 +3411,7 @@ runStartsFrom: aCard in: aColumn
 	"cardIndex = 1"
 	^true! !
 
-!Klondike methodsFor: 'actions' stamp: 'KenD 28/Aug/2013 13:03:00'!
+!Klondike methodsFor: 'actions' stamp: 'KenD 28/Aug/2013, 8:03:00 pm (UTC)'!
 newGame
 	"Empty out my Card Containers, shuffle and re-deal."
 	
@@ -3422,13 +3422,13 @@ newGame
 		dealCards;
 		redrawNeeded ! !
 
-!Klondike methodsFor: 'actions' stamp: 'KenD 18/Nov/2004 16:51:00'!
+!Klondike methodsFor: 'actions' stamp: 'KenD 18/Nov/2004, 11:51:00 pm (UTC)'!
 quit
 	"@@ToDo: popup dialog Do you REALLY want to Quit?"
 	
 	super quit! !
 
-!Klondike methodsFor: 'actions' stamp: 'KenD 19/Nov/2004 14:22:00'!
+!Klondike methodsFor: 'actions' stamp: 'KenD 19/Nov/2004, 9:22:00 pm (UTC)'!
 removeCards
 	"Empty out my Card Containers."
 	
@@ -3436,7 +3436,7 @@ removeCards
 	self piles do: [ :container | container makeEmpty ].
 	self columns do: [ :container | container makeEmpty ]! !
 
-!Klondike methodsFor: 'actions' stamp: 'KenD 28/Aug/2013 13:02:00'!
+!Klondike methodsFor: 'actions' stamp: 'KenD 28/Aug/2013, 8:02:00 pm (UTC)'!
 sameGame
 	"Empty out my Card Containers and deal the original deal."
 	
@@ -3448,14 +3448,14 @@ sameGame
 		reDealCards;
 		redrawNeeded ! !
 
-!Klondike methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010 15:34:00'!
+!Klondike methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010, 10:34:00 pm (UTC)'!
 restoreGame
 	"Put up a dialog to reaf game state from a file.
 	See #restoreGameFromDataStream:"
 
 	self restoreGame: 'klo' userMessage: 'Select a Klondike Game File...'! !
 
-!Klondike methodsFor: 'fileIn/out' stamp: 'KenD 25/Dec/2021 11:51:47'!
+!Klondike methodsFor: 'fileIn/out' stamp: 'KenD 25/Dec/2021, 6:51:47 pm (UTC)'!
 restoreGameFromDataStream: aDataStream
 	"Given an open DataStream, read and restore game state."
 	
@@ -3493,14 +3493,14 @@ restoreGameFromDataStream: aDataStream
 		ifFalse: [ Error signal: 'FIXME: Undo save/restore NYI' ].
 	]! !
 
-!Klondike methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010 14:42:00'!
+!Klondike methodsFor: 'fileIn/out' stamp: 'KenDickey 19/Nov/2010, 9:42:00 pm (UTC)'!
 saveGame
 	"Show a file dialog to the user to save a game.
 	See #saveGameToDataStream: for actual data save."
 	
 	self saveGame: 'klo' userMessage: 'Enter File Name to save Klondike Game...'! !
 
-!Klondike methodsFor: 'fileIn/out' stamp: 'KenD 23/Nov/2004 13:13:00'!
+!Klondike methodsFor: 'fileIn/out' stamp: 'KenD 23/Nov/2004, 8:13:00 pm (UTC)'!
 saveGameToDataStream: aDataStream
 	"Given an open DataStream, save the current game state."
 	
@@ -3523,7 +3523,7 @@ saveGameToDataStream: aDataStream
 							nil. "FIXME"
 						}! !
 
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021 16:27:39'!
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021, 11:27:39 pm (UTC)'!
 initializedImage
 	"Answer a new instance"
 	"
@@ -3532,7 +3532,7 @@ initializedImage
 	
 	^ self initializedInstance openInHand! !
 
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 23/Dec/2021 14:39:02'!
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 23/Dec/2021, 9:39:02 pm (UTC)'!
 initializedInstance
 	"Answer a new instance"
 	"
@@ -3541,7 +3541,7 @@ initializedInstance
 	
 	^ self newColumn ! !
 
-!Klondike class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021 16:27:52'!
+!Klondike class methodsFor: 'instance creation' stamp: 'KenD 24/Dec/2021, 11:27:52 pm (UTC)'!
 newGame
 	"Answer a new instance"
 	"
@@ -3550,7 +3550,7 @@ newGame
 	
 	^ self initializedInstance openInWorld! !
 
-!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 16:48:00'!
+!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016, 11:48:00 pm (UTC)'!
 fileReaderServicesForFile: fullName suffix: suffix
 	"FileList buttons that are serviced by us."
 
@@ -3558,7 +3558,7 @@ fileReaderServicesForFile: fullName suffix: suffix
 		ifTrue: [ {self serviceRestoreKlondike.} ]
 		ifFalse: [ #() ]! !
 
-!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 17:00:00'!
+!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 4/Feb/2016, 12:00:00 am (UTC)'!
 restoreFromSaved: fullFileName
 
 	| aGame |
@@ -3570,7 +3570,7 @@ restoreFromSaved: fullFileName
 	].
 	^ aGame! !
 
-!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 16:49:00'!
+!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016, 11:49:00 pm (UTC)'!
 serviceRestoreKlondike
 
 	^ (SimpleServiceEntry 
@@ -3579,17 +3579,17 @@ serviceRestoreKlondike
 		selector: #restoreFromSaved:
 		description: 'restore Klondike solitaire game') triggerFileListChanged! !
 
-!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016 16:36:00'!
+!Klondike class methodsFor: 'file reader registration' stamp: 'KenD 3/Feb/2016, 11:36:00 pm (UTC)'!
 unload
 
 	FileList unregisterFileReader: self ! !
 
-!Klondike class methodsFor: 'class initialization' stamp: 'KenD 19/Nov/2004 11:58:00'!
+!Klondike class methodsFor: 'class initialization' stamp: 'KenD 19/Nov/2004, 6:58:00 pm (UTC)'!
 includeInNewMorphMenu
 
 	^true! !
 
-!Klondike class methodsFor: 'class initialization' stamp: 'KenD 24/Dec/2021 15:29:39'!
+!Klondike class methodsFor: 'class initialization' stamp: 'KenD 24/Dec/2021, 10:29:39 pm (UTC)'!
 initialize
 "
 	Klondike initialize.
@@ -3599,12 +3599,12 @@ initialize
 	NumPiles := 4.
 	^self! !
 
-!Klondike class methodsFor: 'environments' stamp: 'KenD 16/Jun/2020 16:16:10'!
+!Klondike class methodsFor: 'environments' stamp: 'KenD 16/Jun/2020, 11:16:10 pm (UTC)'!
 environmentsExportMe
 	"Register me (make me visible) from Smalltalk SystemDictionary"
 	^true! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 2/Jun/2020 13:32:06'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 2/Jun/2020, 8:32:06 pm (UTC)'!
 cardColor
 	"Answer a symbol denoting the color of this card"
 	"clubs diamonds hearts spades => black red red black"
@@ -3617,24 +3617,24 @@ cardColor
 			ifTrue: [ ^#Black ]
 			ifFalse: [ ^#Red ]].! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004 08:37:00'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004, 3:37:00 pm (UTC)'!
 face
 	"Answer a symbol denoting the face value of this card"
 
 	^FaceNames at: (self faceNumber).! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004 08:44:00'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004, 3:44:00 pm (UTC)'!
 name
 	"e.g. Jack of Hearts"
 	^((self face) asString), ' of ', ((self suit) asString)! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004 08:37:00'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 20/Oct/2004, 3:37:00 pm (UTC)'!
 suit
 	"Answer a symbol denoting the suit of this card"
 
 	^SuitNames at: (self suitNumber).! !
 
-!CardMorph methodsFor: 'access' stamp: 'KenD 28/Oct/2004 11:07:00'!
+!CardMorph methodsFor: 'access' stamp: 'KenD 28/Oct/2004, 6:07:00 pm (UTC)'!
 suitColor
 	"Answer a symbol denoting the color of this card"
 	"clubs diamonds hearts spades => black red red black"
@@ -3647,7 +3647,7 @@ suitColor
 			ifTrue: [ ^#Black ]
 			ifFalse: [ ^#Red ]].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 < aCard
 	"Absolute ordering over all cards in a 52 card deck."
 
@@ -3655,19 +3655,19 @@ suitColor
 	ifTrue: [ ^ (self cardNumber) < (aCard cardNumber) ]
 	ifFalse: [ ^false ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 = aCard
 	(aCard isKindOf: CardMorph)
 	ifTrue: [ ^ (self cardNumber) = (aCard cardNumber) ]
 	ifFalse: [ ^false ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 > aCard
 	(aCard isKindOf: CardMorph)
 	ifTrue: [ ^ (self cardNumber) > (aCard cardNumber) ]
 	ifFalse: [ ^false ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 20/Oct/2004 10:31:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 20/Oct/2004, 5:31:00 pm (UTC)'!
 hasDifferentColorThan: anotherCard
 	"Answer true if anotherCard has the same color"
 	
@@ -3675,7 +3675,7 @@ hasDifferentColorThan: anotherCard
 	ifTrue: [ ^false ]
 	ifFalse: [ ^true ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 hasFaceOneLessThan: anotherCard
 	"Answer true if anotherCard has the same face value plus one"
 	
@@ -3683,7 +3683,7 @@ hasFaceOneLessThan: anotherCard
 	ifTrue: [ ^(self faceNumber + 1) == (anotherCard faceNumber) ]
 	ifFalse: [ Error signal: 'Expected an CardMorph, got: ', (anotherCard asString) ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 hasSameColorAs: anotherCard
 	"Answer true if anotherCard has the same color"
 	
@@ -3691,7 +3691,7 @@ hasSameColorAs: anotherCard
 	ifTrue: [ ^(self suitColor) == (anotherCard suitColor) ]
 	ifFalse: [ Error signal: 'Expected an CardMorph, got: ', (anotherCard asString) ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 hasSameFaceAs: anotherCard
 	"Answer true if anotherCard has the same face value"
 	
@@ -3699,7 +3699,7 @@ hasSameFaceAs: anotherCard
 	ifTrue: [ ^(self face) == (anotherCard face) ]
 	ifFalse: [ Error signal: 'Expected an CardMorph, got: ', (anotherCard asString) ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 hasSameSuitAs: anotherCard
 	"Answer true if anotherCard has the same suit"
 	
@@ -3707,12 +3707,12 @@ hasSameSuitAs: anotherCard
 	ifTrue: [ ^(self suit) == (anotherCard suit) ]
 	ifFalse: [ Error signal: 'Expected an CardMorph, got: ', (anotherCard asString) ].! !
 
-!CardMorph methodsFor: 'comparing' stamp: 'KenD 18/Oct/2004 05:11:00'!
+!CardMorph methodsFor: 'comparing' stamp: 'KenD 18/Oct/2004, 12:11:00 pm (UTC)'!
 hash
 	"because = is implemented"
 	^ (self cardNumber) hash.! !
 
-!CardMorph methodsFor: 'display' stamp: 'KenD 6/Apr/2016 16:11:00'!
+!CardMorph methodsFor: 'display' stamp: 'KenD 6/Apr/2016, 11:11:00 pm (UTC)'!
 flip
 	"Turn the card over"
 
@@ -3720,17 +3720,17 @@ flip
 	ifTrue:  [ self image: self backForm ]
 	ifFalse: [ self image: self faceForm ]! !
 
-!CardMorph methodsFor: 'display' stamp: 'KenD 19/Nov/2004 11:41:00'!
+!CardMorph methodsFor: 'display' stamp: 'KenD 19/Nov/2004, 6:41:00 pm (UTC)'!
 makeFaceDown
 
 	self isFaceDown ifFalse: [ self flip ]! !
 
-!CardMorph methodsFor: 'display' stamp: 'KenD 14/Mar/2015 20:59:00'!
+!CardMorph methodsFor: 'display' stamp: 'KenD 15/Mar/2015, 3:59:00 am (UTC)'!
 makeFaceUp
 
 	self isFaceUp ifFalse: [ self flip ]! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 06:55:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015, 1:55:00 pm (UTC)'!
 dropShadowForm
 	"Answer the shadow only for the BlockMorph"
 
@@ -3745,19 +3745,19 @@ dropShadowForm
 	^ destForm
 ! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 09:47:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015, 4:47:00 pm (UTC)'!
 dropShadowOffset
 
 	^ 8@10! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 07:47:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015, 2:47:00 pm (UTC)'!
 dropShadowShown
 
 	| dsMorph |
 	dsMorph := self valueOfProperty: #dropShadowMorph ifAbsent: [ ^false ].
 	^ self submorphs includes: dsMorph! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 07:51:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015, 2:51:00 pm (UTC)'!
 hideDropShadow
 	
 	self valueOfProperty: #dropShadowMorph
@@ -3766,7 +3766,7 @@ hideDropShadow
 			self removeProperty: #dropShadowMorph
 	]! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 18/Jan/2026 14:36:15'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 18/Jan/2026, 9:36:15 pm (UTC)'!
 setDropShadowMorph
 
 	| dsMorph |
@@ -3777,21 +3777,21 @@ setDropShadowMorph
 		
 ! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 09:43:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Oct/2026, 8:15:22 pm (UTC)'!
 shadowForm
 "
 	(ImageMorph new image: (CardMorph the: #ace of: #spades) shadowForm) openInWorld.
 "
 	| aCanvas stencilForm |
 	aCanvas := BitBltCanvas depth: Display depth over: self fullExtentRect.
-	aCanvas image: self form at: 0@0.
-	self submorphs reverseDo: [ :m | aCanvas image: m form at: m morphPosition ].
+	aCanvas image: self imageForm at: 0@0.
+	self submorphs reverseDo: [ :m | aCanvas image: m imageForm at: m morphPosition ].
 	stencilForm := aCanvas form. 
 	aCanvas := BitBltCanvas depth: Display depth over: self fullExtentRect. 
 	aCanvas stencil: stencilForm at: 0@0  color: (Color black alpha: 0.3).	 
 	^ aCanvas form! !
 
-!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015 07:57:00'!
+!CardMorph methodsFor: 'dropShadow' stamp: 'KenD 12/Aug/2015, 2:57:00 pm (UTC)'!
 showDropShadow
 	
 	self 
@@ -3801,7 +3801,7 @@ showDropShadow
 			self addMorphBack: (self valueOfProperty: #dropShadowMorph)
 		]! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/Aug/2015 07:00:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 12/Aug/2015, 2:00:00 pm (UTC)'!
 aboutToBeGrabbedBy: aHand 
 	"I'm about to be grabbed by the hand. If other cards are above me in a 
 	Card Container, then move them from the Container to being submorphs of me"
@@ -3820,7 +3820,7 @@ aboutToBeGrabbedBy: aHand
 	ifTrue: [^nil]
 ! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 28/Oct/2004 14:07:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 28/Oct/2004, 9:07:00 pm (UTC)'!
 acceptDroppingMorph: aMorph event: evt 
 	"Delegate to my owning Card Container"
 	
@@ -3828,19 +3828,19 @@ acceptDroppingMorph: aMorph event: evt
 	ifTrue: [ ^(self owner) acceptDroppingMorph: aMorph event: evt ]
 	ifFalse: [ ^false ]! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Jan/2013 19:15:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Jan/2013, 2:15:00 am (UTC)'!
 allowsMorphDrop
 	"Answer whether we accept dropping morphs. By default answer false."
 
 	^ true! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 22/Jan/2013 19:16:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 23/Jan/2013, 2:16:00 am (UTC)'!
 allowsSubmorphDrag
 	"Answer whether our morphs can just be grabbed with the hand, instead of requiring the use of the halo. By default answer false."
 
 	^ true! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 1/Oct/2021 13:30:47'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 1/Oct/2021, 8:30:47 pm (UTC)'!
 collectCardsAboveMe 
 	"I'm about to be grabbed by the hand or otherwise moved. 
 	If other cards are above me in a Card Container, then move 
@@ -3872,16 +3872,16 @@ collectCardsAboveMe
 	].
 	self redrawNeeded.! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013 15:02:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013, 10:02:00 pm (UTC)'!
 forgetPreowner
 	
 	grabPreowner  := nil! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013 14:58:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013, 9:58:00 pm (UTC)'!
 grabPreowner
 	^grabPreowner ! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025 13:21:15'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 9/Feb/2025, 8:21:15 pm (UTC)'!
 justDroppedInto: aMorph event: anEvent
 	"Someone just dropped me.."
 	
@@ -3892,7 +3892,7 @@ justDroppedInto: aMorph event: anEvent
 	ifTrue: [ ^ self owner dropComplete ]
 	ifFalse: [^ false ]! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 26/Dec/2021 10:47:55'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 26/Dec/2021, 5:47:55 pm (UTC)'!
 rejectDropMorphEvent: evt
 	"Drop rejected. If have submorphs, give them back to the container."
 "	
@@ -3910,14 +3910,14 @@ rejectDropMorphEvent: evt
 			self redrawNeeded ]
 	ifFalse: [ super rejectDropMorphEvent: evt.].! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013 15:01:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 15/Jan/2013, 10:01:00 pm (UTC)'!
 rememberPreowner
 	
 	(self owner isKindOf: CardContainerMorph )
 	ifTrue: [grabPreowner := self owner]
 	ifFalse: [grabPreowner  := nil] "no funny stuff.."! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 25/Oct/2004 14:39:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 25/Oct/2004, 9:39:00 pm (UTC)'!
 wantsDroppedMorph: aMorph event: evt 
 	"Ask my container."
 	
@@ -3925,13 +3925,13 @@ wantsDroppedMorph: aMorph event: evt
 	ifTrue: [ ^(self owner) wantsDroppedMorph: aMorph event: evt ]
 	ifFalse: [^ false]! !
 
-!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 29/Oct/2004 09:46:00'!
+!CardMorph methodsFor: 'dropping/grabbing' stamp: 'KenD 29/Oct/2004, 4:46:00 pm (UTC)'!
 wantsToBeDroppedInto: aMorph 
 	"I want to be dropped onto a Card or a Card Container"
 	^ (aMorph isKindOf: CardContainerMorph)
 		| (aMorph isKindOf: CardMorph)! !
 
-!CardMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013 10:01:00'!
+!CardMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013, 5:01:00 pm (UTC)'!
 click: evt localPosition: localEventPosition
 	"ignore this and wait until #firstClickTimedOut: arrives"
 "
@@ -3941,14 +3941,14 @@ click: evt localPosition: localEventPosition
 	ifTrue: [ self owner click: evt localPosition: localEventPosition ]
 	ifFalse: [ ^false ]! !
 
-!CardMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013 10:01:00'!
+!CardMorph methodsFor: 'event handling' stamp: 'KenD 21/Jan/2013, 5:01:00 pm (UTC)'!
 handlesMouseDown: evt 
 "
 	Transcript newLine; show: (self name , ' got #handlesMouseDown:').  
 "
 	^ true! !
 
-!CardMorph methodsFor: 'event handling' stamp: 'KenD 15/Feb/2013 14:37:00'!
+!CardMorph methodsFor: 'event handling' stamp: 'KenD 15/Feb/2013, 9:37:00 pm (UTC)'!
 processMouseDown: evt localPosition: localEventPosition
 	"Do nothing upon mouse-down except inform the hand to watch for a 
 	double-click; wait until an ensuing click:, doubleClick:, or drag: 
@@ -3982,7 +3982,7 @@ processMouseDown: evt localPosition: localEventPosition
 	]
 ! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'KenD 27/Dec/2020 14:55:35'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 27/Dec/2020, 9:55:35 pm (UTC)'!
 displayFullBounds
 	"Answer enough room for our shadow, even if not present."
 	| r |
@@ -3990,7 +3990,7 @@ displayFullBounds
 	r ifNil: [ r := 0@0 extent: self morphExtent ].
 	^r quickMerge: (r translatedBy: self dropShadowOffset)! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'KenD 12/Aug/2015 09:07:00'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 12/Aug/2015, 4:07:00 pm (UTC)'!
 fullExtentRect
 
 	"Answer a Rectangle which covers my extent and those of my submorphs -- even when drawn outside my bounds"
@@ -4002,28 +4002,28 @@ fullExtentRect
 "Transcript newLine; show: rect printString."
 	^ rect! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'KenD 18/Oct/2004 13:37:00'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 18/Oct/2004, 8:37:00 pm (UTC)'!
 height
 
 	^self faceForm height! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'KenD 14/Jan/2013 20:34:00'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 15/Jan/2013, 3:34:00 am (UTC)'!
 minimumExtent
 
 	^self faceForm extent
 ! !
 
-!CardMorph methodsFor: 'geometry' stamp: 'KenD 18/Oct/2004 13:38:00'!
+!CardMorph methodsFor: 'geometry' stamp: 'KenD 18/Oct/2004, 8:38:00 pm (UTC)'!
 width
 
 	^self faceForm width! !
 
-!CardMorph methodsFor: 'geometry testing' stamp: 'KenD 30/Sep/2021 12:38:49'!
+!CardMorph methodsFor: 'geometry testing' stamp: 'KenD 30/Sep/2021, 7:38:49 pm (UTC)'!
 submorphsMightProtrude
 	"Because of dropshadows"
 	^true! !
 
-!CardMorph methodsFor: 'initialization' stamp: 'KenD 29/Aug/2021 12:03:55'!
+!CardMorph methodsFor: 'initialization' stamp: 'KenD 29/Aug/2021, 7:03:55 pm (UTC)'!
 withCardNumber: cardNum
 	"Private"
 	
@@ -4036,7 +4036,7 @@ withCardNumber: cardNum
 		color: Color transparent;
 		yourself! !
 
-!CardMorph methodsFor: 'initialization' stamp: 'KenD 2/Jun/2020 13:28:39'!
+!CardMorph methodsFor: 'initialization' stamp: 'KenD 2/Jun/2020, 8:28:39 pm (UTC)'!
 withCardNumber: cardNum image: form
 	"Private"
 	
@@ -4048,42 +4048,42 @@ withCardNumber: cardNum image: form
 		color: Color transparent;
 		yourself! !
 
-!CardMorph methodsFor: 'testing' stamp: 'KenD 28/Oct/2004 11:08:00'!
+!CardMorph methodsFor: 'testing' stamp: 'KenD 28/Oct/2004, 6:08:00 pm (UTC)'!
 isBlack
 	^(self suitColor) == #Black! !
 
-!CardMorph methodsFor: 'testing' stamp: 'KenD 19/Oct/2004 13:14:00'!
+!CardMorph methodsFor: 'testing' stamp: 'KenD 19/Oct/2004, 8:14:00 pm (UTC)'!
 isCardMorph
 	
 	^true! !
 
-!CardMorph methodsFor: 'testing' stamp: 'KenD 6/Apr/2016 16:09:00'!
+!CardMorph methodsFor: 'testing' stamp: 'KenD 6/Apr/2016, 11:09:00 pm (UTC)'!
 isFaceDown
 
 	^isFaceDown! !
 
-!CardMorph methodsFor: 'testing' stamp: 'KenD 6/Apr/2016 16:12:00'!
+!CardMorph methodsFor: 'testing' stamp: 'KenD 6/Apr/2016, 11:12:00 pm (UTC)'!
 isFaceUp
 
 	^ self isFaceDown not! !
 
-!CardMorph methodsFor: 'testing' stamp: 'KenD 28/Oct/2004 11:08:00'!
+!CardMorph methodsFor: 'testing' stamp: 'KenD 28/Oct/2004, 6:08:00 pm (UTC)'!
 isRed
 	^(self suitColor) == #Red! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 18/Oct/2004 12:20:00'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 18/Oct/2004, 7:20:00 pm (UTC)'!
 backForm
 	"form for this card's back side"
 
 	^FormsArray at: 53.! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 18/Oct/2004 05:09:00'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 18/Oct/2004, 12:09:00 pm (UTC)'!
 cardNumber
 	"private"
 
 	^cardNumber! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 30/Aug/2021 14:31:22'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 30/Aug/2021, 9:31:22 pm (UTC)'!
 faceForm
 	"Answer form for this card's face"
 	
@@ -4091,75 +4091,75 @@ faceForm
 	"Sometimes invoked _before_ initialize .. 8^(" 
 	^FormsArray at: (cardNumber ifNil: [1] ifNotNil: [:cn | cn + 1])! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 28/Dec/2010 14:44:00'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 28/Dec/2010, 9:44:00 pm (UTC)'!
 faceNumber
 	"Private;  Answer 1..13"
 
 	^((self cardNumber // 4) + 1)! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 17/Apr/2013 20:31:00'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 12/Oct/2026, 8:14:09 pm (UTC)'!
 saveImageToFile: aFileName
 	"NB: overrited file without question"
 
-	(self form) writePNGfileNamed: aFileName! !
+	(self imageForm) writePNGfileNamed: aFileName! !
 
-!CardMorph methodsFor: 'private' stamp: 'KenD 20/Oct/2004 08:36:00'!
+!CardMorph methodsFor: 'private' stamp: 'KenD 20/Oct/2004, 3:36:00 pm (UTC)'!
 suitNumber
 	"Private: Answer 1..4"
 
 	^((cardNumber rem: 4) + 1)! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 30/Sep/2021 14:00:52'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 30/Sep/2021, 9:00:52 pm (UTC)'!
 cardExtent
 
 	"Answer the image extent"
 	^(FormsArray at: 53) extent! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 12/Aug/2015 06:46:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 12/Aug/2015, 1:46:00 pm (UTC)'!
 dropShadowMorph
 
 	^ DropShadowMorph ! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 12/Aug/2015 06:46:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 12/Aug/2015, 1:46:00 pm (UTC)'!
 dropShadowMorph: newShadowMorph
 
 	DropShadowMorph := newShadowMorph! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 21/Oct/2004 17:59:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004, 12:59:00 am (UTC)'!
 extent
 
 	"Answer the image extent"
 	^(FormsArray at: 53) extent! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 21/Oct/2004 18:00:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004, 1:00:00 am (UTC)'!
 height
 
 	"Answer the image height"
 	^(FormsArray at: 53) height! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 9/Jan/2013 20:01:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 10/Jan/2013, 3:01:00 am (UTC)'!
 morphHeight
 
 	"Answer the image height"
 	^(FormsArray at: 53) height! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 9/Jan/2013 19:59:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 10/Jan/2013, 2:59:00 am (UTC)'!
 morphWidth
 
 	"Answer the image width"
 	^(FormsArray at: 53) width! !
 
-!CardMorph class methodsFor: 'accessing' stamp: 'KenD 21/Oct/2004 17:59:00'!
+!CardMorph class methodsFor: 'accessing' stamp: 'KenD 22/Oct/2004, 12:59:00 am (UTC)'!
 width
 
 	"Answer the image width"
 	^(FormsArray at: 53) width! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 30/Aug/2021 14:28:45'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 30/Aug/2021, 9:28:45 pm (UTC)'!
 defaultImage
 	^FormsArray at: 1! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 9/Nov/2022 15:12:34'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 9/Nov/2022, 10:12:34 pm (UTC)'!
 encodedStringFromFile: aFileName
 	"Read binary file and return a Base64MimeConverter'ed ascii string"
 
@@ -4168,7 +4168,7 @@ encodedStringFromFile: aFileName
 	aMimeStream := Base64MimeConverter mimeEncode: aFileStream.
 	^(Clipboard storeObject: (aMimeStream contents)) retrieveStringOrText asString.! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 5/Oct/2006 09:40:00'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 5/Oct/2006, 4:40:00 pm (UTC)'!
 formFromEncodedString: aBase64MimeString
 	"Return a Form based on a Base64MimeConverter'ed string"
 
@@ -4176,13 +4176,13 @@ formFromEncodedString: aBase64MimeString
 	decodedStream := (Base64MimeConverter mimeDecodeToBytes: aBase64MimeString readStream).
 	^(Form fromBinaryStream: decodedStream)! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 20/Oct/2004 08:56:00'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 20/Oct/2004, 3:56:00 pm (UTC)'!
 includeInNewMorphMenu
 	"Private"
 
 	^false! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 1/Feb/2011 03:03:00'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 1/Feb/2011, 10:03:00 am (UTC)'!
 savePNGimagesToDir: dirName
 
 	"Save card images to files"
@@ -4199,7 +4199,7 @@ savePNGimagesToDir: dirName
 		].
 	(FormsArray at: 53) writePNGfileNamed: (imageDirNamePrefix , 'back.png')! !
 
-!CardMorph class methodsFor: 'private' stamp: 'KenD 9/Nov/2022 15:00:46'!
+!CardMorph class methodsFor: 'private' stamp: 'KenD 9/Nov/2022, 10:00:46 pm (UTC)'!
 showFormEncodingsFromPNGtoFile: outFileName
 
 	"Show Base64MimeConverter strings"
@@ -4219,7 +4219,7 @@ showFormEncodingsFromPNGtoFile: outFileName
 	outStream cr; nextPut: $'; nextPutAll: (CardMorph encodedStringFromFile:   imageDirNamePrefix, 'back.png'); nextPut: $'.
 	outStream cr; cr! !
 
-!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011 03:34:00'!
+!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011, 10:34:00 am (UTC)'!
 initialize
 
 	ColorNames := #(Red Black).
@@ -6665,7 +6665,7 @@ zrMf/5v3/a5r/rb3/28//z995uXffdnfd/tvlh9cKxI85J0AAAAASUVORK5CYII='
 	self
 ! !
 
-!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 27/Jan/2011 00:51:00'!
+!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 27/Jan/2011, 7:51:00 am (UTC)'!
 initializeFromPNG
 
 	| imageDirNamePrefix |
@@ -6684,7 +6684,7 @@ initializeFromPNG
 		at: 53 
 		put: ((Form fromFileNamed: (imageDirNamePrefix , 'back.png')) asFormOfDepth: 32)! !
 
-!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011 02:35:00'!
+!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011, 9:35:00 am (UTC)'!
 initializeFromPNGfixCorners
 
 	| imageDirNamePrefix ul ur ll lr cornerRect sq copyRule cardForm|
@@ -6727,7 +6727,7 @@ initializeFromPNGfixCorners
 				rule: copyRule.
 	FormsArray at: 53 put: cardForm! !
 
-!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011 02:22:00'!
+!CardMorph class methodsFor: 'class initialization' stamp: 'KenD 1/Feb/2011, 9:22:00 am (UTC)'!
 initializeFromPNGfixShadow
 
 	| imageDirNamePrefix noColor |
@@ -6753,7 +6753,7 @@ initializeFromPNGfixShadow
 		at: 53 
 		put: ((Form fromFileNamed: (imageDirNamePrefix , 'back.png')) asFormOfDepth: 32)! !
 
-!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 27/May/2025 12:50:06'!
+!CardMorph class methodsFor: 'instance creation' stamp: 'KenD 27/May/2025, 7:50:06 pm (UTC)'!
 the: face of: suit
 	"Return an Card instance"
 "	
@@ -6786,7 +6786,7 @@ Note: expect these Morphs to act oddly outside of a card game.
 	newInst color: Color transparent.
 	^newInst! !
 
-!CardTests methodsFor: 'Running' stamp: 'KenD 20/Oct/2004 09:49:00'!
+!CardTests methodsFor: 'Running' stamp: 'KenD 20/Oct/2004, 4:49:00 pm (UTC)'!
 setUp
 	jackOfClubs      := CardMorph the: #Jack of: #Clubs.
 	aceOfSpades      := CardMorph the: #Ace of: #spades.
@@ -6794,7 +6794,7 @@ setUp
 	threeOfHearts    := CardMorph the: 3 of: #hearts.
 	fiveOfHearts     := CardMorph the: #five of: #hearts! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 2/Jun/2020 13:32:06'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 2/Jun/2020, 8:32:06 pm (UTC)'!
 testColor
 	self assert: (jackOfClubs cardColor == #Black).
 	self assert: (twoOfDiamonds cardColor == #Red).
@@ -6812,7 +6812,7 @@ testColor
 	self deny:  (jackOfClubs     isRed).
 	self deny:  (twoOfDiamonds isBlack)! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 10/Jan/2013 13:45:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 10/Jan/2013, 8:45:00 pm (UTC)'!
 testComparisons
 	self deny: (jackOfClubs < aceOfSpades).
 	self deny: (jackOfClubs = aceOfSpades).
@@ -6834,7 +6834,7 @@ testComparisons
 	self deny: (#randomSymbol isKindOf: CardMorph).
 	self assert: (aceOfSpades isKindOf: CardMorph)! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004 09:55:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004, 4:55:00 pm (UTC)'!
 testFace
 	self assert: (jackOfClubs face == #Jack).
 	self assert: (twoOfDiamonds face == #Two).
@@ -6842,7 +6842,7 @@ testFace
 	self assert: (aceOfSpades face == #Ace).
 	self assert: (fiveOfHearts face == #Five)! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004 10:21:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004, 5:21:00 pm (UTC)'!
 testFlip
 
 	self assert: (jackOfClubs isFaceUp).
@@ -6852,7 +6852,7 @@ testFlip
 	self assert: (jackOfClubs isFaceDown).
 	jackOfClubs flip.! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 9/Feb/2025 13:08:23'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 9/Feb/2025, 8:08:23 pm (UTC)'!
 testIllegal
 
 	self 
@@ -6875,7 +6875,7 @@ testIllegal
 		raise: TestResult exError
 ! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004 09:59:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004, 4:59:00 pm (UTC)'!
 testName
 	self assert: (jackOfClubs name =  'Jack of Clubs').
 	self assert: (twoOfDiamonds name = 'Two of Diamonds').
@@ -6883,7 +6883,7 @@ testName
 	self assert: (aceOfSpades name = 'Ace of Spades').
 	self assert: (fiveOfHearts name = 'Five of Hearts')! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004 10:10:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004, 5:10:00 pm (UTC)'!
 testPrivate
 	self assert: (jackOfClubs suitNumber = 1).
 	self assert: (twoOfDiamonds suitNumber = 2).
@@ -6903,7 +6903,7 @@ testPrivate
 	self assert: (threeOfHearts cardNumber = 10).
 	self assert: (fiveOfHearts cardNumber = 18)! !
 
-!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004 09:54:00'!
+!CardTests methodsFor: 'Testing' stamp: 'KenD 20/Oct/2004, 4:54:00 pm (UTC)'!
 testSuit
 	self assert: (jackOfClubs suit == #Clubs).
 	self assert: (twoOfDiamonds suit == #Diamonds).
