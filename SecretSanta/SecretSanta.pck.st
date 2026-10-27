@@ -5,7 +5,7 @@ name1				"Single"
 name2 & name3	"Couples"
 
 See class comment for rules.'!
-!provides: 'SecretSanta' 1 11!
+!provides: 'SecretSanta' '1.11.0'!
 SystemOrganization addCategory: #'SecretSanta-Model'!
 
 

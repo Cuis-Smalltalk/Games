@@ -1,11 +1,12 @@
-'From Cuis7.1 [latest update: #6715] on 12 September 2024 at 12:26:08 pm'!
+'From Cuis7.9 [latest update: #8296] on 27 October 2026 at 2:55:56 pm'!
 'Description The game of Life, an example of a cellular automaton, developed by Prof. John H. Conway at the University of Cambridge.
 
 References:
 ConwayLife.com
 Gardner, Martin, "Mathematical Games", Scientific American, October 1970, February 1971
 "Some Facts of Life", Byte Magazine, December 1978'!
-!provides: 'Life' 1 7!
+!provides: 'Life' '1.7.0'!
+!requires: 'Cuis-Base' '7.9.8290' '7.*.*'!
 SystemOrganization addCategory: #Life!
 
 
@@ -69,7 +70,7 @@ LifeView example1
 Gardner, Martin, "Mathematical Games", Scientific American, October 1970, February 1971
 "Some Facts of Life", Byte Magazine, December 1978!
 
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:41'!
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 10:41:00 pm (UTC)'!
 at: aPoint
 	"
 	Answer the element at aPoint, where:
@@ -79,7 +80,7 @@ at: aPoint
 	
 	^ self i: aPoint x j: aPoint y! !
 
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 15:42'!
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 10:42:00 pm (UTC)'!
 at: aPoint put: anObject
 	"
 	Set the element at aPoint to anObject, where:
@@ -89,55 +90,55 @@ at: aPoint put: anObject
 	
 	^ self i: aPoint x j: aPoint y put: anObject! !
 
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:25'!
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 9:25:00 pm (UTC)'!
 elements
 	"Answer the value of elements"
 	
 	^ elements! !
 
-!LifeArray methodsFor: 'accessing' stamp: 'dhn 7/6/2016 14:26'!
+!LifeArray methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 9:26:00 pm (UTC)'!
 elements: anObject
 	"Set the value of elements"
 	
 	elements _ anObject! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/26/2016 16:07'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 26/Jun/2016, 11:07:00 pm (UTC)'!
 cellIndex
 	"Answer the value of cellIndex"
 
 	^ cellIndex! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/25/2016 15:03'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 25/Jun/2016, 10:03:00 pm (UTC)'!
 cellIndex: aNumber
 	"Set the value of cellIndex"
 	
 	cellIndex _ aNumber! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/26/2016 08:26'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 26/Jun/2016, 3:26:00 pm (UTC)'!
 cells
 	"Answer the value of cells"
 	^ cells! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/26/2016 08:28'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 26/Jun/2016, 3:28:00 pm (UTC)'!
 cells: anObject
 	"Set the value of cells"
 	
 	cells _ anObject! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 7/6/2016 16:00'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 11:00:00 pm (UTC)'!
 clearGrid
 	"Set the state of all cells to 0"
 	
 	(1 to: cells elements size) do: [:i | cells elements at: i put: 0].
 	self triggerEvent: #stateChanged! !
 
-!LifeModel methodsFor: 'accessing' stamp: 'dhn 6/26/2016 11:48'!
+!LifeModel methodsFor: 'accessing' stamp: 'dhn 26/Jun/2016, 6:48:00 pm (UTC)'!
 shape
 	"Answer the value of shape"
 	
 	^ shape! !
 
-!LifeModel methodsFor: 'operation' stamp: 'dhn 7/6/2016 17:58'!
+!LifeModel methodsFor: 'operation' stamp: 'dhn 7/Jul/2016, 12:58:00 am (UTC)'!
 nextState
 	"Determine the next state of the cells"
 	| future env sum |
@@ -163,7 +164,7 @@ nextState
 	self triggerEvent: #stateChanged.
 	self triggerEvent: #period! !
 
-!LifeModel methodsFor: 'operation' stamp: 'dhn 6/26/2016 08:52'!
+!LifeModel methodsFor: 'operation' stamp: 'dhn 26/Jun/2016, 3:52:00 pm (UTC)'!
 surrounding: aPoint
 	"Answer the 3, 5, or 8 cells surrounding aPoint"
 	| sur col top bot |
@@ -184,7 +185,7 @@ surrounding: aPoint
 	^ sur select: [:p | p y <= shape y and: [p y > 0]]
 ! !
 
-!LifeModel methodsFor: 'initialization' stamp: 'dhn 7/7/2016 10:04'!
+!LifeModel methodsFor: 'initialization' stamp: 'dhn 7/Jul/2016, 5:04:00 pm (UTC)'!
 set: pattern at: coords
 	"Load pattern into cells, starting at: coords, specifying the upper left cell location"
 	"A pattern should be a collection of rows of equal length which are used to set initial state"
@@ -204,7 +205,7 @@ set: pattern at: coords
 not located high enough.']
 ! !
 
-!LifeModel methodsFor: 'initialization' stamp: 'dhn 7/6/2016 15:53'!
+!LifeModel methodsFor: 'initialization' stamp: 'dhn 6/Jul/2016, 10:53:00 pm (UTC)'!
 shape: aPoint
 	"Set the number of rows and columns of the grid"
 	
@@ -212,7 +213,7 @@ shape: aPoint
 	cells _ LifeArray height: aPoint x width: aPoint y.
 	self clearGrid! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:42'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:42:00 pm (UTC)'!
 basic
 	"Basic Shuttle"
 	
@@ -232,7 +233,7 @@ basic
 		'500@250' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 10:10'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 5:10:00 pm (UTC)'!
 beacon
 	"Beacon"
 	
@@ -249,7 +250,7 @@ beacon
 		'182@192' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:33'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:33:00 pm (UTC)'!
 berloaf
 	"Berloaflmeter, a period 7 object"
 	
@@ -272,7 +273,7 @@ berloaf
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 10:58'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 5:58:00 pm (UTC)'!
 bipole
 	"Bipole"
 	
@@ -290,7 +291,7 @@ bipole
 		'170@220' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 10:00'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 5:00:00 pm (UTC)'!
 blinker
 	"Blinker"
 	
@@ -304,7 +305,7 @@ blinker
 		'150@160' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 10:12'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 5:12:00 pm (UTC)'!
 clock
 	"Clock"
 	
@@ -321,7 +322,7 @@ clock
 		'182@192' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:46'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:46:00 pm (UTC)'!
 eaterBoundA
 	"Eater Bound Oscillator A"
 	
@@ -351,7 +352,7 @@ eaterBoundA
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:48'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:48:00 pm (UTC)'!
 eaterBoundB
 	"Eater Bound Oscillator B"
 	
@@ -377,7 +378,7 @@ eaterBoundB
 		'290@360' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 13:06'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 8:06:00 pm (UTC)'!
 engine
 	"Switch engine, period 96"
 	
@@ -397,7 +398,7 @@ engine
 		'710@920' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:06'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:06:00 pm (UTC)'!
 flipflopA
 	"Flipflop A"
 	
@@ -418,7 +419,7 @@ flipflopA
 		'252@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:07'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:07:00 pm (UTC)'!
 flipflopB
 	"Flipflop B"
 	
@@ -438,7 +439,7 @@ flipflopB
 		'180@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:12'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:12:00 pm (UTC)'!
 flipflopC
 	"Flipflop C"
 	
@@ -458,7 +459,7 @@ flipflopC
 		'200@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:14'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:14:00 pm (UTC)'!
 flipflopD
 	"Flipflop D"
 	
@@ -478,7 +479,7 @@ flipflopD
 		'200@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:49'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:49:00 pm (UTC)'!
 glider
 	"Glider"
 	
@@ -494,7 +495,7 @@ glider
 		'310@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 13:02'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 8:02:00 pm (UTC)'!
 gliderGun
 	"Glider gun, period 30"
 	
@@ -516,7 +517,7 @@ gliderGun
 		'540@450' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:13'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:13:00 pm (UTC)'!
 hiveEater
 	"Block devours beehive"
 	
@@ -532,7 +533,7 @@ hiveEater
 		'260@250' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:27'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:27:00 pm (UTC)'!
 mazing
 	"Mazing, a period 4 pulsator"
 	
@@ -552,7 +553,7 @@ mazing
 		'250@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:31'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:31:00 pm (UTC)'!
 mitOsc
 	"MIT Oscillator, a period 3 object"
 	
@@ -573,7 +574,7 @@ mitOsc
 		'240@260' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 13:04'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 8:04:00 pm (UTC)'!
 newGun
 	"Period 46 glider gun"
 	
@@ -621,7 +622,7 @@ newGun
 		'590@700' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:24'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:24:00 pm (UTC)'!
 pentadec
 	"The pentadecathlon pulsar"
 	
@@ -637,7 +638,7 @@ pentadec
 		'350@260' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:18'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:18:00 pm (UTC)'!
 period2
 	"Period 2 Oscillator"
 	
@@ -664,7 +665,7 @@ period2
 		'340@360' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:15'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:15:00 pm (UTC)'!
 period3
 	"Period 3 eater"
 	
@@ -684,7 +685,7 @@ period3
 		'252@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:58'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:58:00 pm (UTC)'!
 period52
 	"Period 52 eater"
 	
@@ -714,7 +715,7 @@ period52
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:22'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:22:00 pm (UTC)'!
 period6
 	"Period 6 eater"
 	
@@ -737,7 +738,7 @@ period6
 		'260@320' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 13:00'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 8:00:00 pm (UTC)'!
 period6O
 	"Period 6 oscillator"
 	
@@ -771,7 +772,7 @@ period6O
 		'370@530' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:18'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:18:00 pm (UTC)'!
 pulsar
 	"Pulsar, a period 3 inductor"
 	
@@ -797,7 +798,7 @@ pulsar
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:52'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:52:00 pm (UTC)'!
 space1
 	"Lightweight Spaceship"
 	
@@ -814,7 +815,7 @@ space1
 		'700@160' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:54'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:54:00 pm (UTC)'!
 space2
 	"Middleweight Spaceship"
 	
@@ -832,7 +833,7 @@ space2
 		'950@230' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:55'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:55:00 pm (UTC)'!
 space3
 	"Heavyweight Spaceship"
 	
@@ -850,7 +851,7 @@ space3
 		'730@190' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 10:26'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 5:26:00 pm (UTC)'!
 toad
 	"Toad"
 	
@@ -867,7 +868,7 @@ toad
 		'182@192' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 11:02'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 6:02:00 pm (UTC)'!
 tripole
 	"Tripole"
 	
@@ -886,7 +887,7 @@ tripole
 		'200@230' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:20'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:20:00 pm (UTC)'!
 tumbler
 	"Tumbler, a period 14 inductor"
 	
@@ -905,7 +906,7 @@ tumbler
 		'260@260' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:44'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:44:00 pm (UTC)'!
 twinBees
 	"Twin Bees Shuttle"
 	
@@ -929,7 +930,7 @@ twinBees
 		'610@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:31'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:31:00 pm (UTC)'!
 unix
 	"Unix, a period 6 pulsator"
 	
@@ -950,7 +951,7 @@ unix
 		'240@260' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:22'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:22:00 pm (UTC)'!
 unnamed1
 	"Unnamed period 8 inductor"
 	
@@ -975,7 +976,7 @@ unnamed1
 		'370@300' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:34'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:34:00 pm (UTC)'!
 unnamed2
 	"Unnamed period 8 object"
 	
@@ -1000,7 +1001,7 @@ unnamed2
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:39'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:39:00 pm (UTC)'!
 unnamed3
 	"Unnamed period 5 oscillator"
 	
@@ -1028,7 +1029,7 @@ unnamed3
 		'310@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:41'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:41:00 pm (UTC)'!
 unnamed4
 	"Unnamed period 9 object"
 	
@@ -1055,7 +1056,7 @@ unnamed4
 		'350@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/7/2016 12:37'!
+!LifeModel class methodsFor: 'canned patterns' stamp: 'dhn 7/Jul/2016, 7:37:00 pm (UTC)'!
 wavefront
 	"Wavefront, a period 4 object"
 	
@@ -1081,13 +1082,13 @@ wavefront
 		'320@380' 	"extent hor@ver for morph"
 		) evalStrings! !
 
-!LifeModel class methodsFor: 'documentation' stamp: 'dhn 6/28/2016 14:59'!
+!LifeModel class methodsFor: 'documentation' stamp: 'dhn 28/Jun/2016, 9:59:00 pm (UTC)'!
 defaultLabel
 	"Answer the label used when no life form has been loaded"
 	
 	^ 'The Game of Life'! !
 
-!LifeModel class methodsFor: 'database' stamp: 'dhn 7/2/2016 10:23'!
+!LifeModel class methodsFor: 'database' stamp: 'dhn 2/Jul/2016, 5:23:00 pm (UTC)'!
 menuLines
 	"Answer where to place lines in the Life Forms menu"
 	| nm ln |
@@ -1111,7 +1112,7 @@ menuLines
 	
 	^ ln! !
 
-!LifeModel class methodsFor: 'database' stamp: 'dhn 7/2/2016 15:05'!
+!LifeModel class methodsFor: 'database' stamp: 'dhn 2/Jul/2016, 10:05:00 pm (UTC)'!
 patternNames
 	"Translate a menu list item to a class method selector for the pattern"
 	^ #(
@@ -1156,38 +1157,38 @@ patternNames
 		('Switch Engine' 			#engine)
 	)! !
 
-!GridCell methodsFor: 'accessing' stamp: 'dhn 6/26/2016 08:48'!
+!GridCell methodsFor: 'accessing' stamp: 'dhn 26/Jun/2016, 3:48:00 pm (UTC)'!
 index
 	"Answer the value of index"
 	
 	^ index! !
 
-!GridCell methodsFor: 'accessing' stamp: 'dhn 6/25/2016 14:55'!
+!GridCell methodsFor: 'accessing' stamp: 'dhn 25/Jun/2016, 9:55:00 pm (UTC)'!
 index: anObject
 	"Set the value of index"
 
 	index _ anObject! !
 
-!GridCell methodsFor: 'accessing' stamp: 'dhn 6/25/2016 14:55'!
+!GridCell methodsFor: 'accessing' stamp: 'dhn 25/Jun/2016, 9:55:00 pm (UTC)'!
 offColor
 	"Answer the value of offColor"
 
 	^ offColor! !
 
-!GridCell methodsFor: 'accessing' stamp: 'dhn 6/25/2016 14:56'!
+!GridCell methodsFor: 'accessing' stamp: 'dhn 25/Jun/2016, 9:56:00 pm (UTC)'!
 onColor
 	"Answer the value of onColor"
 
 	^ onColor! !
 
-!GridCell methodsFor: 'accessing' stamp: 'dhn 7/6/2016 16:21'!
+!GridCell methodsFor: 'accessing' stamp: 'dhn 6/Jul/2016, 11:21:00 pm (UTC)'!
 reflectState
 	"Set color based on the state of the cell at index"
 	
 	self color: ((model cells at: index) = 1 ifTrue: [onColor] ifFalse: [offColor])
 ! !
 
-!GridCell methodsFor: 'initialization' stamp: 'dhn 7/6/2016 15:44'!
+!GridCell methodsFor: 'initialization' stamp: 'dhn 6/Jul/2016, 10:44:00 pm (UTC)'!
 initialize
 
 	super initialize.
@@ -1196,14 +1197,14 @@ initialize
 	self setProperty: #'handlesMouseDown:' toValue: true
 ! !
 
-!GridCell methodsFor: 'event handling' stamp: 'dhn 6/30/2016 15:58'!
+!GridCell methodsFor: 'event handling' stamp: 'dhn 30/Jun/2016, 10:58:00 pm (UTC)'!
 mouseButton2Down: event localPosition: point 
 	"Bring up menu for cell"
 
 	model triggerEvent: #gridMenu
 ! !
 
-!GridCell methodsFor: 'event handling' stamp: 'dhn 7/6/2016 16:22'!
+!GridCell methodsFor: 'event handling' stamp: 'dhn 6/Jul/2016, 11:22:00 pm (UTC)'!
 performAction
 	"Identify the cell that was pressed; toggle its state and color"
 
@@ -1213,7 +1214,7 @@ performAction
 	self reflectState.
 	super performAction! !
 
-!LifeView methodsFor: 'initialization' stamp: 'dhn 7/6/2016 17:10'!
+!LifeView methodsFor: 'initialization' stamp: 'dhn 7/Jul/2016, 12:10:00 am (UTC)'!
 buildMorphicWindow
 	"Set up the grid in a system window"
 	
@@ -1229,7 +1230,7 @@ buildMorphicWindow
 	model when: #stateChanged send: #stateChanged to: self.
 	model when: #period send: #updateTitle to: self! !
 
-!LifeView methodsFor: 'initialization' stamp: 'dhn 7/4/2016 15:57'!
+!LifeView methodsFor: 'initialization' stamp: 'dhn 4/Jul/2016, 10:57:00 pm (UTC)'!
 extentAndPosition: aPoint
 	"Set the extent of the receiver and center it in the display"
 	
@@ -1238,7 +1239,7 @@ extentAndPosition: aPoint
 		morphPosition: Display center - (self morphExtent / 2.0)
 	! !
 
-!LifeView methodsFor: 'initialization' stamp: 'dhn 6/28/2016 11:12'!
+!LifeView methodsFor: 'initialization' stamp: 'dhn 28/Jun/2016, 6:12:00 pm (UTC)'!
 initialize
 
 	super initialize.
@@ -1246,23 +1247,22 @@ initialize
 	stepDelay _ 500
 ! !
 
-!LifeView methodsFor: 'initialization' stamp: 'dhn 7/6/2016 17:11'!
+!LifeView methodsFor: 'initialization' stamp: 'KenD 27/Oct/2026, 9:53:28 pm (UTC)'!
 row: aRow length: aNumber
 	"Answer aNumber of cells for aRow"
 	| col morph |
 
-	col _ OrderedCollection new.
+	col := OrderedCollection new.
 	(1 to: aNumber) do: [:ea |
-			morph _ GridCell model: model action: nil.
+			morph := GridCell model: model action: nil.
 			morph
 				index: aRow@ea;
-				roundButtonStyle: false;
 				layoutSpec: (LayoutSpec proportionalWidth: 0.2).
 				gridArray i: aRow j: ea put: morph.
 				col addFirst: morph].
 	^ col! !
 
-!LifeView methodsFor: 'menu' stamp: 'jmv 9/12/2024 12:25:29'!
+!LifeView methodsFor: 'menu' stamp: 'jmv 12/Sep/2024, 7:25:29 pm (UTC)'!
 experiment
 	"Open a clean sheet at a scale and extent"
 	 | xy grid jk |
@@ -1281,13 +1281,13 @@ experiment
 			ifEmpty: [^ nil]
 		].! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/28/2016 21:58'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 29/Jun/2016, 4:58:00 am (UTC)'!
 lines: anObject
 	"Set the value of lines"
 	
 	lines _ anObject! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 7/7/2016 10:13'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 7/Jul/2016, 5:13:00 pm (UTC)'!
 loadPattern
 	"Load a life form selected from a menu"
 	| items n arr siz nww |
@@ -1307,7 +1307,7 @@ loadPattern
 		nww extentAndPosition: arr fourth.
 		self delete "delete old view"]! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 7/20/2018 16:06:50'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 20/Jul/2018, 11:06:50 pm (UTC)'!
 menuMain
 	"Show the main pop-up menu"
 	
@@ -1324,7 +1324,7 @@ menuMain
 		
 	aMenu openInHand! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/28/2016 11:13'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 28/Jun/2016, 6:13:00 pm (UTC)'!
 pauseResume
 	"Toggle the run flag"
 	
@@ -1332,58 +1332,58 @@ pauseResume
 		ifTrue: [self sayRun]
 		ifFalse: [self sayStop]! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/28/2016 15:32'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 28/Jun/2016, 10:32:00 pm (UTC)'!
 sayClear
 	"Clear the grid"
 	
 	model clearGrid.
 	self setLabel: model class defaultLabel! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/28/2016 11:22'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 28/Jun/2016, 6:22:00 pm (UTC)'!
 sayRun
 	"Tell the model to run"
 	
 	self startSteppingStepTime: stepDelay! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/28/2016 11:16'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 28/Jun/2016, 6:16:00 pm (UTC)'!
 sayStop
 	"Tell the model to stop run ning"
 	
 	runFlag _ false.
 	self stopStepping! !
 
-!LifeView methodsFor: 'menu' stamp: 'dhn 6/27/2016 15:10'!
+!LifeView methodsFor: 'menu' stamp: 'dhn 27/Jun/2016, 10:10:00 pm (UTC)'!
 takeAStep
 	"Do one cycle"
 	
 	model nextState! !
 
-!LifeView methodsFor: 'label' stamp: 'dhn 7/2/2016 09:30'!
+!LifeView methodsFor: 'label' stamp: 'dhn 2/Jul/2016, 4:30:00 pm (UTC)'!
 label
 	"Answer the value of label"
 	
 	^ label! !
 
-!LifeView methodsFor: 'label' stamp: 'dhn 7/1/2016 22:10'!
+!LifeView methodsFor: 'label' stamp: 'dhn 2/Jul/2016, 5:10:00 am (UTC)'!
 label: aString
 	"Set the value of label"
 	
 	label  _ aString! !
 
-!LifeView methodsFor: 'label' stamp: 'dhn 7/1/2016 22:06'!
+!LifeView methodsFor: 'label' stamp: 'dhn 2/Jul/2016, 5:06:00 am (UTC)'!
 periodN
 	"Answer the value of period"
 	
 	periodN ifNil: [periodN _ 0].
 	^ periodN! !
 
-!LifeView methodsFor: 'label' stamp: 'dhn 7/1/2016 22:07'!
+!LifeView methodsFor: 'label' stamp: 'dhn 2/Jul/2016, 5:07:00 am (UTC)'!
 periodN: aNumber
 	"Set the value of periodN"
 	
 	periodN _ aNumber! !
 
-!LifeView methodsFor: 'label' stamp: 'dhn 7/1/2016 22:04'!
+!LifeView methodsFor: 'label' stamp: 'dhn 2/Jul/2016, 5:04:00 am (UTC)'!
 updateTitle
 	"Append the period count to the title"
 	
@@ -1394,19 +1394,19 @@ updateTitle
 			nextPut: $ ;
 			nextPutAll: periodN asString])! !
 
-!LifeView methodsFor: 'change reporting' stamp: 'dhn 7/6/2016 17:15'!
+!LifeView methodsFor: 'change reporting' stamp: 'dhn 7/Jul/2016, 12:15:00 am (UTC)'!
 stateChanged
 	"Cause all the grid cells to reflect the state of the model"
 	
 	gridArray elements do: [:ea | ea reflectState]! !
 
-!LifeView class methodsFor: 'instance creation' stamp: 'dhn 6/29/2016 15:35'!
+!LifeView class methodsFor: 'instance creation' stamp: 'dhn 29/Jun/2016, 10:35:00 pm (UTC)'!
 cellSize
 	"Answer the target size for a grid cell"
 	
 	^ 30! !
 
-!LifeView class methodsFor: 'instance creation' stamp: 'dhn 7/6/2016 13:19'!
+!LifeView class methodsFor: 'instance creation' stamp: 'dhn 6/Jul/2016, 8:19:00 pm (UTC)'!
 open: aPoint
 	"Set up a game of Life on a grid of aPoint shape"
 	| mod win xx yy |
@@ -1421,7 +1421,7 @@ open: aPoint
 	win when: #morphicStep evaluate: [ :unused | mod nextState].
 	^ win! !
 
-!LifeView class methodsFor: 'instance creation' stamp: 'dhn 7/4/2016 15:58'!
+!LifeView class methodsFor: 'instance creation' stamp: 'dhn 4/Jul/2016, 10:58:00 pm (UTC)'!
 rows: rows cols: cols
 	"Set up a game of Life on a grid of rows x cols"
 	| mod win xx yy |
@@ -1435,7 +1435,7 @@ rows: rows cols: cols
 	win when: #morphicStep evaluate: [ :unused | mod nextState].
 	^ win! !
 
-!LifeView class methodsFor: 'examples' stamp: 'dhn 7/6/2016 21:59'!
+!LifeView class methodsFor: 'examples' stamp: 'dhn 7/Jul/2016, 4:59:00 am (UTC)'!
 example
 	"
 	LifeView example
@@ -1446,7 +1446,7 @@ example
 	life label: 'LIFE Example'
 ! !
 
-!LifeView class methodsFor: 'examples' stamp: 'dhn 7/7/2016 20:25'!
+!LifeView class methodsFor: 'examples' stamp: 'dhn 8/Jul/2016, 3:25:00 am (UTC)'!
 example1
 	"The pentadecathlon, a pulsar of period 15
 	

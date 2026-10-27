@@ -1,7 +1,7 @@
 'From Cuis7.1 [latest update: #6387] on 20 May 2024 at 5:19:09 pm'!
 'Description Simulation of the Construction board game, a Euro-style game for 2 to 6 players, which is similar to Monopoly.'!
-!provides: 'Construction' 1 236!
-!requires: 'Game' 1 24 nil!
+!provides: 'Construction' '1.236.0'!
+!requires: 'Game' '1.24.0' '1.*.*'!
 SystemOrganization addCategory: #'Construction-Model'!
 SystemOrganization addCategory: #'Construction-Graphics'!
 

@@ -1,6 +1,6 @@
 'From Cuis6.3 [latest update: #6200] on 29 January 2024 at 4:16:00 pm'!
 'Description An aid for solving anagrams with different behavior for short and long anagrams. With a long anagram, random re-arrangements are listed as clues. One may remove letters and study the remainder. Removed letters can be returned. Short anagrams produce a list of permutations.'!
-!provides: 'AnagramAid' 1 34!
+!provides: 'AnagramAid' '1.34.0'!
 SystemOrganization addCategory: #AnagramAid!
 
 

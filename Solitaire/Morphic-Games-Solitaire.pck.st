@@ -1,9 +1,9 @@
 'From Cuis7.9 [latest update: #8266] on 12 October 2026 at 1:34:24 pm'!
 'Description Solitaire Card Games: FreeCell and Klondike'!
-!provides: 'Morphic-Games-Solitaire' 1 143!
-!requires: 'Cuis-Base' 73 7044 nil!
-!requires: 'Goodies' 1 11 nil!
-!requires: 'Graphics-Files-Additional' 1 29 nil!
+!provides: 'Morphic-Games-Solitaire' '1.143.0'!
+!requires: 'Cuis-Base' '7.3.7044' '7.*.*'!
+!requires: 'Goodies' '1.11.0' '1.*.*'!
+!requires: 'Graphics-Files-Additional' '1.29.0' '1.*.*'!
 SystemOrganization addCategory: #'Morphic-Games-Solitaire'!
 
 
