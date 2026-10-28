@@ -1,31 +1,13 @@
-'From Cuis7.9 [latest update: #8296] on 27 October 2026 at 3:17:27 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:55:26 pm'!
 'Description Classes which support board games.'!
 !provides: 'Game' '1.73.0'!
+!requires: 'UI-Widgets' '1.75.0' '1.*.*'!
 !requires: 'UI-Components' '1.0.0' '1.*.*'!
 !requires: 'Morphic-Deprecated' '1.0.0' '1.*.*'!
+!requires: 'UI-Shapes' '1.48.0' '1.*.*'!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
 
-
-!classDefinition: #ArrowMorph category: #'Game-Graphics'!
-ProtoObject subclass: #ArrowMorph
-	instanceVariableNames: 'form'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Game-Graphics'!
-!classDefinition: 'ArrowMorph class' category: #'Game-Graphics'!
-ArrowMorph class
-	instanceVariableNames: ''!
-
-!classDefinition: #PlotGraphMorph category: #'Game-Graphics'!
-ProtoObject subclass: #PlotGraphMorph
-	instanceVariableNames: 'data points yScaleFactor startTime deltaT yFactor xFactor resumed players sorted'
-	classVariableNames: ''
-	poolDictionaries: ''
-	category: 'Game-Graphics'!
-!classDefinition: 'PlotGraphMorph class' category: #'Game-Graphics'!
-PlotGraphMorph class
-	instanceVariableNames: ''!
 
 !classDefinition: #Asset category: #'Game-Model'!
 Object subclass: #Asset
@@ -237,6 +219,16 @@ EllipseMorph subclass: #Token
 Token class
 	instanceVariableNames: ''!
 
+!classDefinition: #PlotGraphMorph category: #'Game-Graphics'!
+FunctionGraphMorph subclass: #PlotGraphMorph
+	instanceVariableNames: 'data points yScaleFactor startTime deltaT yFactor xFactor resumed players sorted'
+	classVariableNames: ''
+	poolDictionaries: ''
+	category: 'Game-Graphics'!
+!classDefinition: 'PlotGraphMorph class' category: #'Game-Graphics'!
+PlotGraphMorph class
+	instanceVariableNames: ''!
+
 !classDefinition: #GamePasteUp category: #'Game-Graphics'!
 PasteUpMorph subclass: #GamePasteUp
 	instanceVariableNames: ''
@@ -257,15 +249,6 @@ PopUpMenu subclass: #GamePopUp
 GamePopUp class
 	instanceVariableNames: ''!
 
-
-!ArrowMorph commentStamp: '<historical>' prior: 0!
-Enable a form to be opened on a world.!
-
-!PlotGraphMorph commentStamp: '<historical>' prior: 0!
-Plot players' progress.
-
-REQUIRES FunctionGraphMorph  !!?!!
-!
 
 !Asset commentStamp: 'dhn 7/10/2016 11:58' prior: 0!
 Abstract class for an asset model.!
@@ -339,6 +322,11 @@ An abstract class for game windows.!
 !Token commentStamp: 'dhn 7/10/2016 11:44' prior: 0!
 A player's piece on the game board.!
 
+!PlotGraphMorph commentStamp: '<historical>' prior: 0!
+Plot players' progress.
+
+!
+
 !GamePasteUp commentStamp: '<historical>' prior: 0!
 Provide a way to make the pasteup immobile.!
 
@@ -347,203 +335,6 @@ Modal dialog, providing syntax identical to a Squeak class:
 
 UserDialogBoxMorph inform: 'An informative string.' title: 'Title'.
 !
-
-!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 13/Nov/2016, 2:23:27 am (UTC)'!
-form
-	"Answer the value of form"
-
-	^ form! !
-
-!ArrowMorph methodsFor: 'accessing' stamp: 'dhn 13/Nov/2016, 2:23:27 am (UTC)'!
-form: anObject
-	"Set the value of form"
-
-	form _ anObject! !
-
-!ArrowMorph methodsFor: 'drawing' stamp: 'dhn 13/Nov/2016, 2:13:00 am (UTC)'!
-drawOn: aCanvas
-
-	aCanvas image: form at: 0@0! !
-
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 20/Jan/2017, 6:56:31 pm (UTC)'!
-includeInNewMorphMenu
-	"Not to be instantiated from the menu"
-	^ false! !
-
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 14/May/2017, 7:52:40 pm (UTC)'!
-leftOn: aWorld
-	"Open a right-pointing arrow in aWorld"
-	
-	^ self new
-		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm! !
-
-!ArrowMorph class methodsFor: 'instance creation' stamp: 'dhn 14/May/2017, 7:46:15 pm (UTC)'!
-rightOn: aWorld
-	"Open a right-pointing arrow in aWorld"
-
-	^ self new
-		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 19/Jan/2017, 1:21:02 am (UTC)'!
-asNormalizedPoints: aCollection
-	"Answer an array of points which are mapped on [0, T] in both dimensions, where T is a multiple of 10"
-	| yArray xArray result |
-
-	yArray _ yFactor * (self normalize: aCollection asOrderedCollection with: yScaleFactor).
-	xArray _ xFactor * (self normalize: (0 to: aCollection size) asArray).
-	
-	result _ OrderedCollection new.
-	1 to: yArray size	do: [ :i | result add: (xArray at: i) @ (yArray at: i) ].
-	
-	^ result.! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 19/Mar/2017, 3:16:23 am (UTC)'!
-drawOn: aCanvas
-	"Draw all the lines, including axes, on the graph"
-	| fully lineColor |
-	
-	fully _ 10 raisedTo: yMax log asInteger.
-
-	aCanvas line: (self toMorphic:0@yMin) to: (self toMorphic: 0 @ yMax) width: 2 color: Color lightGray.
-	aCanvas line: (self toMorphic: xMin@0) to: (self toMorphic: xMax@0) width: 2 color: Color lightGray.
-	aCanvas line: (self toMorphic: 0@fully) to: (self toMorphic: xMax@fully) width: 2 color: Color lightRed.
-	
-	owner owner rank: sorted.
-	
-	sorted do: [:ea |
-		lineColor _ ea color.
-		ea history size > 1 ifTrue: [
-			points _ self asNormalizedPoints: ea history.
-
-			1 to: points size - 1 do: [:n | | p |
-				aCanvas 	"continue the graph"
-					line: (self toMorphic: (p _ points at: n)) 	"from point"
-					to: (self toMorphic: (points at: n + 1)) 	"to point"
-					width: 2 color: lineColor]]].! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 23/May/2015, 6:50:00 pm (UTC)'!
-normalize: aCollection
-	"Answer aCollection divided by its maximum"
-	| max |
-	max _ aCollection inject: 0 into: [:a :c | (a > c)
-		ifTrue: [a]
-		ifFalse: [c]].
-	^ OrderedCollection new
-		addAll: aCollection / (max * 1.0)! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 27/May/2015, 3:09:00 am (UTC)'!
-normalize: aCollection with: aFactor
-	"Answer aCollection divided by its maximum and scaled by maximum/aFactor"
-	| max |
-	max _ aCollection inject: 0 into: [:a :c | (a > c)
-		ifTrue: [a]
-		ifFalse: [c]].
-	^ OrderedCollection new
-		addAll: (aCollection / (max * 1.0)) * (max / aFactor)! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 29/Sep/2016, 5:58:56 pm (UTC)'!
-plotData
-	"Sort then plot for each player"
-
-	sorted _ SortedCollection new
-		sortBlock: [:a :c | a history last > c history last].
-	sorted addAll: players.
-	self redrawNeeded
-
-! !
-
-!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 12/May/2016, 5:39:00 pm (UTC)'!
-startTime
-	"Answer the value of startTime"
-	
-	startTime ifNil: [startTime _ Time localMillisecondClock].
-	^ startTime! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 6/May/2015, 4:33:00 pm (UTC)'!
-color: aColor
-
-	super color: aColor.
-! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 23/May/2015, 11:09:00 pm (UTC)'!
-data: aCollection
-
-	data _ aCollection
-! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 1/Oct/2016, 3:57:20 am (UTC)'!
-details
-	"Update the plot"
-
-	self 
-		players: owner owner model players;
-		plotData! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 29/Sep/2016, 3:37:04 am (UTC)'!
-players
-	"Answer the value of players"
-
-	^ players! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 29/Sep/2016, 3:37:25 am (UTC)'!
-players: anObject
-	"Set the value of players"
-
-	players _ anObject! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
-points
-	"Answer the value of points"
-
-	^ points! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
-points: anObject
-	"Set the value of points"
-
-	points _ anObject! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/Jun/2016, 7:13:00 pm (UTC)'!
-resumed: anObject
-	"Set the value of resumed"
-
-	resumed _ anObject! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
-startTime: anObject
-	"Set the value of startTime"
-
-	startTime _ anObject! !
-
-!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 26/May/2015, 7:25:00 pm (UTC)'!
-yScaleFactor: aNumber
-
-	yScaleFactor _ aNumber
-! !
-
-!PlotGraphMorph methodsFor: 'initialization' stamp: 'dhn 12/May/2016, 4:50:00 pm (UTC)'!
-initialize
-
-	super initialize! !
-
-!PlotGraphMorph methodsFor: 'initialization' stamp: 'dhn 12/May/2016, 4:17:00 am (UTC)'!
-setXYFactors
-	"Set the values of xFactor and yFactor"
-
-	xFactor _ 10 raisedTo: xMax log asInteger.
-	yFactor _ 10 raisedTo: yMax log asInteger
-! !
-
-!PlotGraphMorph class methodsFor: 'instance creation' stamp: 'dhn 20/Jan/2017, 6:58:36 pm (UTC)'!
-includeInNewMorphMenu
-	"Not to be instantiated from the menu"
-	^ false! !
-
-!PlotGraphMorph class methodsFor: 'display' stamp: 'dhn 11/May/2016, 11:01:00 pm (UTC)'!
-ticLength
-	"Answer the length of tic marks"
-	
-	^ 0.2! !
 
 !Asset methodsFor: 'accessing' stamp: 'dhn 25/Sep/2011, 5:37:00 pm (UTC)'!
 cost
@@ -3482,6 +3273,167 @@ newFor: aModel
 rollCount
 	"Answer the number of iterations for a roll"
 	^ 1! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 19/Jan/2017, 1:21:02 am (UTC)'!
+asNormalizedPoints: aCollection
+	"Answer an array of points which are mapped on [0, T] in both dimensions, where T is a multiple of 10"
+	| yArray xArray result |
+
+	yArray _ yFactor * (self normalize: aCollection asOrderedCollection with: yScaleFactor).
+	xArray _ xFactor * (self normalize: (0 to: aCollection size) asArray).
+	
+	result _ OrderedCollection new.
+	1 to: yArray size	do: [ :i | result add: (xArray at: i) @ (yArray at: i) ].
+	
+	^ result.! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 19/Mar/2017, 3:16:23 am (UTC)'!
+drawOn: aCanvas
+	"Draw all the lines, including axes, on the graph"
+	| fully lineColor |
+	
+	fully _ 10 raisedTo: yMax log asInteger.
+
+	aCanvas line: (self toMorphic:0@yMin) to: (self toMorphic: 0 @ yMax) width: 2 color: Color lightGray.
+	aCanvas line: (self toMorphic: xMin@0) to: (self toMorphic: xMax@0) width: 2 color: Color lightGray.
+	aCanvas line: (self toMorphic: 0@fully) to: (self toMorphic: xMax@fully) width: 2 color: Color lightRed.
+	
+	owner owner rank: sorted.
+	
+	sorted do: [:ea |
+		lineColor _ ea color.
+		ea history size > 1 ifTrue: [
+			points _ self asNormalizedPoints: ea history.
+
+			1 to: points size - 1 do: [:n | | p |
+				aCanvas 	"continue the graph"
+					line: (self toMorphic: (p _ points at: n)) 	"from point"
+					to: (self toMorphic: (points at: n + 1)) 	"to point"
+					width: 2 color: lineColor]]].! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 23/May/2015, 6:50:00 pm (UTC)'!
+normalize: aCollection
+	"Answer aCollection divided by its maximum"
+	| max |
+	max _ aCollection inject: 0 into: [:a :c | (a > c)
+		ifTrue: [a]
+		ifFalse: [c]].
+	^ OrderedCollection new
+		addAll: aCollection / (max * 1.0)! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 27/May/2015, 3:09:00 am (UTC)'!
+normalize: aCollection with: aFactor
+	"Answer aCollection divided by its maximum and scaled by maximum/aFactor"
+	| max |
+	max _ aCollection inject: 0 into: [:a :c | (a > c)
+		ifTrue: [a]
+		ifFalse: [c]].
+	^ OrderedCollection new
+		addAll: (aCollection / (max * 1.0)) * (max / aFactor)! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 29/Sep/2016, 5:58:56 pm (UTC)'!
+plotData
+	"Sort then plot for each player"
+
+	sorted _ SortedCollection new
+		sortBlock: [:a :c | a history last > c history last].
+	sorted addAll: players.
+	self redrawNeeded
+
+! !
+
+!PlotGraphMorph methodsFor: 'drawing' stamp: 'dhn 12/May/2016, 5:39:00 pm (UTC)'!
+startTime
+	"Answer the value of startTime"
+	
+	startTime ifNil: [startTime _ Time localMillisecondClock].
+	^ startTime! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 6/May/2015, 4:33:00 pm (UTC)'!
+color: aColor
+
+	super color: aColor.
+! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 23/May/2015, 11:09:00 pm (UTC)'!
+data: aCollection
+
+	data _ aCollection
+! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 1/Oct/2016, 3:57:20 am (UTC)'!
+details
+	"Update the plot"
+
+	self 
+		players: owner owner model players;
+		plotData! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 29/Sep/2016, 3:37:04 am (UTC)'!
+players
+	"Answer the value of players"
+
+	^ players! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 29/Sep/2016, 3:37:25 am (UTC)'!
+players: anObject
+	"Set the value of players"
+
+	players _ anObject! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
+points
+	"Answer the value of points"
+
+	^ points! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
+points: anObject
+	"Set the value of points"
+
+	points _ anObject! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/Jun/2016, 7:13:00 pm (UTC)'!
+resumed: anObject
+	"Set the value of resumed"
+
+	resumed _ anObject! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 11/May/2016, 9:06:00 am (UTC)'!
+startTime: anObject
+	"Set the value of startTime"
+
+	startTime _ anObject! !
+
+!PlotGraphMorph methodsFor: 'accessing' stamp: 'dhn 26/May/2015, 7:25:00 pm (UTC)'!
+yScaleFactor: aNumber
+
+	yScaleFactor _ aNumber
+! !
+
+!PlotGraphMorph methodsFor: 'initialization' stamp: 'dhn 12/May/2016, 4:50:00 pm (UTC)'!
+initialize
+
+	super initialize! !
+
+!PlotGraphMorph methodsFor: 'initialization' stamp: 'dhn 12/May/2016, 4:17:00 am (UTC)'!
+setXYFactors
+	"Set the values of xFactor and yFactor"
+
+	xFactor _ 10 raisedTo: xMax log asInteger.
+	yFactor _ 10 raisedTo: yMax log asInteger
+! !
+
+!PlotGraphMorph class methodsFor: 'instance creation' stamp: 'dhn 20/Jan/2017, 6:58:36 pm (UTC)'!
+includeInNewMorphMenu
+	"Not to be instantiated from the menu"
+	^ false! !
+
+!PlotGraphMorph class methodsFor: 'display' stamp: 'dhn 11/May/2016, 11:01:00 pm (UTC)'!
+ticLength
+	"Answer the length of tic marks"
+	
+	^ 0.2! !
 
 !GamePasteUp methodsFor: 'dropping/grabbing' stamp: 'dhn 5/Jan/2018, 1:32:52 am (UTC)'!
 aboutToGrab: submorph
