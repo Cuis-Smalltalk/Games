@@ -1,10 +1,11 @@
-'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 2:55:26 pm'!
+'From Cuis7.9 [latest update: #8296] on 28 October 2026 at 3:50:37 pm'!
 'Description Classes which support board games.'!
 !provides: 'Game' '1.73.0'!
 !requires: 'UI-Widgets' '1.75.0' '1.*.*'!
 !requires: 'UI-Components' '1.0.0' '1.*.*'!
 !requires: 'Morphic-Deprecated' '1.0.0' '1.*.*'!
 !requires: 'UI-Shapes' '1.48.0' '1.*.*'!
+!requires: 'UI-Entry' '1.63.0' '1.*.*'!
 SystemOrganization addCategory: #'Game-Model'!
 SystemOrganization addCategory: #'Game-Graphics'!
 
@@ -3007,11 +3008,11 @@ arrow
 
 	^ arrow! !
 
-!Token methodsFor: 'accessing' stamp: 'dhn 19/Feb/2017, 1:16:13 am (UTC)'!
+!Token methodsFor: 'accessing' stamp: 'KenD 28/Oct/2026, 10:49:20 pm (UTC)'!
 arrowPosition
 	"Answer the position for the arrow"
 
-	^ (self morphWidth / 3) @ -60! !
+	^ (self morphWidth / 3) @ 0! !
 
 !Token methodsFor: 'accessing' stamp: 'dhn 10/Oct/2011, 3:04:00 am (UTC)'!
 count
@@ -3062,26 +3063,24 @@ tokenId: anObject
 
 	tokenId _ anObject! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 8/Aug/2017, 6:31:47 pm (UTC)'!
+!Token methodsFor: 'initialization' stamp: 'KenD 28/Oct/2026, 10:41:45 pm (UTC)'!
 arrowLeft
 	"Associate an arrow with the sender, pointing to the left"
 
-	arrow _ ArrowMorph new
-		form: (BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm.
+	arrow := ImageMorph newWith:
+			(BitBltCanvas arrowOfDirection: #left size: 40) as8BitColorForm.
 	self addMorph: arrow.
-	arrow openInWorld: self.
 	arrow morphPosition: self arrowPosition
 
 ! !
 
-!Token methodsFor: 'initialization' stamp: 'dhn 8/Aug/2017, 6:31:24 pm (UTC)'!
+!Token methodsFor: 'initialization' stamp: 'KenD 28/Oct/2026, 10:37:28 pm (UTC)'!
 arrowRight
 	"Associate an arrow with the sender, pointing to the right"
 
-	arrow _ ArrowMorph new
-		form: (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm.
+	arrow := ImageMorph newWith:
+		 (BitBltCanvas arrowOfDirection: #right size: 40) as8BitColorForm.
 	self addMorph: arrow.
-	arrow openInWorld: self.
 	arrow morphPosition: self arrowPosition
 ! !
 
